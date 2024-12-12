@@ -93,12 +93,12 @@ public class Modele implements Sujet{
         return blocsMap.get(id);
     }
 
-    public void ajouterObservateur(Observateur observateur) {
+    public void ajouterObs(Observateur observateur) {
         observateurs.add(observateur);
     }
 
     // Retirer un observateur
-    public void supprimerObservateur(Observateur observateur) {
+    public void supprimerObs(Observateur observateur) {
         observateurs.remove(observateur);
     }
 

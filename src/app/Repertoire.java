@@ -33,4 +33,8 @@ public class Repertoire extends FileComposite{
         }
         return res;
     }
+
+    public ArrayList<FileComposite> getFileCompositeArrayList() {
+        return fileCompositeArrayList;
+    }
 }
