@@ -2,13 +2,15 @@ package app;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.*;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Modele {
 
-
+    private FileComposite rep;
     private int blocCourant;
     private Pane viewport;
     private VBox explorateur;
@@ -25,8 +27,8 @@ public class Modele {
 
     private List<Bloc> chercherDependance(int id ){
         HashMap<Bloc, Integer> dependance = new HashMap<>();
-        for
-
+        //for
+        return null;
     }
 
 
@@ -55,4 +57,12 @@ public class Modele {
 
     }
     public void setBlocCourant(int id){}
+
+    public FileComposite getRep() {
+        return rep;
+    }
+
+    public void setRep(FileComposite rep) {
+        this.rep = rep;
+    }
 }
