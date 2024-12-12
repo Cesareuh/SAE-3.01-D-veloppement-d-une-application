@@ -4,7 +4,11 @@ public class Fleche {
     private int blocDepart;
     private int blocArrivee;
 
-    public Position getPosDep(){}
+    public Position getPosDep(){
 
-    public Position getPosArr(){}
+    }
+
+    public Position getPosArr(){
+        
+    }
 }

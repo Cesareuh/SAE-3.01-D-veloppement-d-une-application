@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Modele {
 
-
+    
     private int blocCourant;
     private Pane viewport;
     private VBox explorateur;
