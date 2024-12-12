@@ -1,3 +1,5 @@
+package app;
+
 public interface Sujet {
     //methodes pour gerer les observateurs du model
     //public void ajouterObs(Observateur o);
