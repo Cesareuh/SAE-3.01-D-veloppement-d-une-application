@@ -1,7 +1,7 @@
 package app;
 
-import javax.swing.text.Position;
-import java.awt.*;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,19 +14,19 @@ public class Modele {
     private GridPane scene;
     private Canvas canvas;
 
-    public Modele(GridPane s, Canavs c , Pane p, VBox e){
+    public Modele(GridPane s, Canvas c , Pane p, VBox e){
 
     }
 
     private List<Bloc> chercherDepenance(int id ){
-
+        return null;
     }
 
     public ArrayList<Fleche> afficherFleches(){
-
+        return null;
     }
 
-    public void creerBloc(Class class, Position p){
+    public void creerBloc(Class classe, Position p){
 
     }
 
