@@ -7,10 +7,10 @@ public class Fleche {
     private int blocArrivee;
 
     public Position getPosDep(){
-       
+       return null;
     }
 
     public Position getPosArr(){
-        
+        return null;
     }
 }
