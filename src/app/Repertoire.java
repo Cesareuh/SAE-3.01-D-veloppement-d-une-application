@@ -1,3 +1,5 @@
+package app;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -15,6 +17,10 @@ public class Repertoire extends FileComposite{
                 }
             }
         }
+    }
+
+    public void addFiles(String path){
+        //TODO
     }
 
 

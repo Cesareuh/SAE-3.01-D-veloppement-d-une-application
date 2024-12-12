@@ -1,3 +1,5 @@
+package app;
+
 public class Attribut {
     private String autorisation;
     private String type;
