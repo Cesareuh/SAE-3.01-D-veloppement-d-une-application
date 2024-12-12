@@ -2,4 +2,4 @@
 
 
 ## Diagramme de classe
-![PlantUML](diagramme_classe/plantuml.png)
+![PlantUML](Etude_prealable/diagramme_classe/plantuml.pn)
