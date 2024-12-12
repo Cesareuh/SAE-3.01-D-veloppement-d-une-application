@@ -3,6 +3,7 @@ package app;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Modele {
@@ -13,20 +14,29 @@ public class Modele {
     private VBox explorateur;
     private GridPane scene;
     private Canvas canvas;
+    private List<Fleche> fleches;
 
     public Modele(GridPane s, Canvas c , Pane p, VBox e){
+        this.viewport = p;
+        this.explorateur = e;
+        this.scene = s;
+        this.canvas = c;
+    }
+
+    private List<Bloc> chercherDependance(int id ){
+        HashMap<Bloc, Integer> dependance = new HashMap<>();
+        for
 
     }
 
-    private List<Bloc> chercherDepenance(int id ){
-        return null;
-    }
 
-    public ArrayList<Fleche> afficherFleches(){
-        return null;
+    public void creerFleche(int blocDepart, int blocArrivee, String type) {
+        Fleche nouvelleFleche = new Fleche(blocDepart, blocArrivee, type);
+        fleches.add(nouvelleFleche);
     }
 
     public void creerBloc(Class classe, Position p){
+        Bloc nouveauBloc = new Bloc();
 
     }
 
