@@ -43,4 +43,11 @@ public class Bloc {
     public List<Attribut> getListMethodes() {
         return methodes;
     }
+
+    public String getNom(String className) {
+        return this.nom;
+    }
+
+    public void setNom(String className) {
+    }
 }
