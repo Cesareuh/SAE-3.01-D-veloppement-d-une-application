@@ -1,8 +1,11 @@
 package app;
 
 public class FabriqueInterface extends FabriqueBloc {
-    public Bloc creerBloc() {
 
-        return new Bloc();
+    // Méthode modifiée pour accepter des paramètres
+    @Override
+    public Bloc creerBloc(String nom, String image, String implementation, String heritage) {
+        // Création du Bloc en passant les paramètres au constructeur
+        return new Bloc(nom, image, implementation, heritage);
     }
 }

@@ -1,7 +1,9 @@
 package app;
 
 public class FabriqueClass extends FabriqueBloc {
-    public Bloc creerBloc() {
-        return new Bloc();
+
+    @Override
+    public Bloc creerBloc(String nom, String image, String implementation, String heritage) {
+        return new Bloc(nom, image, implementation, heritage);
     }
 }

@@ -33,20 +33,6 @@ public class Modele implements Sujet{
         primaryStage = stage;
     }
 
-    public VBox getFileExplorer() {
-        return this.explorateur;
-    }
-
-    /*
-    private List<Bloc> chercherDependance(int id ){
-        HashMap<Bloc, Integer> dependance = new HashMap<>();
-        for
-
-    }
-
-     */
-
-
     // Cherche les dépendances d'un bloc donné par son id
     private List<Bloc> chercherDependance(int id) {
         List<Bloc> dependances = new ArrayList<>();
@@ -66,7 +52,7 @@ public class Modele implements Sujet{
         int id = derniereID++;
 
         // Crée une nouvelle instance de Bloc
-        Bloc nouveauBloc = new Bloc();
+        Bloc nouveauBloc = new Bloc("NomBloc", "ImageBloc", "ImplementationBloc", "HeritageBloc");
 
         // Initialise les attributs du bloc
         nouveauBloc.setPosition(position.getX(), position.getY());
@@ -137,5 +123,9 @@ public class Modele implements Sujet{
 
     public Stage getStage(){
         return primaryStage;
+    }
+
+    public VBox getFileExplorer() {
+        return this.explorateur;
     }
 }
