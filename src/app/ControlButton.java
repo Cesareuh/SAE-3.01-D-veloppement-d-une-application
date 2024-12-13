@@ -26,7 +26,7 @@ public class ControlButton implements EventHandler {
 			dirChooser.setTitle("Open Directory");
 			File selectedFile = dirChooser.showDialog(m.getStage());
 			if(selectedFile != null){
-				m.initialiserBlocs(selectedFile);
+				m.initialiserBlocs(String.valueOf(selectedFile));
 			}
 		}
 	}

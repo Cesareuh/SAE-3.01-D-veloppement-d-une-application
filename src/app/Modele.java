@@ -3,7 +3,7 @@ package app;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.*;
 
-//import java.lang.classfile.Attribute;
+
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -88,7 +88,7 @@ public class Modele implements Sujet{
 
 
     // Initialisation des blocs à partir d'un répertoire
-    public void initialiserBlocs(File repertoire) {
+    public void initialiserBlocs(String repertoire) {
         // Logique d'initialisation des blocs depuis un répertoire donné
     }
 
