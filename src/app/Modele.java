@@ -2,14 +2,11 @@ package app;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.*;
-<<<<<<< HEAD
 
 import java.lang.classfile.Attribute;
-=======
 import javafx.stage.Stage;
 
 import java.io.File;
->>>>>>> 3c13ca3 (main + controlbutton + menu contextuel)
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
