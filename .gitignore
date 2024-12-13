@@ -26,3 +26,4 @@ replay_pid*
 .iml
 *.iml
 out/
+module-info.java
