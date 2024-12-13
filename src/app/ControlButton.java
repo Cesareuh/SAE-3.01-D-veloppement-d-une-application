@@ -22,7 +22,6 @@ public class ControlButton implements EventHandler {
     @Override
 	public void handle(Event event) {
 		if(((MenuItem)event.getTarget()).getText().equals("Select directory")){
-			System.out.println("test");
 			DirectoryChooser dirChooser = new DirectoryChooser();
 			dirChooser.setTitle("Open Directory");
 			File selectedFile = dirChooser.showDialog(m.getStage());

@@ -2,7 +2,7 @@ package app;
 
 public class VueFleche implements Observateur{
     @Override
-    public void actualiser() {
+    public void actualiser(Sujet s) {
 
     }
 }

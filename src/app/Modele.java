@@ -18,18 +18,16 @@ public class Modele implements Sujet{
     private Pane viewport;
     private VBox explorateur;
     private VBox root;
-    private Canvas canvas;
     private Stage primaryStage;
     private List<Fleche> fleches;
     private HashMap<Integer, Bloc> blocsMap;
     private int derniereID = 1;
     private List<Observateur> observateurs = new ArrayList<>();
 
-    public Modele(VBox r, Canvas c , Pane p, VBox e, Stage stage){
+    public Modele(VBox r, Pane p, VBox e, Stage stage){
         this.viewport = p;
         this.explorateur = e;
         this.root = r;
-        this.canvas = c;
         this.fleches = new ArrayList<>();
         this.blocsMap = new HashMap<>();
         primaryStage = stage;
@@ -121,7 +119,7 @@ public class Modele implements Sujet{
     // Notifie tous les observateurs des changements
     public void notifierObs() {
         for (Observateur observateur : observateurs) {
-            observateur.actualiser();
+            observateur.actualiser(this);
         }
     }
 
