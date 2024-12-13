@@ -1,41 +1,34 @@
 package app;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.MenuItem;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
-public class ControlButton implements EventHandler<ActionEvent> {
+import java.io.File;
 
-    private final Modele modele;
-    private final TextField cheminField;
-    private final Button button;
+public class ControlButton implements EventHandler {
 
-    public ControlButton(Modele modele, TextField cheminField, Button button) {
-        this.modele = modele;
-        this.cheminField = cheminField;
-        this.button = button;
-        this.button.setOnAction(this);
+    Modele m;
+    public ControlButton(Modele m){
+        this.m = m;
     }
 
-    public void handle(ActionEvent event) {
-        String buttonId = button.getId();
 
-        if ("btnGenerer".equals(buttonId)) {
-            String chemin = cheminField.getText();
 
-            if (chemin == null || chemin.isEmpty()) {
-                System.out.println("veuillez renseigner un chemin");
-            } else {
-                try {
-                    modele.initialiserBlocs(chemin);
-                    System.out.println("Diagramme généré avec : " + chemin);
-                } catch (Exception e) {
-                    System.out.println("Erreur lors de la génération du diagramme : " + e.getMessage());
-                }
-            }
-        } else {
-            System.out.println("l'action n existe pas : " + buttonId);
-        }
-    }
+    @Override
+	public void handle(Event event) {
+		if(((MenuItem)event.getTarget()).getText().equals("Select directory")){
+			System.out.println("test");
+			DirectoryChooser dirChooser = new DirectoryChooser();
+			dirChooser.setTitle("Open Directory");
+			File selectedFile = dirChooser.showDialog(m.getStage());
+			if(selectedFile != null){
+				m.initialiserBlocs(selectedFile);
+			}
+		}
+	}
 }

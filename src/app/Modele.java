@@ -2,8 +2,14 @@ package app;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.*;
+<<<<<<< HEAD
 
 import java.lang.classfile.Attribute;
+=======
+import javafx.stage.Stage;
+
+import java.io.File;
+>>>>>>> 3c13ca3 (main + controlbutton + menu contextuel)
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,21 +19,32 @@ public class Modele implements Sujet{
     private int blocCourant;
     private Pane viewport;
     private VBox explorateur;
-    private GridPane scene;
+    private VBox root;
     private Canvas canvas;
+    private Stage primaryStage;
     private List<Fleche> fleches;
     private HashMap<Integer, Bloc> blocsMap;
     private int derniereID = 1;
     private List<Observateur> observateurs = new ArrayList<>();
 
-    public Modele(GridPane s, Canvas c, Pane p, VBox e) {
+    public Modele(VBox r, Canvas c , Pane p, VBox e, Stage stage){
         this.viewport = p;
         this.explorateur = e;
-        this.scene = s;
+        this.root = r;
         this.canvas = c;
         this.fleches = new ArrayList<>();
         this.blocsMap = new HashMap<>();
+        primaryStage = stage;
     }
+
+    /*
+    private List<Bloc> chercherDependance(int id ){
+        HashMap<Bloc, Integer> dependance = new HashMap<>();
+        for
+
+    }
+
+     */
 
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -71,7 +88,6 @@ public class Modele implements Sujet{
         if (bloc != null) {
             bloc.setPosition(x, y);
         }
-    }
 
     // Initialisation des blocs à partir d'un répertoire
     public void initialiserBlocs(String repertoire) {
@@ -107,5 +123,9 @@ public class Modele implements Sujet{
         for (Observateur observateur : observateurs) {
             observateur.actualiser();
         }
+    }
+
+    public Stage getStage(){
+        return primaryStage;
     }
 }
