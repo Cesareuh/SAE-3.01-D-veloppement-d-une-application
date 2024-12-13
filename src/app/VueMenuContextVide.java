@@ -1,6 +1,6 @@
 package app;
 
-public class VueMenuContextuel implements Observateur{
+public class VueMenuContextVide implements Observateur{
     @Override
     public void actualiser() {
         //TODO

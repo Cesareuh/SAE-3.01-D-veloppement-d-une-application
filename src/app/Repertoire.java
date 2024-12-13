@@ -26,11 +26,15 @@ public class Repertoire extends FileComposite{
 
     @Override
     public String afficher(String prec) {
-        String res="";
-        res+=prec+"-"+this.f.getName()+"\n";
-        for (FileComposite fileComposite : fileCompositeArrayList) {
-            res+=fileComposite.afficher(prec+"| ");
+        String res = "";
+        for(FileComposite file : this.getFileCompositeArrayList()){
+            res+=file.afficher(" "+prec);
+            System.out.println(res);
         }
         return res;
+    }
+
+    public ArrayList<FileComposite> getFileCompositeArrayList() {
+        return fileCompositeArrayList;
     }
 }
