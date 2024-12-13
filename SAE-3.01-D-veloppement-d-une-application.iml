@@ -35,10 +35,8 @@
         <SOURCES />
       </library>
     </orderEntry>
-=======
     <orderEntry type="library" name="javafx.controls" level="project" />
     <orderEntry type="library" name="javafx.graphics" level="project" />
     <orderEntry type="library" name="javafx.base" level="project" />
->>>>>>> 3c748c3aac2efef2b01f5c6ff0e2c778b0bdd47f
   </component>
 </module>
