@@ -1,5 +1,3 @@
-package Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import app.Bloc;
@@ -13,9 +11,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.util.HashMap;
-
 class ModeleTest {
 
     // Test de la méthode creerBloc
@@ -27,7 +22,7 @@ class ModeleTest {
         Pane viewport = new Pane();
         VBox explorateur = new VBox();
         Stage stage = new Stage();
-        Modele modele = new Modele(root, canvas, viewport, explorateur, stage);
+        Modele modele = new Modele(root, viewport, explorateur, stage);
 
         Position position = new Position(10, 20);
 
