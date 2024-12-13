@@ -3,7 +3,7 @@ package app;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.*;
 
-import java.lang.classfile.Attribute;
+//import java.lang.classfile.Attribute;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -123,6 +123,7 @@ public class Modele implements Sujet{
         for (Observateur observateur : observateurs) {
             observateur.actualiser();
         }
+    }
 
     public File getRep() {
         return rep;
