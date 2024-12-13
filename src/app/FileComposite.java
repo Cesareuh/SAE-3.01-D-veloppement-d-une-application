@@ -8,6 +8,7 @@ public abstract class FileComposite {
 
     //constructeur
     public FileComposite(File file) {
+
         this.f = file;
     }
     //methodes

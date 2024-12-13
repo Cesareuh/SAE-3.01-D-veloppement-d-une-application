@@ -33,6 +33,10 @@ public class Modele implements Sujet{
         primaryStage = stage;
     }
 
+    public VBox getFileExplorer() {
+        return this.explorateur;
+    }
+
     /*
     private List<Bloc> chercherDependance(int id ){
         HashMap<Bloc, Integer> dependance = new HashMap<>();
