@@ -33,16 +33,6 @@ public class Modele implements Sujet{
         primaryStage = stage;
     }
 
-    /*
-    private List<Bloc> chercherDependance(int id ){
-        HashMap<Bloc, Integer> dependance = new HashMap<>();
-        for
-
-    }
-
-     */
-
-
     // Cherche les dépendances d'un bloc donné par son id
     private List<Bloc> chercherDependance(int id) {
         List<Bloc> dependances = new ArrayList<>();
@@ -57,7 +47,7 @@ public class Modele implements Sujet{
     }
 
     // Crée un nouveau bloc à partir d'une classe et d'une position
-    public void creerBloc(Class className, Position position) {
+    public void creerBloc(Fichier f, Position position) {
         // Génère un ID unique pour le nouveau bloc
         int id = derniereID++;
 
@@ -71,8 +61,6 @@ public class Modele implements Sujet{
         blocsMap.put(id, nouveauBloc);
     }
 
-
-
     // Supprime un bloc donné
     public void supprimerBloc(int id) {
         blocsMap.remove(id);
@@ -84,17 +72,6 @@ public class Modele implements Sujet{
         if (bloc != null) {
             bloc.setPosition(x, y);
         }
-    }
-
-
-    // Initialisation des blocs à partir d'un répertoire
-    public void initialiserBlocs(String repertoire) {
-        // Logique d'initialisation des blocs depuis un répertoire donné
-    }
-
-    // Affiche un menu contextuel lorsque l'utilisateur clique avec le bouton droit
-    public void afficherClicDroit(Position p) {
-        // Logique pour afficher un menu contextuel en fonction de la position
     }
 
     // Définit le bloc courant
