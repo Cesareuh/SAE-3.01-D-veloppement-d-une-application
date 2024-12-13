@@ -3,7 +3,7 @@ package app;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.*;
 
-
+//import java.lang.classfile.Attribute;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -32,16 +32,6 @@ public class Modele implements Sujet{
         this.blocsMap = new HashMap<>();
         primaryStage = stage;
     }
-
-    /*
-    private List<Bloc> chercherDependance(int id ){
-        HashMap<Bloc, Integer> dependance = new HashMap<>();
-        for
-
-    }
-
-     */
-
 
     // Cherche les dépendances d'un bloc donné par son id
     private List<Bloc> chercherDependance(int id) {
@@ -88,7 +78,7 @@ public class Modele implements Sujet{
 
 
     // Initialisation des blocs à partir d'un répertoire
-    public void initialiserBlocs(String repertoire) {
+    public void initialiserBlocs(File repertoire) {
         // Logique d'initialisation des blocs depuis un répertoire donné
     }
 
@@ -135,11 +125,7 @@ public class Modele implements Sujet{
         return primaryStage;
     }
 
-    public List<Fleche> getfleches() {
-        return fleches;
-    }
-
-    public int getblocCourant(){
-        return blocCourant;
+    public VBox getFileExplorer() {
+        return this.explorateur;
     }
 }

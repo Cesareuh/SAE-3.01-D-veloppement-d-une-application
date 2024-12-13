@@ -1,6 +1,5 @@
 package app;
 
-import javax.swing.text.Position;
 
 public class Fleche {
     private int blocDepart;

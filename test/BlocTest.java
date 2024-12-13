@@ -1,5 +1,3 @@
-package Test;
-
 import app.Bloc;
 import app.Position;
 import org.junit.jupiter.api.BeforeEach;
