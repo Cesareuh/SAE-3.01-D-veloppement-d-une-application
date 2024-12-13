@@ -6,18 +6,16 @@ import javafx.scene.text.Text;
 import java.io.File;
 
 public class VueTextuel extends Label implements Observateur {
-    //attributs
-    protected Modele m;
 
     //constructeur
-    public VueTextuel(Modele modele) {
-        this.m = modele;
+    public VueTextuel() {
         this.setText("aaaaaaaaaaaaaaa");
     }
 
     //methodes
     @Override
-    public void actualiser() {
+    public void actualiser(Sujet s) {
+        Modele m = (Modele)s;
         File f = m.getRep();
         String res="";
         if(f.isFile()) {

@@ -15,6 +15,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -35,7 +36,6 @@ public class Main extends Application {
         MenuBar menuBar = new MenuBar();
         VBox fileExplorer = new VBox();
         Pane viewport = new Pane();
-        Canvas canvas = new Canvas();
 
         BorderStroke bs = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2));
         Border border = new Border(bs);
@@ -43,7 +43,7 @@ public class Main extends Application {
         fileExplorer.setBorder(border);
         viewport.setBorder(border);
 
-        Modele m = new Modele(root, canvas, viewport, fileExplorer, primaryStage);
+        Modele m = new Modele(root, viewport, fileExplorer, primaryStage);
 
         // Ajout du menu supérieur
         Menu fileMenu = new Menu("File");
@@ -51,30 +51,20 @@ public class Main extends Application {
         selectRep.setOnAction(new ControlButton(m));
         MenuItem export = new MenuItem("Export as PNG");
         export.setOnAction(new ControlButton(m));
-
-        Menu editMenu = new Menu("Edit");
         fileMenu.getItems().addAll(selectRep, export);
-
-        VueMenuContextBloc cb = new VueMenuContextBloc();
-        root.setOnContextMenuRequested(e -> cb.show(root, e.getScreenX(), e.getScreenY()));
-
-
-        /*
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-
-         */
-
+        Menu editMenu = new Menu("Edit");
         menuBar.getMenus().addAll(fileMenu, editMenu);
-        viewport.getChildren().add(canvas);
+
+        root.setOnContextMenuRequested(new ControlClicDroit(m));
+
         base.getChildren().addAll(fileExplorer, viewport);
         root.getChildren().addAll(menuBar, base);
-        primaryStage.setScene(new Scene(root, 300, 250));
+        primaryStage.setScene(new Scene(root, 1200, 600));
         primaryStage.show();
+
+
+        // Choisir taille viewport et fileExplorer
+        viewport.setMinSize(primaryStage.getWidth()*((double) 3 /4), primaryStage.getHeight());
+        fileExplorer.setMinSize(primaryStage.getWidth()*((double) 1 /4),primaryStage.getHeight());
     }
 }
