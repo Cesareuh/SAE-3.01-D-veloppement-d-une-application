@@ -17,8 +17,6 @@ public class ControlButton implements EventHandler {
         this.m = m;
     }
 
-
-
     @Override
 	public void handle(Event event) {
 		if(((MenuItem)event.getTarget()).getText().equals("Select directory")){

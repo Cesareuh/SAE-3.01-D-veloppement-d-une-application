@@ -1,5 +1,6 @@
 package app;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bloc {
@@ -11,6 +12,16 @@ public class Bloc {
     private Position pos;
     private List<Attribut> attributs;
     private List<Attribut> methodes;
+
+    public Bloc(String nom, String image, String implementation, String heritage) {
+        this.nom = nom;
+        this.image = image;
+        this.implementation = implementation;
+        this.heritage = heritage;
+        this.pos = new Position();
+        this.attributs = new ArrayList<>();
+        this.methodes = new ArrayList<>();
+    }
 
     public void setPosition(int x, int y) {
         if (pos == null) {
@@ -44,10 +55,18 @@ public class Bloc {
         return methodes;
     }
 
-    public String getNom(String className) {
+    public String getNom() {
         return this.nom;
     }
 
     public void setNom(String className) {
+    }
+
+    public int getPositionX() {
+        return pos.getX();
+    }
+
+    public int getPositionY(){
+        return pos.getY();
     }
 }

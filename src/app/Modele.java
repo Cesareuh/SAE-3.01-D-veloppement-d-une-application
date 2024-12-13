@@ -64,7 +64,7 @@ public class Modele implements Sujet{
         int id = derniereID++;
 
         // Crée une nouvelle instance de Bloc
-        Bloc nouveauBloc = new Bloc();
+        Bloc nouveauBloc = new Bloc("NomBloc", "ImageBloc", "ImplementationBloc", "HeritageBloc");
 
         // Initialise les attributs du bloc
         nouveauBloc.setPosition(position.getX(), position.getY());
@@ -135,5 +135,13 @@ public class Modele implements Sujet{
 
     public Stage getStage(){
         return primaryStage;
+    }
+
+    public List<Fleche> getfleches() {
+        return fleches;
+    }
+
+    public int getblocCourant(){
+        return blocCourant;
     }
 }
