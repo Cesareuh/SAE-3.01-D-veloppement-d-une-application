@@ -1,6 +1,7 @@
 package app;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -11,7 +12,20 @@ public class Fichier extends FileComposite{
 
     @Override
     public String afficher(String prec) {
-        Class<? extends Fichier> c = this.getClass();
+        try {
+            System.out.println("a"+f.getCanonicalPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String path = f.getPath();
+        path = path.replace("\\", ".");
+        Class<?> c;
+        try {
+            c = Class.forName(path);
+        } catch (ClassNotFoundException e) {
+            System.out.println("erreur");
+            return "";
+        }
         if(c.isInterface()) {
             prec+="Interface "+c.getSimpleName()+"{\n";
             //return prec+">"+f.getName()+"("+f.length()+")\n";
@@ -33,6 +47,7 @@ public class Fichier extends FileComposite{
                 prec+=f.getName()+" : "+f.getType().getName()+"\n";
             }
         }
+        System.out.println(prec);
         return prec+"}\n";
     }
 }

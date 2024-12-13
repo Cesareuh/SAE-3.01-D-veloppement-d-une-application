@@ -1,33 +1,36 @@
 package app;
 
+import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 
-public class VueTextuel extends Text implements Observateur {
+import java.io.File;
+
+public class VueTextuel extends Label implements Observateur {
     //attributs
     protected Modele m;
 
     //constructeur
     public VueTextuel(Modele modele) {
         this.m = modele;
+        this.setText("aaaaaaaaaaaaaaa");
     }
 
     //methodes
     @Override
     public void actualiser() {
-        FileComposite f = m.getRep();
-        this.setText(afficher(f));
-    }
+        File f = m.getRep();
+        String res="";
+        if(f.isFile()) {
+            Fichier fichier = new Fichier(f);
+            res+= fichier.afficher("");
+            System.out.println("hey");
+        }else if(f.isDirectory()) {
+            Repertoire repertoire = new Repertoire(f);
+            res+= repertoire.afficher("");
+        }else res="erreur";
+        this.setText(res);
+        System.out.println("res : "+res);
 
-    public String afficher(FileComposite f) {
-        String res = "";
-        if(f instanceof Repertoire){
-            for(FileComposite file : ((Repertoire) f).getFileCompositeArrayList()){
-                res+=afficher(file);
-            }
-        }else if(f instanceof Fichier){
-
-        }
-        return null;
     }
 
 }

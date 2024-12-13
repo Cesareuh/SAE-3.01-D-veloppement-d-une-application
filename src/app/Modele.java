@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Modele implements Sujet{
 
+    private File rep;
     private int blocCourant;
     private Pane viewport;
     private VBox explorateur;
@@ -73,6 +74,7 @@ public class Modele implements Sujet{
         }
     }
 
+
     // Initialisation des blocs à partir d'un répertoire
     public void initialiserBlocs(String repertoire) {
         // Logique d'initialisation des blocs depuis un répertoire donné
@@ -107,5 +109,12 @@ public class Modele implements Sujet{
         for (Observateur observateur : observateurs) {
             observateur.actualiser();
         }
+
+    public File getRep() {
+        return rep;
+    }
+
+    public void setRep(File rep) {
+        this.rep = rep;
     }
 }
