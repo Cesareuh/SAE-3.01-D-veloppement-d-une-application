@@ -90,7 +90,7 @@ public class Modele implements Sujet{
 
 
     // Initialisation des blocs à partir d'un répertoire
-    public void initialiserBlocs(String repertoire) {
+    public void initialiserBlocs(File repertoire) {
         // Logique d'initialisation des blocs depuis un répertoire donné
     }
 
