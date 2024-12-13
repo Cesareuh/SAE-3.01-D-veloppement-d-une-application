@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Modele implements Sujet{
+public class Modele implements Sujet {
 
     private File rep;
     private int blocCourant;
@@ -24,7 +24,7 @@ public class Modele implements Sujet{
     private int derniereID = 1;
     private List<Observateur> observateurs = new ArrayList<>();
 
-    public Modele(VBox r, Pane p, VBox e, Stage stage){
+    public Modele(VBox r, Pane p, VBox e, Stage stage) {
         this.viewport = p;
         this.explorateur = e;
         this.root = r;
@@ -60,7 +60,6 @@ public class Modele implements Sujet{
         // Ajoute le bloc dans la HashMap avec l'ID unique
         blocsMap.put(id, nouveauBloc);
     }
-
 
 
     // Supprime un bloc donné
@@ -121,11 +120,19 @@ public class Modele implements Sujet{
         this.rep = rep;
     }
 
-    public Stage getStage(){
+    public Stage getStage() {
         return primaryStage;
     }
 
     public VBox getFileExplorer() {
         return this.explorateur;
+    }
+
+    public List<Fleche> getFleches() {
+        return fleches;
+    }
+
+    public int getblocCourant() {
+        return blocCourant;
     }
 }

@@ -60,7 +60,9 @@ public class Bloc {
     }
 
     public void setNom(String className) {
+        this.nom = className;
     }
+
 
     public int getPositionX() {
         return pos.getX();

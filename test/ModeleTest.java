@@ -15,7 +15,6 @@ class ModeleTest {
 
     // Test de la méthode creerBloc
     @Test
-    @Test
     void testCreerBloc() {
 
         VBox root = new VBox();
@@ -23,7 +22,7 @@ class ModeleTest {
         Pane viewport = new Pane();
         VBox explorateur = new VBox();
         Stage stage = new Stage();
-        Modele modele = new Modele(root, viewport, explorateur, stage);
+        Modele modele = new Modele(root, viewport, explorateur, stage); // Corrected constructor call
 
         Position position = new Position(10, 20);
 
@@ -37,8 +36,6 @@ class ModeleTest {
         assertEquals(20, bloc.getPositionY(), "La position Y du bloc doit être 20.");
     }
 
-
-
     @Test
     void testCreerFleche() {
         // Arrange
@@ -47,13 +44,13 @@ class ModeleTest {
         Pane viewport = new Pane();
         VBox explorateur = new VBox();
         Stage stage = new Stage();
-        Modele modele = new Modele(root, canvas, viewport, explorateur, stage);
+        Modele modele = new Modele(root, viewport, explorateur, stage);
 
 
         modele.creerFleche(1, 2, "type");
 
-        assertEquals(1, modele.getfleches().size(), "Il devrait y avoir une flèche.");
-        Fleche fleche = modele.getfleches().get(0);
+        assertEquals(1, modele.getFleches().size(), "Il devrait y avoir une flèche.");
+        Fleche fleche = modele.getFleches().get(0); // Corrected method call
         assertEquals(1, fleche.getBlocDepart(), "Le bloc de départ de la flèche doit être 1.");
         assertEquals(2, fleche.getBlocArrivee(), "Le bloc d'arrivée de la flèche doit être 2.");
         assertEquals("type", fleche.getType(), "Le type de la flèche doit être 'type'.");
@@ -67,14 +64,11 @@ class ModeleTest {
         Pane viewport = new Pane();
         VBox explorateur = new VBox();
         Stage stage = new Stage();
-        Modele modele = new Modele(root, canvas, viewport, explorateur, stage);
+        Modele modele = new Modele(root, viewport, explorateur, stage);
+
 
         modele.setBlocCourant(3);
 
         assertEquals(3, modele.getblocCourant(), "Le bloc courant doit être 3.");
     }
-
-
-
-
 }
