@@ -85,6 +85,7 @@ public class Modele implements Sujet{
         if (bloc != null) {
             bloc.setPosition(x, y);
         }
+    }
 
     // Initialisation des blocs à partir d'un répertoire
     public void initialiserBlocs(String repertoire) {
