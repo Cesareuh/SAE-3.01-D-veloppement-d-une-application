@@ -1,67 +1,76 @@
 package app;
 
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
 
-public class ControlButton implements EventHandler {
+public class ControlButton implements EventHandler<ActionEvent> {
 
-	private Modele m;
+	private Modele modele;
 
-	public ControlButton(Modele m) {
-		this.m = m;
+	public ControlButton(Modele modele) {
+		this.modele = modele;
 	}
 
 	@Override
-	public void handle(Event event) {
-		MenuItem source = (MenuItem) event.getTarget();
+	public void handle(ActionEvent event) {
+		MenuItem source = (MenuItem) event.getSource();  // Récupère l'élément qui a déclenché l'événement
 
-		// Si l'utilisateur a choisi un répertoire
 		if (source.getText().equals("Select directory")) {
+			// Ouvre un dialogue pour sélectionner un répertoire
 			DirectoryChooser dirChooser = new DirectoryChooser();
-			dirChooser.setTitle("Open Directory");
-			File selectedDirectory = dirChooser.showDialog(m.getStage());
+			dirChooser.setTitle("Select Directory");
+			File selectedDirectory = dirChooser.showDialog(modele.getStage());
 
-			// Si un répertoire est sélectionné
 			if (selectedDirectory != null) {
-				System.out.println("Répertoire sélectionné: " + selectedDirectory.getAbsolutePath());
+				System.out.println("Répertoire sélectionné : " + selectedDirectory.getAbsolutePath());
 
-				// Mettre à jour le modèle avec le répertoire sélectionné
-				m.setRep(selectedDirectory);
-				m.initialiserBlocs(selectedDirectory);
+				// Mettez à jour le modèle avec le répertoire sélectionné
+				modele.setRep(selectedDirectory);
+				modele.initialiserBlocs(selectedDirectory);
 
-				// Récupérer le VBox pour l'explorateur de fichiers
-				VBox fileExplorer = m.getFileExplorer();
-				fileExplorer.getChildren().clear(); // Vider le contenu précédent
+				// Mettre à jour l'arborescence du TreeView
+				TreeView<String> fileExplorer = modele.getFileExplorerTree();
+				fileExplorer.setRoot(null);  // Réinitialiser l'arborescence
 
-				// Vérification des fichiers dans le répertoire
-				File[] files = selectedDirectory.listFiles();
-				if (files != null) {
-					for (File file : files) {
-						System.out.println("Vérification du fichier: " + file.getName()); // Log du fichier en cours
+				// Créer un nouvel élément racine pour le répertoire sélectionné
+				TreeItem<String> root = createNode(selectedDirectory);
+				root.setExpanded(true);  // Développer le répertoire racine
+				fileExplorer.setRoot(root);
+			}
+		} else if (source.getText().equals("Export as PNG")) {
+			// Action pour exporter le contenu en PNG
+			exportAsPNG();
+		}
+	}
 
-						// Vérifier si c'est un répertoire
-						if (file.isDirectory()) {
-							Label dirLabel = new Label("Répertoire: " + file.getName());
-							dirLabel.setStyle("-fx-font-weight: bold;");
-							fileExplorer.getChildren().add(dirLabel);
-						} else if (file.getName().endsWith(".java")) {
-							// Si c'est un fichier .java, l'ajouter à l'explorateur
-							FileComposite fileComposite = new Fichier(file);
-							Label fileLabel = new Label(fileComposite.afficher(""));
-							fileLabel.setStyle("-fx-font-style: italic;");
-							fileExplorer.getChildren().add(fileLabel);
-						}
-					}
+	private void exportAsPNG() {
+		// Logique d'exportation en PNG, tu peux adapter cela selon tes besoins
+		System.out.println("Export en PNG...");
+		// Par exemple, tu peux utiliser un `Canvas` et une `WritableImage` pour exporter le contenu
+	}
+
+	private TreeItem<String> createNode(File directory) {
+		// Crée un nœud dans le TreeView à partir du répertoire sélectionné
+		TreeItem<String> node = new TreeItem<>(directory.getName());
+		node.setExpanded(true);
+
+		// Ajoute les fichiers et sous-répertoires comme des enfants
+		File[] files = directory.listFiles();
+		if (files != null) {
+			for (File file : files) {
+				if (file.isDirectory()) {
+					node.getChildren().add(createNode(file));  // Appel récursif pour les sous-répertoires
 				} else {
-					System.out.println("Le répertoire est vide ou inaccessible.");
+					node.getChildren().add(new TreeItem<>(file.getName()));
 				}
 			}
 		}
+		return node;
 	}
 }

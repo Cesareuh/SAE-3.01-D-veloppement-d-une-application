@@ -1,27 +1,36 @@
 package app;
 
-import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.Scene;
 
-public class ControlClicDroit implements EventHandler {
+public class ControlClicDroit implements EventHandler<ContextMenuEvent> {
+    private Modele modele;
 
-    Modele m;
-    public ControlClicDroit(Modele m){
-        this.m = m;
+    public ControlClicDroit(Modele modele) {
+        this.modele = modele;
     }
 
     @Override
-    public void handle(Event event) {
-        VueContext vc;
-        ContextMenuEvent contextEvent = (ContextMenuEvent)event;
-        if(event.getTarget() instanceof VueBloc){
-            vc = new VueMenuContextBloc();
-        }else{
-            vc = new VueMenuContextVide();
-        }
+    public void handle(ContextMenuEvent event) {
+        // Créer le menu contextuel
+        ContextMenu contextMenu = new ContextMenu();
 
-        vc.show(m.getStage(), contextEvent.getScreenX(), contextEvent.getScreenY());
+        // Ajouter des éléments au menu contextuel
+        MenuItem item1 = new MenuItem("Option 1");
+        item1.setOnAction(e -> {
+            // Action pour Option 1
+        });
+        MenuItem item2 = new MenuItem("Option 2");
+        item2.setOnAction(e -> {
+            // Action pour Option 2
+        });
+        contextMenu.getItems().addAll(item1, item2);
 
+        // Afficher le menu contextuel, en spécifiant la scène principale comme propriétaire
+        contextMenu.show((Node) event.getSource(), event.getScreenX(), event.getScreenY());
     }
 }

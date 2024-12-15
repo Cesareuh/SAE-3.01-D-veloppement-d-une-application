@@ -1,6 +1,7 @@
 package app;
 
-import javafx.scene.canvas.Canvas;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.layout.*;
 
 //import java.lang.classfile.Attribute;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class Modele implements Sujet{
 
+    private final Stage stage;
     private File rep;
     private int blocCourant;
     private Pane viewport;
@@ -23,14 +25,13 @@ public class Modele implements Sujet{
     private HashMap<Integer, Bloc> blocsMap;
     private int derniereID = 1;
     private List<Observateur> observateurs = new ArrayList<>();
+    private TreeView<String> fileExplorerTree;
 
-    public Modele(VBox r, Pane p, VBox e, Stage stage){
-        this.viewport = p;
-        this.explorateur = e;
-        this.root = r;
-        this.fleches = new ArrayList<>();
-        this.blocsMap = new HashMap<>();
-        primaryStage = stage;
+    public Modele(VBox root, Pane viewport, TreeView<String> fileExplorerTree, Stage stage) {
+        this.root = root;
+        this.viewport = viewport;
+        this.fileExplorerTree = fileExplorerTree;
+        this.stage = stage;
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -61,7 +62,21 @@ public class Modele implements Sujet{
         blocsMap.put(id, nouveauBloc);
     }
 
+    public void updateFileExplorer(File directory) {
+        TreeItem<String> rootItem = new TreeItem<>(directory.getName());
+        rootItem.setExpanded(true);
 
+        // Parcours du répertoire pour ajouter les fichiers et sous-répertoires
+        if (directory.isDirectory()) {
+            for (File file : directory.listFiles()) {
+                TreeItem<String> item = new TreeItem<>(file.getName());
+                rootItem.getChildren().add(item);
+            }
+        }
+
+        // Mettre à jour le TreeView
+        fileExplorerTree.setRoot(rootItem);
+    }
 
     // Supprime un bloc donné
     public void supprimerBloc(int id) {
@@ -128,4 +143,9 @@ public class Modele implements Sujet{
     public VBox getFileExplorer() {
         return this.explorateur;
     }
+
+    public TreeView<String> getFileExplorerTree() {
+        return fileExplorerTree; // TreeView<String> initialisé dans le Modele
+    }
+
 }
