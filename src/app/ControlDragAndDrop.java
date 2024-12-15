@@ -72,7 +72,7 @@ public class ControlDragAndDrop {
                 success = true;
                 for (File file : db.getFiles()) {
                     // Afficher le nom du fichier ou répertoire dans le viewport
-                    Text text = new Text("Fichier ou répertoire déposé: " + file.getName());
+                    Text text = new Text(file.getName());
                     text.setLayoutX(10);
                     text.setLayoutY(10 + (viewport.getChildren().size() * 30)); // Espacement vertical pour chaque fichier
                     viewport.getChildren().add(text);

@@ -48,8 +48,6 @@ public class Main extends Application {
         Menu editMenu = new Menu("Edit");
         menuBar.getMenus().addAll(fileMenu, editMenu);
 
-        // Gestion des clics droit
-        root.setOnContextMenuRequested(new ControlClicDroit(m));
 
         // Initialiser le Drag and Drop
         ControlDragAndDrop dragAndDrop = new ControlDragAndDrop(fileExplorer, viewport);
@@ -62,6 +60,9 @@ public class Main extends Application {
         // Scene et affichage de la fenêtre principale
         primaryStage.setScene(new Scene(root, 1200, 600));
         primaryStage.show();
+
+        // Gestion des clics droit
+        root.setOnContextMenuRequested(new ControlClicDroit(m));
 
         // Ajuster la taille du viewport et du fileExplorer
         viewport.setMinSize(primaryStage.getWidth() * ((double) 3 / 4), primaryStage.getHeight());

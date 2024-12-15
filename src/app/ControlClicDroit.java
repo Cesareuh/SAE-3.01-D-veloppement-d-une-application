@@ -16,21 +16,16 @@ public class ControlClicDroit implements EventHandler<ContextMenuEvent> {
 
     @Override
     public void handle(ContextMenuEvent event) {
-        // Créer le menu contextuel 
-        ContextMenu contextMenu = new ContextMenu();
-
-        // Ajouter des éléments au menu contextuel
-        MenuItem item1 = new MenuItem("Option 1");
-        item1.setOnAction(e -> {
-            // Action pour Option 1
-        });
-        MenuItem item2 = new MenuItem("Option 2");
-        item2.setOnAction(e -> {
-            // Action pour Option 2
-        });
-        contextMenu.getItems().addAll(item1, item2);
+        // Créer le menu contextuel
+        VueContext vc;
+        ContextMenuEvent contextEvent = (ContextMenuEvent)event;
+        if(event.getTarget() instanceof VueBloc){
+            vc = new VueMenuContextBloc();
+        }else{
+            vc = new VueMenuContextVide();
+        }
 
         // Afficher le menu contextuel, en spécifiant la scène principale comme propriétaire
-        contextMenu.show((Node) event.getSource(), event.getScreenX(), event.getScreenY());
+        vc.show(modele.getStage(), event.getScreenX(), event.getScreenY());
     }
 }
