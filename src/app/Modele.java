@@ -20,7 +20,6 @@ public class Modele implements Sujet{
     private Pane viewport;
     private VBox explorateur;
     private VBox root;
-    private Stage primaryStage;
     private List<Fleche> fleches;
     private HashMap<Integer, Bloc> blocsMap;
     private int derniereID = 1;
@@ -137,7 +136,7 @@ public class Modele implements Sujet{
     }
 
     public Stage getStage(){
-        return primaryStage;
+        return stage;
     }
 
     public VBox getFileExplorer() {
