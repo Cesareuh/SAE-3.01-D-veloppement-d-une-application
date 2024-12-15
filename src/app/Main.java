@@ -3,13 +3,9 @@ package app;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 public class Main extends Application {
 
@@ -54,6 +50,10 @@ public class Main extends Application {
 
         // Gestion des clics droit
         root.setOnContextMenuRequested(new ControlClicDroit(m));
+
+        // Initialiser le Drag and Drop
+        ControlDragAndDrop dragAndDrop = new ControlDragAndDrop(fileExplorer, viewport);
+        dragAndDrop.handle();  // Activer la gestion du drag and drop
 
         // Ajouter les composants dans le layout principal
         base.getChildren().addAll(fileExplorer, viewport);

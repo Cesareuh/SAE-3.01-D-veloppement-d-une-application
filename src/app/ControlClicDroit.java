@@ -16,7 +16,7 @@ public class ControlClicDroit implements EventHandler<ContextMenuEvent> {
 
     @Override
     public void handle(ContextMenuEvent event) {
-        // Créer le menu contextuel
+        // Créer le menu contextuel 
         ContextMenu contextMenu = new ContextMenu();
 
         // Ajouter des éléments au menu contextuel
