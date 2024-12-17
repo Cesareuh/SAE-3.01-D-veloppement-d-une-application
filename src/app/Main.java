@@ -50,22 +50,29 @@ public class Main extends Application {
 
 
         // Initialiser le Drag and Drop
+        /*
         ControlDragAndDrop dragAndDrop = new ControlDragAndDrop(fileExplorer, viewport);
         dragAndDrop.handle();  // Activer la gestion du drag and drop
+
+         */
 
         // Ajouter les composants dans le layout principal
         base.getChildren().addAll(fileExplorer, viewport);
         root.getChildren().addAll(menuBar, base);
+
 
         // Scene et affichage de la fenêtre principale
         primaryStage.setScene(new Scene(root, 1200, 600));
         primaryStage.show();
 
         // Gestion des clics droit
-        root.setOnContextMenuRequested(new ControlClicDroit(m));
+        root.setOnMouseClicked(new ControlClicDroit(m));
 
         // Ajuster la taille du viewport et du fileExplorer
-        viewport.setMinSize(primaryStage.getWidth() * ((double) 3 / 4), primaryStage.getHeight());
-        fileExplorer.setMinSize(primaryStage.getWidth() * ((double) 1 / 4), primaryStage.getHeight());
+        viewport.setMinSize(primaryStage.getWidth() * ((double) 3 / 4), primaryStage.getHeight() - menuBar.getHeight());
+        fileExplorer.setMinSize(primaryStage.getWidth() * ((double) 1 / 4), primaryStage.getHeight() - menuBar.getHeight());
+
+
+
     }
 }

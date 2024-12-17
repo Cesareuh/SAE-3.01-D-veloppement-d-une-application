@@ -11,16 +11,16 @@ public class Bloc {
     private String heritage;
     private Position pos;
     private List<Attribut> attributs;
-    private List<Attribut> methodes;
+    private List<Methode> methodes;
 
-    public Bloc(String nom, String image, String implementation, String heritage) {
+    public Bloc(String nom, String image, String implementation, String heritage, List attrs, List meths) {
         this.nom = nom;
         this.image = image;
         this.implementation = implementation;
         this.heritage = heritage;
         this.pos = new Position();
-        this.attributs = new ArrayList<>();
-        this.methodes = new ArrayList<>();
+        this.attributs = attrs;
+        this.methodes = meths;
     }
 
     public void setPosition(int x, int y) {
@@ -51,7 +51,7 @@ public class Bloc {
         return attributs;
     }
 
-    public List<Attribut> getListMethodes() {
+    public List<Methode> getListMethodes() {
         return methodes;
     }
 
@@ -64,11 +64,11 @@ public class Bloc {
     }
 
 
-    public int getPositionX() {
+    public double getPositionX() {
         return pos.getX();
     }
 
-    public int getPositionY(){
+    public double getPositionY(){
         return pos.getY();
     }
 }

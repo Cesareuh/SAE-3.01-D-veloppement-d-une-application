@@ -19,33 +19,39 @@ public class ControlButton implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent event) {
-		MenuItem source = (MenuItem) event.getSource();  // Récupère l'élément qui a déclenché l'événement
+		if(event.getSource() instanceof MenuItem source) { // Récupère l'élément qui a déclenché l'événement
+			switch(source.getText()) {
+				case "Select directory":
+					// Ouvre un dialogue pour sélectionner un répertoire
+					DirectoryChooser dirChooser = new DirectoryChooser();
+					dirChooser.setTitle("Select Directory");
+					File selectedDirectory = dirChooser.showDialog(modele.getStage());
 
-		if (source.getText().equals("Select directory")) {
-			// Ouvre un dialogue pour sélectionner un répertoire
-			DirectoryChooser dirChooser = new DirectoryChooser();
-			dirChooser.setTitle("Select Directory");
-			File selectedDirectory = dirChooser.showDialog(modele.getStage());
+					if (selectedDirectory != null) {
+						System.out.println("Répertoire sélectionné : " + selectedDirectory.getAbsolutePath());
 
-			if (selectedDirectory != null) {
-				System.out.println("Répertoire sélectionné : " + selectedDirectory.getAbsolutePath());
+						// Mettez à jour le modèle avec le répertoire sélectionné
+						modele.setRep(selectedDirectory);
+						modele.initialiserBlocs(selectedDirectory);
 
-				// Mettez à jour le modèle avec le répertoire sélectionné
-				modele.setRep(selectedDirectory);
-				modele.initialiserBlocs(selectedDirectory);
+						// Mettre à jour l'arborescence du TreeView
+						TreeView<String> fileExplorer = modele.getFileExplorerTree();
+						fileExplorer.setRoot(null);  // Réinitialiser l'arborescence
 
-				// Mettre à jour l'arborescence du TreeView
-				TreeView<String> fileExplorer = modele.getFileExplorerTree();
-				fileExplorer.setRoot(null);  // Réinitialiser l'arborescence
-
-				// Créer un nouvel élément racine pour le répertoire sélectionné
-				TreeItem<String> root = createNode(selectedDirectory);
-				root.setExpanded(true);  // Développer le répertoire racine
-				fileExplorer.setRoot(root);
+						// Créer un nouvel élément racine pour le répertoire sélectionné
+						TreeItem<String> root = createNode(selectedDirectory);
+						root.setExpanded(true);  // Développer le répertoire racine
+						fileExplorer.setRoot(root);
+					}
+					break;
+				case "Export as PNG":
+					// Action pour exporter le contenu en PNG
+					exportAsPNG();
+					break;
+				case "Remove":
+					modele.supprimerBlocSelect();
+					break;
 			}
-		} else if (source.getText().equals("Export as PNG")) {
-			// Action pour exporter le contenu en PNG
-			exportAsPNG();
 		}
 	}
 

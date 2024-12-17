@@ -6,6 +6,7 @@ public class FabriqueInterface extends FabriqueBloc {
     @Override
     public Bloc creerBloc(String nom, String image, String implementation, String heritage) {
         // Création du Bloc en passant les paramètres au constructeur
-        return new Bloc(nom, image, implementation, heritage);
+        return null;
+        //return new Bloc(nom, image, implementation, heritage);
     }
 }

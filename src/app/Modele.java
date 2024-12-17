@@ -22,7 +22,7 @@ public class Modele implements Sujet{
     private VBox root;
     private List<Fleche> fleches;
     private HashMap<Integer, Bloc> blocsMap;
-    private int derniereID = 1;
+    private int derniereID;
     private List<Observateur> observateurs = new ArrayList<>();
     private TreeView<String> fileExplorerTree;
 
@@ -31,6 +31,8 @@ public class Modele implements Sujet{
         this.viewport = viewport;
         this.fileExplorerTree = fileExplorerTree;
         this.stage = stage;
+        this.derniereID = 0;
+        this.blocsMap = new HashMap<>();
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -47,6 +49,7 @@ public class Modele implements Sujet{
     }
 
     // Crée un nouveau bloc à partir d'une classe et d'une position
+    /*
     public void creerBloc(Class className, Position position) {
         // Génère un ID unique pour le nouveau bloc
         int id = derniereID++;
@@ -59,6 +62,19 @@ public class Modele implements Sujet{
 
         // Ajoute le bloc dans la HashMap avec l'ID unique
         blocsMap.put(id, nouveauBloc);
+    }
+     */
+
+    // TEMPORAIRE (il faut changer les params pour que la description soit correcte)
+    public void ajouterBlocDiag(Bloc b){
+        derniereID++;
+        blocsMap.put(derniereID, b);
+        VueBloc vb = new VueBloc(derniereID);
+        vb.setOnMouseDragged(new ControlDragAndDrop(this));
+        vb.setOnMouseClicked(new ControlClicDroit(this));
+        viewport.getChildren().add(vb);
+        ajouterObs(vb);
+        notifierObs();
     }
 
     public void updateFileExplorer(File directory) {
@@ -77,17 +93,36 @@ public class Modele implements Sujet{
         fileExplorerTree.setRoot(rootItem);
     }
 
-    // Supprime un bloc donné
-    public void supprimerBloc(int id) {
-        blocsMap.remove(id);
+    // Supprime le bloc sélectionné
+    public void supprimerBlocSelect() {
+        Observateur aSupprimer = null;
+        blocsMap.remove(blocCourant);
+        for(Observateur obs : observateurs){
+            if(obs instanceof VueBloc vb){
+                if(vb.getBlocId() == blocCourant){
+                    aSupprimer = obs;
+                }
+            }
+        }
+        notifierObs();
+        supprimerObs(aSupprimer);
     }
 
     // Déplace un bloc vers une nouvelle position
     public void translaterBloc(int id, int x, int y) {
         Bloc bloc = getBlocById(id);
         if (bloc != null) {
-            bloc.setPosition(x, y);
+            bloc.setPosition(x,y);
         }
+        notifierObs();
+    }
+
+    // Transforme une position sur l'écran en position par rapport au viewport
+    public Position screenPosToViewportPos(Position p){
+        Position res = new Position(0,0);
+        res.setX((int) (p.getX() - this.stage.getX() - this.viewport.getLayoutX()));
+        res.setY((int) (p.getY() - this.stage.getY() - this.viewport.getParent().getLayoutY()));
+        return res;
     }
 
 
@@ -137,6 +172,10 @@ public class Modele implements Sujet{
 
     public Stage getStage(){
         return stage;
+    }
+
+    public Pane getViewport(){
+        return viewport;
     }
 
     public VBox getFileExplorer() {

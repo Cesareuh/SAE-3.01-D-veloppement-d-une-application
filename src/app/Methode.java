@@ -1,11 +1,11 @@
 package app;
 
-public class Attribut {
+public class Methode {
     private String autorisation;
     private String type;
     private String nom;
 
-    public Attribut(String aut, String t, String n){
+    public Methode(String aut, String t, String n){
         this.autorisation = aut;
         this.type = t;
         this.nom = n;

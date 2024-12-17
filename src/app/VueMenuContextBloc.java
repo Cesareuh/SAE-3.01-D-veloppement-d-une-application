@@ -6,13 +6,15 @@ import javafx.scene.control.MenuItem;
 
 public class VueMenuContextBloc extends VueContext{
 
-    public VueMenuContextBloc(){
-        super();
+    public VueMenuContextBloc(Modele m){
+        super(m);
         Menu affichage = new Menu("View");
         MenuItem simple = new MenuItem("Simple");
         MenuItem complexe = new MenuItem("Complex");
         affichage.getItems().addAll(simple, complexe);
-        this.getItems().addAll(affichage);
+        MenuItem remove = new MenuItem("Remove");
+        remove.setOnAction(new ControlButton(m));
+        this.getItems().addAll(affichage, remove);
     }
     @Override
     public void actualiser(Sujet s) {

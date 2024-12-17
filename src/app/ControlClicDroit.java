@@ -1,31 +1,35 @@
 package app;
 
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.Scene;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
-public class ControlClicDroit implements EventHandler<ContextMenuEvent> {
-    private Modele modele;
+public class ControlClicDroit implements EventHandler<MouseEvent> {
+    private Modele m;
 
     public ControlClicDroit(Modele modele) {
-        this.modele = modele;
+        this.m = modele;
     }
 
     @Override
-    public void handle(ContextMenuEvent event) {
-        // Créer le menu contextuel
-        VueContext vc;
-        ContextMenuEvent contextEvent = (ContextMenuEvent)event;
-        if(event.getTarget() instanceof VueBloc){
-            vc = new VueMenuContextBloc();
-        }else{
-            vc = new VueMenuContextVide();
-        }
+    public void handle(MouseEvent event) {
+        if (event.getButton() == MouseButton.SECONDARY) {
+            // Créer le menu contextuel
+            VueContext vc;
+            if (!(event.getTarget() instanceof Pane)) {
+                if (event.getSource() instanceof VueBloc vb) {
+                    vc = new VueMenuContextBloc(m);
+                    m.setBlocCourant(vb.getBlocId());
+                    vc.show(m.getStage(), event.getScreenX(), event.getScreenY());
+                }
+            } else {
+                vc = new VueMenuContextVide(m);
+                m.setBlocCourant(0);
+                vc.show(m.getStage(), event.getScreenX(), event.getScreenY());
+            }
 
-        // Afficher le menu contextuel, en spécifiant la scène principale comme propriétaire
-        vc.show(modele.getStage(), event.getScreenX(), event.getScreenY());
+        }
     }
 }
