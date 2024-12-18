@@ -21,6 +21,8 @@ public class Modele implements Sujet{
     private VBox explorateur;
     private VBox root;
     private List<Fleche> fleches;
+
+
     private HashMap<Integer, Bloc> blocsMap;
     private int derniereID;
     private List<Observateur> observateurs = new ArrayList<>();
@@ -33,6 +35,7 @@ public class Modele implements Sujet{
         this.stage = stage;
         this.derniereID = 0;
         this.blocsMap = new HashMap<>();
+        this.fleches = new ArrayList<>();
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -185,5 +188,24 @@ public class Modele implements Sujet{
     public TreeView<String> getFileExplorerTree() {
         return fileExplorerTree; // TreeView<String> initialisé dans le Modele
     }
+
+    public List<Fleche> getFleches() {
+        return fleches;
+    }
+
+    public int getDerniereID() {
+        return derniereID;
+    }
+
+
+    public void resetDerniereID() {
+        this.derniereID = 0;
+        this.blocsMap.clear();
+    }
+
+    public int getBlocCourant() {
+        return blocCourant;
+    }
+
 
 }

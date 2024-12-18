@@ -41,7 +41,7 @@ public class Main extends Application {
         Menu fileMenu = new Menu("File");
         MenuItem selectRep = new MenuItem("Select directory");
         selectRep.setOnAction(new ControlButton(m));  // Action pour sélectionner un répertoire
-        MenuItem export = new MenuItem("Export as PNG");
+        MenuItem export = new MenuItem("Export as image");
         export.setOnAction(new ControlButton(m));  // Action pour exporter en PNG
         fileMenu.getItems().addAll(selectRep, export);
 
