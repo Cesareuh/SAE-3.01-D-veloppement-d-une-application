@@ -41,7 +41,7 @@ public class ControlButton implements EventHandler<ActionEvent> {
 
 						// Mettez à jour le modèle avec le répertoire sélectionné
 						modele.setRep(selectedDirectory);
-						modele.initialiserBlocs(selectedDirectory);
+						modele.initialiserFichiers(selectedDirectory);
 
 						// Mettre à jour l'arborescence du TreeView
 						TreeView<String> fileExplorer = modele.getFileExplorerTree();

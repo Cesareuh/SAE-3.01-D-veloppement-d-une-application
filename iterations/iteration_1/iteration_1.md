@@ -9,7 +9,7 @@ MVC opérationnel
 
  - code du squelette de toutes les classes
  - implementation des classes :
-    - Main
+    - src.tpRene.Main
     - Bloc
     - Fleche
     - Attribut
