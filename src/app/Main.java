@@ -37,6 +37,10 @@ public class Main extends Application {
         // Création du modèle (Modele gère les interactions)
         Modele m = new Modele(root, viewport, fileExplorer, primaryStage);
 
+        //Création de la vue textuelle
+        VueTextuel vt = new VueTextuel();
+        m.ajouterObs(vt);
+
         // Création du menu
         Menu fileMenu = new Menu("File");
         MenuItem selectRep = new MenuItem("Select directory");

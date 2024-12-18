@@ -25,6 +25,7 @@ public class Modele implements Sujet{
     private int derniereID;
     private List<Observateur> observateurs = new ArrayList<>();
     private TreeView<String> fileExplorerTree;
+    private List<Fichier> fichiers;
 
     public Modele(VBox root, Pane viewport, TreeView<String> fileExplorerTree, Stage stage) {
         this.root = root;
@@ -127,8 +128,13 @@ public class Modele implements Sujet{
 
 
     // Initialisation des blocs à partir d'un répertoire
-    public void initialiserBlocs(File repertoire) {
-        // Logique d'initialisation des blocs depuis un répertoire donné
+    public void initialiserFichiers(File repertoire) {
+        this.fichiers = new ArrayList<>();
+        if(repertoire.isDirectory()){
+            Repertoire rep = new Repertoire(repertoire);
+            fichiers.addAll(rep.getFichiers());
+        }else fichiers.add(new Fichier(repertoire));
+        notifierObs();
     }
 
     // Affiche un menu contextuel lorsque l'utilisateur clique avec le bouton droit

@@ -25,8 +25,8 @@ public class VueMenuContextVide extends VueContext{
             a.add(a1);
             a.add(a2);
             ArrayList<Methode> meth = new ArrayList<>();
-            Methode m1 = new Methode("+", "void", "foo()");
-            Methode m2 = new Methode("+", "String", "foo2(x : int)");
+            Methode m1 = new Methode("+", "void", "foo()", null);
+            Methode m2 = new Methode("+", "String", "foo2(x : int)", null);
             meth.add(m1);
             meth.add(m2);
             Bloc b = new Bloc("Test", "Image", null, null, a, meth);
