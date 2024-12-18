@@ -32,7 +32,7 @@ public class VueMenuContextVide extends VueContext{
             Bloc b = new Bloc("Test", "Image", null, null, a, meth);
             Position new_pos = m.screenPosToViewportPos(new Position(this.getX(), this.getY()));
             b.setPosition((int) new_pos.getX(), (int) new_pos.getY());
-            m.ajouterBlocDiag(b);
+            m.afficherBloc(b);
         });
         debug.getItems().add(add);
         this.getItems().addAll(affichage, debug);

@@ -66,7 +66,7 @@ public class Modele implements Sujet{
      */
 
     // TEMPORAIRE (il faut changer les params pour que la description soit correcte)
-    public void ajouterBlocDiag(Bloc b){
+    public void afficherBloc(Bloc b){
         derniereID++;
         blocsMap.put(derniereID, b);
         VueBloc vb = new VueBloc(derniereID);
