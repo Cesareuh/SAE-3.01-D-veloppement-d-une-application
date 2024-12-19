@@ -11,17 +11,18 @@ public class VueTextuel  implements Observateur {
     @Override
     public void actualiser(Sujet s) {
         Modele m = (Modele)s;
-        File f = m.getRep();
-        String res="";
-        if(f.isFile()) {
-            Fichier fichier = new Fichier(f);
-            res+= fichier.afficher("");
-            System.out.println("hey");
-        }else if(f.isDirectory()) {
-            Repertoire repertoire = new Repertoire(f);
-            res+= repertoire.afficher("");
-        }else res="erreur";
-        System.out.println("res : "+res);
+        if(m.getRep()!=null) {
+            File f = m.getRep();
+            String res = "";
+            if (f.isFile()) {
+                Fichier fichier = new Fichier(f);
+                res += fichier.afficher("");
+            } else if (f.isDirectory()) {
+                Repertoire repertoire = new Repertoire(f);
+                res += repertoire.afficher("");
+            } else res = "erreur";
+        }
+        //System.out.println("res : "+res);
 
     }
 
