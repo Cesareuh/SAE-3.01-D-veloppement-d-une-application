@@ -19,6 +19,7 @@
  - Modifier affichage des classes
  - Générer plantuml
  - Drag and drop
+ - Mettre petites images classe
 
 ## Diagramme de classe
 ![Diagramme de classe](plantuml.png)
