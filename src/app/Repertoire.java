@@ -10,9 +10,9 @@ public class Repertoire extends FileComposite{
         File[] files = f.listFiles();
         if(files != null) {
             for (File f : files) {
-                if (f.isFile()) {
+                if (f.isFile() && f.getName().endsWith(".java") && !f.getName().equals("module-info.java")) {
                     fileCompositeArrayList.add(new Fichier(f));
-                } else {
+                } else if (f.isDirectory()) {
                     fileCompositeArrayList.add(new Repertoire(f));
                 }
             }

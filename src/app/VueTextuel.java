@@ -14,7 +14,7 @@ public class VueTextuel  implements Observateur {
         if(m.getRep()!=null) {
             File f = m.getRep();
             String res = "";
-            if (f.isFile()) {
+            if (f.isFile() && f.getName().endsWith(".java") && !f.getName().equals("module-info.java")) {
                 Fichier fichier = new Fichier(f);
                 res += fichier.afficher("");
             } else if (f.isDirectory()) {
