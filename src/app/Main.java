@@ -7,6 +7,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class Main extends Application {
 
     public static void main(String[] args) {
@@ -38,7 +40,7 @@ public class Main extends Application {
         Modele m = new Modele(root, viewport, fileExplorer, primaryStage);
 
         //Création de la vue textuelle
-        VueTextuel vt = new VueTextuel();
+       VueTextuel vt = new VueTextuel();
         m.ajouterObs(vt);
 
         // Création du menu
