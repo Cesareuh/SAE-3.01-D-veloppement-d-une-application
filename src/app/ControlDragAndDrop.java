@@ -13,20 +13,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-public class ControlDragAndDrop implements EventHandler<MouseEvent>{
+public class ControlDragAndDrop implements EventHandler<MouseEvent> {
 
-    private TreeView<String> fileExplorer;
-    private Pane viewport;
     private Modele m;
-
-    /*
-    public ControlDragAndDrop(Modele m, TreeView<String> fileExplorer, Pane viewport) {
-        this.fileExplorer = fileExplorer;
-        this.viewport = viewport;
-        this.m = m;
-    }
-
-     */
 
     public ControlDragAndDrop(Modele m) {
         this.m = m;
@@ -34,101 +23,87 @@ public class ControlDragAndDrop implements EventHandler<MouseEvent>{
 
     @Override
     public void handle(MouseEvent event) {
-
-        // Drag and Drop d'un bloc
-        if(event.getButton() == MouseButton.PRIMARY) {
+        // Gestion du Drag and Drop pour un bloc
+        if (event.getButton() == MouseButton.PRIMARY) {
             if (event.getSource() instanceof VueBloc vb) {
                 int id = vb.getBlocId();
                 Pane viewport = m.getViewport();
-                // Convertit la position du curseur en fonction du viewport au lieu de la scène complète
-                Position viewport_pos = m.screenPosToViewportPos(new Position(event.getScreenX(), event.getScreenY()));
 
-                // Centre le curseur sur la boite
-                int x = (int) (viewport_pos.getX() - vb.getWidth() / 2);
-                int y = (int) (viewport_pos.getY() - vb.getHeight() / 2);
+                // Convertir la position de l'écran en position relative au viewport
+                Position viewportPos = m.screenPosToViewportPos(
+                        new Position(event.getScreenX(), event.getScreenY())
+                );
 
-                // Ne pas dépasser les limites (avec un ecart de 5 ce qui empêche les bugs)
-                int ecart = 5;
-                if (x <= ecart) {
-                    x = ecart;
-                }
-                if (x >= viewport.getWidth() - vb.getWidth() - ecart) {
-                    x = (int) (viewport.getWidth() - vb.getWidth() - ecart);
-                }
-                if (y < ecart) {
-                    y = ecart;
-                }
-                if (y >= viewport.getHeight() - vb.getHeight() - ecart) {
-                    y = (int) (viewport.getHeight() - vb.getHeight() - ecart);
-                }
+                // Calculer la position centrée du bloc par rapport au curseur
+                int x = (int) (viewportPos.getX() - vb.getWidth() / 2);
+                int y = (int) (viewportPos.getY() - vb.getHeight() / 2);
+
+                // Contraindre le bloc à rester dans les limites du viewport
+                int margin = 5;
+                x = Math.max(margin, Math.min(x, (int) (viewport.getWidth() - vb.getWidth() - margin)));
+                y = Math.max(margin, Math.min(y, (int) (viewport.getHeight() - vb.getHeight() - margin)));
+
+                // Mettre à jour la position du bloc dans le modèle
                 m.translaterBloc(id, x, y);
             }
+
+            // Gestion du Drag and Drop pour l'explorateur de fichiers
+            if (event.getSource() instanceof TreeView<?> treeView) {
+                // Gérer le début du drag and drop du fichier dans le TreeView
+                TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    File selectedFile = new File(selectedItem.getValue());
+                    if (selectedFile.exists() && selectedFile.isFile()) {
+                        // Démarrer l'opération de glissement du fichier
+                        Dragboard db = treeView.startDragAndDrop(TransferMode.MOVE);
+                        ClipboardContent content = new ClipboardContent();
+                        content.putFiles(Collections.singletonList(selectedFile));  // Met le fichier dans le dragboard
+                        db.setContent(content);
+                    }
+                }
+            }
         }
-       /*
-        // Gérer le drag and drop pour les items du TreeView
-        fileExplorer.setCellFactory(param -> new TreeCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                } else {
-                    setText(item);
-                    // Ajouter un gestionnaire de drag détecté pour chaque élément de TreeView
-                    setOnDragDetected(event -> {
-                        if (!isEmpty()) {
-                            // Démarrer le drag sur l'élément sélectionné
-                            Dragboard db = startDragAndDrop(TransferMode.COPY);
-                            ClipboardContent content = new ClipboardContent();
-                            // Envelopper le fichier dans une liste
-                            content.putFiles(Collections.singletonList(new File(getItem()))); // Passer une liste de fichiers
-                            db.setContent(content);
-                            event.consume();
-                        }
-                    });
-                }
-            }
-        });
+    }
 
-        // Gérer le drag over pour le fileExplorer (gauche) : autoriser le glisser
-        fileExplorer.setOnDragOver(event -> {
-            if (event.getGestureSource() != fileExplorer && event.getDragboard().hasFiles()) {
-                event.acceptTransferModes(TransferMode.COPY);
-            }
-            event.consume();
-        });
+    // Gérer l'événement DragOver pour accepter les fichiers dans le TreeView
+    public void handleDragOver(DragEvent event) {
+        // Accepter le drag-and-drop seulement si des fichiers sont présents
+        if (event.getGestureSource() != event.getTarget() && event.getDragboard().hasFiles()) {
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+        event.consume();
+    }
 
-        // Gérer le drag dropped pour le fileExplorer (gauche) : rien ne se passe quand on dépose dans fileExplorer
-        fileExplorer.setOnDragDropped(event -> {
-            event.consume();
-        });
+    // Gérer l'événement DragDropped pour gérer le dépôt du fichier
+    public void handleDragDropped(DragEvent event) {
+        // Vérifier si des fichiers ont été déposés
+        Dragboard db = event.getDragboard();
+        boolean success = false;
 
-        // Gérer le drag over pour le viewport (droite) : autoriser le glisser
-        viewport.setOnDragOver(event -> {
-            if (event.getGestureSource() != viewport && event.getDragboard().hasFiles()) {
-                event.acceptTransferModes(TransferMode.COPY);
-            }
-            event.consume();
-        });
+        if (db.hasFiles()) {
+            File file = db.getFiles().get(0);  // Récupérer le fichier
+            // Vous pouvez effectuer ici une action sur le fichier, par exemple, le déplacer
+            success = moveFile(file);
+        }
 
-        // Gérer le drag dropped pour le viewport (droite) : afficher le nom du fichier dans le viewport
-        viewport.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasFiles()) {
-                success = true;
-                for (File file : db.getFiles()) {
-                    // Afficher le nom du fichier ou répertoire dans le viewport
-                    Text text = new Text(file.getName());
-                    text.setLayoutX(10);
-                    text.setLayoutY(10 + (viewport.getChildren().size() * 30)); // Espacement vertical pour chaque fichier
-                    viewport.getChildren().add(text);
-                }
-            }
+        // Indiquer si le dépôt a réussi ou échoué
+        event.setDropCompleted(success);
+        event.consume();
+    }
 
-            event.setDropCompleted(success);
-            event.consume();
-        });
-        */
+    // Exemple de méthode pour déplacer un fichier (à personnaliser selon vos besoins)
+    private boolean moveFile(File file) {
+        // Implémenter ici la logique de déplacement ou de gestion du fichier
+        System.out.println("Fichier déplacé : " + file.getAbsolutePath());
+
+        // Par exemple, on peut déplacer le fichier vers un répertoire spécifique (s'il s'agit d'un répertoire cible)
+        File destination = new File("nouveau_chemin_ou_repertoire");
+        if (file.renameTo(destination)) {
+            System.out.println("Le fichier a été déplacé avec succès !");
+            return true;
+        } else {
+            System.out.println("Échec du déplacement.");
+            return false;
+        }
     }
 }

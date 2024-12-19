@@ -49,13 +49,6 @@ public class Main extends Application {
         menuBar.getMenus().addAll(fileMenu, editMenu);
 
 
-        // Initialiser le Drag and Drop
-        /*
-        ControlDragAndDrop dragAndDrop = new ControlDragAndDrop(fileExplorer, viewport);
-        dragAndDrop.handle();  // Activer la gestion du drag and drop
-
-         */
-
         // Ajouter les composants dans le layout principal
         base.getChildren().addAll(fileExplorer, viewport);
         root.getChildren().addAll(menuBar, base);
