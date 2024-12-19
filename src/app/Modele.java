@@ -20,11 +20,12 @@ public class Modele implements Sujet{
     private Pane viewport;
     private VBox explorateur;
     private VBox root;
-    private List<Fleche> fleches;
+    private HashMap<Integer, Fleche> flechesMap;
 
 
     private HashMap<Integer, Bloc> blocsMap;
     private int derniereID;
+    private int derniereFlecheID;
     private List<Observateur> observateurs = new ArrayList<>();
     private TreeView<String> fileExplorerTree;
     private List<Fichier> fichiers;
@@ -35,8 +36,9 @@ public class Modele implements Sujet{
         this.fileExplorerTree = fileExplorerTree;
         this.stage = stage;
         this.derniereID = 0;
+        this.derniereFlecheID = 0;
         this.blocsMap = new HashMap<>();
-        this.fleches = new ArrayList<>();
+        this.flechesMap = new HashMap<>();
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -46,6 +48,7 @@ public class Modele implements Sujet{
         return dependances;
     }
 
+    /*
     // Crée une flèche entre deux blocs avec un type donné
     public void creerFleche(int blocDepart, int blocArrivee, String type) {
         Fleche nouvelleFleche = new Fleche(blocDepart, blocArrivee, type);
@@ -53,7 +56,6 @@ public class Modele implements Sujet{
     }
 
     // Crée un nouveau bloc à partir d'une classe et d'une position
-    /*
     public void creerBloc(Class className, Position position) {
         // Génère un ID unique pour le nouveau bloc
         int id = derniereID++;
@@ -69,7 +71,7 @@ public class Modele implements Sujet{
     }
      */
 
-    // TEMPORAIRE (il faut changer les params pour que la description soit correcte)
+    // Affiche un bloc dans le diagramme
     public void afficherBloc(Bloc b){
         derniereID++;
         blocsMap.put(derniereID, b);
@@ -86,6 +88,13 @@ public class Modele implements Sujet{
             }
         }
         ajouterObs(vb);
+        notifierObs();
+    }
+
+    public void afficherFleche(Fleche f){
+        derniereFlecheID++;
+        VueFleche vf = new VueFleche(derniereFlecheID);
+        ajouterObs(vf);
         notifierObs();
     }
 
@@ -124,7 +133,7 @@ public class Modele implements Sujet{
     public void translaterBloc(int id, int x, int y) {
         Bloc bloc = getBlocById(id);
         if (bloc != null) {
-            bloc.setPosition(x,y);
+            bloc.setPosition(new Position(x,y));
         }
         notifierObs();
     }
@@ -146,11 +155,6 @@ public class Modele implements Sujet{
             fichiers.addAll(rep.getFichiers());
         }else fichiers.add(new Fichier(repertoire));
         notifierObs();
-    }
-
-    // Affiche un menu contextuel lorsque l'utilisateur clique avec le bouton droit
-    public void afficherClicDroit(Position p) {
-        // Logique pour afficher un menu contextuel en fonction de la position
     }
 
     // Définit le bloc courant
@@ -203,8 +207,8 @@ public class Modele implements Sujet{
         return fileExplorerTree; // TreeView<String> initialisé dans le Modele
     }
 
-    public List<Fleche> getFleches() {
-        return fleches;
+    public HashMap<Integer, Fleche> getFleches() {
+        return flechesMap;
     }
 
     public int getDerniereID() {

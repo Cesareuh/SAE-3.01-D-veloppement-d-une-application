@@ -31,7 +31,7 @@ public class VueMenuContextVide extends VueContext{
             meth.add(m2);
             Bloc b = new Bloc("Test", "Image", null, null, a, meth);
             Position new_pos = m.screenPosToViewportPos(new Position(this.getX(), this.getY()));
-            b.setPosition((int) new_pos.getX(), (int) new_pos.getY());
+            b.setPosition(new Position((int) new_pos.getX(), (int) new_pos.getY()));
             m.afficherBloc(b);
         });
         MenuItem add2 = new MenuItem("add2");
@@ -42,13 +42,13 @@ public class VueMenuContextVide extends VueContext{
             a.add(a1);
             a.add(a2);
             ArrayList<Methode> meth = new ArrayList<>();
-            Methode m1 = new Methode("+", "void", "foo()");
-            Methode m2 = new Methode("+", "String", "foo2(x : int)");
+            Methode m1 = new Methode("+", "void", "foo()", null);
+            Methode m2 = new Methode("+", "String", "foo2(x : int)", null);
             meth.add(m1);
             meth.add(m2);
             Bloc b = new Bloc("OUII", "Image", null, null, a, meth);
             Position new_pos = m.screenPosToViewportPos(new Position(this.getX(), this.getY()));
-            b.setPosition((int) new_pos.getX(), (int) new_pos.getY());
+            b.setPosition(new Position((int) new_pos.getX(), (int) new_pos.getY()));
             m.afficherBloc(b);
         });
         debug.getItems().addAll(add, add2);

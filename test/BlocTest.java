@@ -23,10 +23,10 @@ public class BlocTest {
 
     @Test
     public void testSetPosition() {
-        bloc.setPosition(10, 20);
+        bloc.setPosition(new Position(10, 20));
         assertNotNull(bloc.getPosition(), "La position ne doit pas être nulle.");
-        assertEquals(10, bloc.getPositionX(), "La position X doit être 10.");
-        assertEquals(20, bloc.getPositionY(), "La position Y doit être 20.");
+        assertEquals(10, bloc.getPosition().getX(), "La position X doit être 10.");
+        assertEquals(20, bloc.getPosition().getY(), "La position Y doit être 20.");
     }
 
     @Test

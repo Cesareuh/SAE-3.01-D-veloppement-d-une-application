@@ -78,6 +78,11 @@ public class Main extends Application {
         viewport.setMinSize(primaryStage.getWidth() * ((double) 3 / 4), primaryStage.getHeight() - menuBar.getHeight());
         fileExplorer.setMinSize(primaryStage.getWidth() * ((double) 1 / 4), primaryStage.getHeight() - menuBar.getHeight());
 
+        // A SUPPRIMER
+        /*
+        Fleche f = new Fleche(1,1,"heritage");
+        m.afficherFleche(f);
+         */
 
 
     }
