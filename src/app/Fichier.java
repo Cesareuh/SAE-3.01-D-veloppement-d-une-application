@@ -141,4 +141,8 @@ public class Fichier extends FileComposite {
         return c;
     }
 
+    public String getName(){
+        return f.getName();
+    }
+
 }

@@ -43,14 +43,6 @@ public class ControlButton implements EventHandler<ActionEvent> {
 						modele.setRep(selectedDirectory);
 						modele.initialiserFichiers(selectedDirectory);
 
-						// Mettre à jour l'arborescence du TreeView
-						TreeView<String> fileExplorer = modele.getFileExplorerTree();
-						fileExplorer.setRoot(null);  // Réinitialiser l'arborescence
-
-						// Créer un nouvel élément racine pour le répertoire sélectionné
-						TreeItem<String> root = createNode(selectedDirectory);
-						root.setExpanded(true);  // Développer le répertoire racine
-						fileExplorer.setRoot(root);
 					}
 					break;
 				case "Export as image":

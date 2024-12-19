@@ -76,7 +76,7 @@ public class Modele implements Sujet{
         derniereID++;
         blocsMap.put(derniereID, b);
         VueBloc vb = new VueBloc(derniereID);
-        vb.setOnMouseDragged(new ControlDragAndDrop(this));
+        vb.setOnMouseDragged(new ControlDeplacerBloc(this));
         vb.setOnMouseClicked(new ControlClicDroit(this));
         viewport.getChildren().add(vb);
         // TODO fleches
@@ -223,6 +223,10 @@ public class Modele implements Sujet{
 
     public int getBlocCourant() {
         return blocCourant;
+    }
+
+    public List<Fichier> getFichiers(){
+        return fichiers;
     }
 
 

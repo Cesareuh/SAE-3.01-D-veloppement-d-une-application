@@ -1,19 +1,12 @@
 package app;
 
-import javafx.scene.input.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
-import java.io.File;
-import java.util.Collections;
 import javafx.event.EventHandler;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 
-public class ControlDragAndDrop implements EventHandler<MouseEvent>{
+public class ControlDeplacerBloc implements EventHandler<MouseEvent>{
 
     private TreeView<String> fileExplorer;
     private Pane viewport;
@@ -28,8 +21,10 @@ public class ControlDragAndDrop implements EventHandler<MouseEvent>{
 
      */
 
-    public ControlDragAndDrop(Modele m) {
+    public ControlDeplacerBloc(Modele m) {
         this.m = m;
+        this.fileExplorer = m.getFileExplorerTree();
+        this.viewport = m.getViewport();
     }
 
     @Override
@@ -64,6 +59,8 @@ public class ControlDragAndDrop implements EventHandler<MouseEvent>{
                 m.translaterBloc(id, x, y);
             }
         }
+
+
        /*
         // Gérer le drag and drop pour les items du TreeView
         fileExplorer.setCellFactory(param -> new TreeCell<String>() {
