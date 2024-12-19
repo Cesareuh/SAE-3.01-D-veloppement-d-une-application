@@ -86,47 +86,76 @@ public class ControlButton implements EventHandler<ActionEvent> {
 
 
 	private void exportAsImage() {
-		System.out.println("Export en image (PNG ou JPEG)...");
+		System.out.println("Export en PNG ou JPEG...");
 
-		// Capture du contenu de la zone affichée (viewport)
-		Pane viewport = modele.getViewport(); // Récupère la zone d'affichage
-		WritableImage writableImage = viewport.snapshot(new SnapshotParameters(), null); // Prend un "snapshot" de la zone
+		// Capture du contenu du viewport ou de ton Pane
+		Pane viewport = modele.getViewport();
+		WritableImage writableImage = viewport.snapshot(new SnapshotParameters(), null);
 
-		// Boîte de dialogue pour sauvegarder l'image
+		// Convertir WritableImage en BufferedImage
+		BufferedImage bufferedImage = new BufferedImage(
+				(int) writableImage.getWidth(),
+				(int) writableImage.getHeight(),
+				BufferedImage.TYPE_INT_ARGB
+		);
+
+		IntBuffer buffer = IntBuffer.allocate((int) (writableImage.getWidth() * writableImage.getHeight()));
+		writableImage.getPixelReader().getPixels(
+				0, 0,
+				(int) writableImage.getWidth(),
+				(int) writableImage.getHeight(),
+				javafx.scene.image.PixelFormat.getIntArgbInstance(),
+				buffer,
+				(int) writableImage.getWidth()
+		);
+		bufferedImage.setRGB(0, 0, (int) writableImage.getWidth(), (int) writableImage.getHeight(), buffer.array(), 0, (int) writableImage.getWidth());
+
+		// Ouvrir un dialogue pour sauvegarder le fichier
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Exporter en Image");
+		fileChooser.setTitle("Exporter en image");
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("Fichiers PNG", "*.png"),
 				new FileChooser.ExtensionFilter("Fichiers JPEG", "*.jpeg")
 		);
-
-		// Affiche la boîte de dialogue pour choisir où sauvegarder le fichier
 		File file = fileChooser.showSaveDialog(modele.getStage());
 
 		if (file != null) {
-			String extension = getFileExtension(file); // Récupère l'extension du fichier
+			// Détermine l'extension du fichier choisi
+			String extension = getFileExtension(file).toLowerCase();
 
-			// Conversion directe de WritableImage en BufferedImage
-			BufferedImage bufferedImage = new BufferedImage(
-					(int) writableImage.getWidth(),
-					(int) writableImage.getHeight(),
-					BufferedImage.TYPE_INT_ARGB
-			);
-
-			// Utilisation d'ImageIO pour sauvegarder l'image directement
+			// Vérifie si le format est supporté et exporte l'image
 			try {
-				ImageIO.write(bufferedImage, extension, file);
-				System.out.println("Image exportée en " + extension.toUpperCase() + " : " + file.getAbsolutePath());
+				switch (extension) {
+					case "png":
+						ImageIO.write(bufferedImage, "png", file);
+						System.out.println("Image exportée en PNG : " + file.getAbsolutePath());
+						break;
+					case "jpeg":
+					case "jpg":
+						// Conversion en BufferedImage TYPE_INT_RGB pour éviter des erreurs de format JPEG
+						BufferedImage rgbImage = new BufferedImage(
+								bufferedImage.getWidth(),
+								bufferedImage.getHeight(),
+								BufferedImage.TYPE_INT_RGB
+						);
+						rgbImage.getGraphics().drawImage(bufferedImage, 0, 0, null);
+						ImageIO.write(rgbImage, "jpeg", file);
+						System.out.println("Image exportée en JPEG : " + file.getAbsolutePath());
+						break;
+					default:
+						System.err.println("Format non pris en charge : " + extension);
+				}
 			} catch (IOException e) {
-				System.err.println("Erreur lors de l'exportation de l'image : " + e.getMessage());
+				System.err.println("Erreur lors de l'exportation : " + e.getMessage());
 			}
 		}
 	}
 
-	// Méthode utilitaire pour récupérer l'extension d'un fichier
+	// Méthode pour récupérer l'extension d'un fichier
 	private String getFileExtension(File file) {
 		String fileName = file.getName(); // Récupère le nom complet du fichier
 		int dotIndex = fileName.lastIndexOf('.'); // Cherche la dernière occurrence du point
 		return (dotIndex > 0) ? fileName.substring(dotIndex + 1) : ""; // Retourne l'extension
 	}
+
 }
