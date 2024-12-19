@@ -77,6 +77,14 @@ public class Modele implements Sujet{
         vb.setOnMouseDragged(new ControlDragAndDrop(this));
         vb.setOnMouseClicked(new ControlClicDroit(this));
         viewport.getChildren().add(vb);
+        // TODO fleches
+        for(Attribut a : b.getListAttributs()){
+            for(Bloc b2 : blocsMap.values()){
+                if(b2.getNom().equals(a.getType())){
+                    System.out.println("dépendance");
+                }
+            }
+        }
         ajouterObs(vb);
         notifierObs();
     }
