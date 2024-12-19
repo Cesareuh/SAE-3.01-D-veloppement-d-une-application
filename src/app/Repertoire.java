@@ -39,4 +39,16 @@ public class Repertoire extends FileComposite{
     public ArrayList<FileComposite> getFileCompositeArrayList() {
         return fileCompositeArrayList;
     }
+
+    public ArrayList<Fichier> getFichiers() {
+        ArrayList<Fichier> fichiers = new ArrayList<>();
+        for(FileComposite file : this.getFileCompositeArrayList()){
+            if(file instanceof Fichier){
+                fichiers.add((Fichier)file);
+            }else {
+                fichiers.addAll(((Repertoire) file).getFichiers());
+            }
+        }
+        return fichiers;
+    }
 }

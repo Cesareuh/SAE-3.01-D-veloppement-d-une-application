@@ -21,10 +21,13 @@ public class Modele implements Sujet{
     private VBox explorateur;
     private VBox root;
     private List<Fleche> fleches;
+
+
     private HashMap<Integer, Bloc> blocsMap;
     private int derniereID;
     private List<Observateur> observateurs = new ArrayList<>();
     private TreeView<String> fileExplorerTree;
+    private List<Fichier> fichiers;
 
     public Modele(VBox root, Pane viewport, TreeView<String> fileExplorerTree, Stage stage) {
         this.root = root;
@@ -33,6 +36,7 @@ public class Modele implements Sujet{
         this.stage = stage;
         this.derniereID = 0;
         this.blocsMap = new HashMap<>();
+        this.fleches = new ArrayList<>();
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -66,7 +70,7 @@ public class Modele implements Sujet{
      */
 
     // TEMPORAIRE (il faut changer les params pour que la description soit correcte)
-    public void ajouterBlocDiag(Bloc b){
+    public void afficherBloc(Bloc b){
         derniereID++;
         blocsMap.put(derniereID, b);
         VueBloc vb = new VueBloc(derniereID);
@@ -127,8 +131,13 @@ public class Modele implements Sujet{
 
 
     // Initialisation des blocs à partir d'un répertoire
-    public void initialiserBlocs(File repertoire) {
-        // Logique d'initialisation des blocs depuis un répertoire donné
+    public void initialiserFichiers(File repertoire) {
+        this.fichiers = new ArrayList<>();
+        if(repertoire.isDirectory()){
+            Repertoire rep = new Repertoire(repertoire);
+            fichiers.addAll(rep.getFichiers());
+        }else fichiers.add(new Fichier(repertoire));
+        notifierObs();
     }
 
     // Affiche un menu contextuel lorsque l'utilisateur clique avec le bouton droit
@@ -185,5 +194,24 @@ public class Modele implements Sujet{
     public TreeView<String> getFileExplorerTree() {
         return fileExplorerTree; // TreeView<String> initialisé dans le Modele
     }
+
+    public List<Fleche> getFleches() {
+        return fleches;
+    }
+
+    public int getDerniereID() {
+        return derniereID;
+    }
+
+
+    public void resetDerniereID() {
+        this.derniereID = 0;
+        this.blocsMap.clear();
+    }
+
+    public int getBlocCourant() {
+        return blocCourant;
+    }
+
 
 }

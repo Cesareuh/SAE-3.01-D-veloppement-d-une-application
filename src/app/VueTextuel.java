@@ -5,12 +5,7 @@ import javafx.scene.text.Text;
 
 import java.io.File;
 
-public class VueTextuel extends Label implements Observateur {
-
-    //constructeur
-    public VueTextuel() {
-        this.setText("aaaaaaaaaaaaaaa");
-    }
+public class VueTextuel  implements Observateur {
 
     //methodes
     @Override
@@ -26,7 +21,6 @@ public class VueTextuel extends Label implements Observateur {
             Repertoire repertoire = new Repertoire(f);
             res+= repertoire.afficher("");
         }else res="erreur";
-        this.setText(res);
         System.out.println("res : "+res);
 
     }

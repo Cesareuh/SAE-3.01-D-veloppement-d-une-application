@@ -37,11 +37,15 @@ public class Main extends Application {
         // Création du modèle (Modele gère les interactions)
         Modele m = new Modele(root, viewport, fileExplorer, primaryStage);
 
+        //Création de la vue textuelle
+        VueTextuel vt = new VueTextuel();
+        m.ajouterObs(vt);
+
         // Création du menu
         Menu fileMenu = new Menu("File");
         MenuItem selectRep = new MenuItem("Select directory");
         selectRep.setOnAction(new ControlButton(m));  // Action pour sélectionner un répertoire
-        MenuItem export = new MenuItem("Export as PNG");
+        MenuItem export = new MenuItem("Export as image");
         export.setOnAction(new ControlButton(m));  // Action pour exporter en PNG
         fileMenu.getItems().addAll(selectRep, export);
 

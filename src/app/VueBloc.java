@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class VueBloc extends VBox implements Observateur{
+public class VueBloc extends VBox implements Observateur {
 
     private int id;
 

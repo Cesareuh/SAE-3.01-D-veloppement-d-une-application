@@ -1,7 +1,12 @@
 import app.Bloc;
 import app.Position;
+import app.Attribut;
+import app.Methode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +16,9 @@ public class BlocTest {
 
     @BeforeEach
     public void setUp() {
-        bloc = new Bloc("TestBloc", "image.png", "ImplClass", "HeritageClass");
+        List<Attribut> attributs = new ArrayList<>();
+        List<Methode> methodes = new ArrayList<>();
+        bloc = new Bloc("TestBloc", "image.png", "ImplClass", "HeritageClass", attributs, methodes);
     }
 
     @Test
@@ -30,14 +37,16 @@ public class BlocTest {
 
     @Test
     public void testGetListAttributs() {
-        // Vérifie que la liste des attributs n'est pas nulle
-        assertNotNull(bloc.getListAttributs(), "La liste des attributs ne doit pas être nulle.");
+        List<Attribut> attributs = bloc.getListAttributs();
+        assertNotNull(attributs, "La liste des attributs ne doit pas être nulle.");
+        assertTrue(attributs.isEmpty(), "La liste des attributs doit être vide au départ.");
     }
 
     @Test
     public void testGetListMethodes() {
-        // Vérifie que la liste des méthodes n'est pas nulle
-        assertNotNull(bloc.getListMethodes(), "La liste des méthodes ne doit pas être nulle.");
+        List<Methode> methodes = bloc.getListMethodes();
+        assertNotNull(methodes, "La liste des méthodes ne doit pas être nulle.");
+        assertTrue(methodes.isEmpty(), "La liste des méthodes doit être vide au départ.");
     }
 
     @Test
@@ -50,9 +59,7 @@ public class BlocTest {
 
     @Test
     public void testHeritageAndImplementation() {
-
         assertEquals("HeritageClass", bloc.getHeritage(), "L'héritage doit être 'HeritageClass'.");
         assertEquals("ImplClass", bloc.getImplementation(), "L'implémentation doit être 'ImplClass'.");
     }
-
 }

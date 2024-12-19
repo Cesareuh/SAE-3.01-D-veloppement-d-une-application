@@ -7,13 +7,13 @@ public class Bloc {
     private boolean affichageSimple;
     private String nom;
     private String image;
-    private String implementation;
+    private List<String> implementation;
     private String heritage;
     private Position pos;
     private List<Attribut> attributs;
     private List<Methode> methodes;
 
-    public Bloc(String nom, String image, String implementation, String heritage, List attrs, List meths) {
+    public Bloc(String nom, String image, List<String> implementation, String heritage, List attrs, List meths) {
         this.nom = nom;
         this.image = image;
         this.implementation = implementation;
@@ -39,7 +39,7 @@ public class Bloc {
         return image;
     }
 
-    public String getImplementation() {
+    public List<String>  getImplementation() {
         return implementation;
     }
 
