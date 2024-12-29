@@ -46,64 +46,54 @@ public class ControlDragAndDrop implements EventHandler<MouseEvent> {
                 // Mettre à jour la position du bloc dans le modèle
                 m.translaterBloc(id, x, y);
             }
+        }
+        else if (event.getSource() instanceof TreeView<?> treeView) {
+            // Vérifie si un élément est sélectionné
+            TreeView<String> fileExplorerTree = m.getFileExplorerTree();
+            TreeItem<?> selectedItem = fileExplorerTree.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                System.out.println("Élément sélectionné : " + selectedItem.getValue());
+                // Crée un Label temporaire pour représenter visuellement le fichier
+                Label fileLabel = new Label(selectedItem.getValue().toString());
+                fileLabel.setStyle("-fx-background-color: lightgray; -fx-padding: 5; -fx-border-color: black;");
 
-            // Gestion du Drag and Drop pour l'explorateur de fichiers
-            if (event.getSource() instanceof TreeView<?> treeView) {
-                // Gérer le début du drag and drop du fichier dans le TreeView
-                TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    File selectedFile = new File(selectedItem.getValue());
-                    if (selectedFile.exists() && selectedFile.isFile()) {
-                        // Démarrer l'opération de glissement du fichier
-                        Dragboard db = treeView.startDragAndDrop(TransferMode.MOVE);
-                        ClipboardContent content = new ClipboardContent();
-                        content.putFiles(Collections.singletonList(selectedFile));  // Met le fichier dans le dragboard
-                        db.setContent(content);
-                    }
-                }
+                Pane viewport = m.getViewport();
+                viewport.getChildren().add(fileLabel);
+
+                // Suivre le curseur lors du déplacement
+                fileLabel.setOnMouseDragged(dragEvent -> {
+                    double x = dragEvent.getSceneX() - fileLabel.getWidth() / 2;
+                    double y = dragEvent.getSceneY() - fileLabel.getHeight() / 2;
+
+                    // Contraindre aux limites du viewport
+                    x = Math.max(0, Math.min(x, viewport.getWidth() - fileLabel.getWidth()));
+                    y = Math.max(0, Math.min(y, viewport.getHeight() - fileLabel.getHeight()));
+
+                    fileLabel.setLayoutX(x);
+                    fileLabel.setLayoutY(y);
+                });
+
+                // Fixe le Label dans le Pane à la position lâchée
+                fileLabel.setOnMouseReleased(releaseEvent -> {
+                    double x = releaseEvent.getSceneX() - fileLabel.getWidth() / 2;
+                    double y = releaseEvent.getSceneY() - fileLabel.getHeight() / 2;
+
+                    // Contraindre la position finale aux limites du viewport
+                    x = Math.max(0, Math.min(x, viewport.getWidth() - fileLabel.getWidth()));
+                    y = Math.max(0, Math.min(y, viewport.getHeight() - fileLabel.getHeight()));
+
+                    fileLabel.setLayoutX(x);
+                    fileLabel.setLayoutY(y);
+
+                    // Finaliser la position dans le Pane
+                    fileLabel.setOnMouseDragged(null); // Désactiver le drag après placement
+                    fileLabel.setOnMouseReleased(null);
+                });
+            }
+            else {
+                System.out.println("Aucun élément sélectionné.");
             }
         }
-    }
 
-    // Gérer l'événement DragOver pour accepter les fichiers dans le TreeView
-    public void handleDragOver(DragEvent event) {
-        // Accepter le drag-and-drop seulement si des fichiers sont présents
-        if (event.getGestureSource() != event.getTarget() && event.getDragboard().hasFiles()) {
-            event.acceptTransferModes(TransferMode.MOVE);
-        }
-        event.consume();
-    }
-
-    // Gérer l'événement DragDropped pour gérer le dépôt du fichier
-    public void handleDragDropped(DragEvent event) {
-        // Vérifier si des fichiers ont été déposés
-        Dragboard db = event.getDragboard();
-        boolean success = false;
-
-        if (db.hasFiles()) {
-            File file = db.getFiles().get(0);  // Récupérer le fichier
-            // Vous pouvez effectuer ici une action sur le fichier, par exemple, le déplacer
-            success = moveFile(file);
-        }
-
-        // Indiquer si le dépôt a réussi ou échoué
-        event.setDropCompleted(success);
-        event.consume();
-    }
-
-    // Exemple de méthode pour déplacer un fichier (à personnaliser selon vos besoins)
-    private boolean moveFile(File file) {
-        // Implémenter ici la logique de déplacement ou de gestion du fichier
-        System.out.println("Fichier déplacé : " + file.getAbsolutePath());
-
-        // Par exemple, on peut déplacer le fichier vers un répertoire spécifique (s'il s'agit d'un répertoire cible)
-        File destination = new File("nouveau_chemin_ou_repertoire");
-        if (file.renameTo(destination)) {
-            System.out.println("Le fichier a été déplacé avec succès !");
-            return true;
-        } else {
-            System.out.println("Échec du déplacement.");
-            return false;
-        }
     }
 }
