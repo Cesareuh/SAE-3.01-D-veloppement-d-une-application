@@ -32,7 +32,7 @@ public class VueBloc extends VBox implements Observateur {
             this.getChildren().removeAll(this.getChildren());
 
             Bloc b = m.getBlocById(id);
-            this.relocate(b.getPositionX(), b.getPositionY());
+            this.relocate(b.getPosition().getX(), b.getPosition().getY());
             HBox titre = new HBox();
             titre.getChildren().addAll(new Label(b.getImage()), new Label(b.getNom()));
             titre.setAlignment(Pos.CENTER);

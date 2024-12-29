@@ -23,12 +23,11 @@ public class Bloc {
         this.methodes = meths;
     }
 
-    public void setPosition(int x, int y) {
+    public void setPosition(Position pos) {
         if (pos == null) {
             pos = new Position();
         }
-        pos.setX(x);
-        pos.setY(y);
+        this.pos = pos;
     }
 
     public Position getPosition() {
@@ -63,12 +62,4 @@ public class Bloc {
         this.nom = className;
     }
 
-
-    public double getPositionX() {
-        return pos.getX();
-    }
-
-    public double getPositionY(){
-        return pos.getY();
-    }
 }

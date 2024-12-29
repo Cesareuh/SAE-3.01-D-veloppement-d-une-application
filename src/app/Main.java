@@ -3,6 +3,7 @@ package app;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.DragEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -26,7 +27,7 @@ public class Main extends Application {
         MenuBar menuBar = new MenuBar();
 
         // File Explorer (TreeView pour afficher l'arborescence)
-        TreeView<String> fileExplorer = new TreeView<>();
+        VueFichiers fileExplorer = new VueFichiers();
         Pane viewport = new Pane();
 
         // Définir une bordure autour du fileExplorer et du viewport
@@ -42,6 +43,7 @@ public class Main extends Application {
         //Création de la vue textuelle
        VueTextuel vt = new VueTextuel();
         m.ajouterObs(vt);
+        m.ajouterObs(fileExplorer);
 
         // Création du menu
         Menu fileMenu = new Menu("File");
@@ -59,6 +61,7 @@ public class Main extends Application {
         base.getChildren().addAll(fileExplorer, viewport);
         root.getChildren().addAll(menuBar, base);
 
+        ControlDragNDrop cdb = new ControlDragNDrop(m);
 
         // Scene et affichage de la fenêtre principale
         primaryStage.setScene(new Scene(root, 1200, 600));
@@ -71,6 +74,11 @@ public class Main extends Application {
         viewport.setMinSize(primaryStage.getWidth() * ((double) 3 / 4), primaryStage.getHeight() - menuBar.getHeight());
         fileExplorer.setMinSize(primaryStage.getWidth() * ((double) 1 / 4), primaryStage.getHeight() - menuBar.getHeight());
 
+        // A SUPPRIMER
+        /*
+        Fleche f = new Fleche(1,1,"heritage");
+        m.afficherFleche(f);
+         */
 
 
     }
