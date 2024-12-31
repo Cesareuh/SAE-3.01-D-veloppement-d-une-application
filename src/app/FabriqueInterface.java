@@ -1,6 +1,8 @@
 package app;
 
-import java.lang.reflect.Field;
+import app.classes.Bloc;
+import app.classes.Methode;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;

@@ -1,5 +1,6 @@
-package app;
+package app.control;
 
+import app.Modele;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
@@ -12,7 +13,6 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
-import javax.swing.text.Document;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

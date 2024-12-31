@@ -1,6 +1,8 @@
-package app;
+package app.vue;
 
-import javafx.scene.control.ContextMenu;
+import app.Modele;
+import app.Sujet;
+import app.control.ControlButton;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 

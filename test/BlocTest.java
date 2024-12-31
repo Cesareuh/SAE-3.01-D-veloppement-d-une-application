@@ -1,7 +1,7 @@
-import app.Bloc;
-import app.Position;
-import app.Attribut;
-import app.Methode;
+import app.classes.Bloc;
+import app.classes.Position;
+import app.classes.Attribut;
+import app.classes.Methode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

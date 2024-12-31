@@ -1,5 +1,13 @@
 package app;
 
+import app.classes.Attribut;
+import app.classes.Bloc;
+import app.classes.Fleche;
+import app.classes.Position;
+import app.control.ControlClicDroit;
+import app.control.ControlDeplacerBloc;
+import app.vue.VueBloc;
+import app.vue.VueFleche;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.*;
@@ -21,11 +29,11 @@ public class Modele implements Sujet{
     private VBox explorateur;
     private VBox root;
     private HashMap<Integer, Fleche> flechesMap;
+    private int derniereFlecheID;
 
 
     private HashMap<Integer, Bloc> blocsMap;
     private int derniereID;
-    private int derniereFlecheID;
     private List<Observateur> observateurs = new ArrayList<>();
     private TreeView<String> fileExplorerTree;
     private List<Fichier> fichiers;
@@ -79,11 +87,21 @@ public class Modele implements Sujet{
         vb.setOnMouseDragged(new ControlDeplacerBloc(this));
         vb.setOnMouseClicked(new ControlClicDroit(this));
         viewport.getChildren().add(vb);
-        // TODO fleches
+
+        // Ajoute les flèches du bloc en fonction des attributs
         for(Attribut a : b.getListAttributs()){
-            for(Bloc b2 : blocsMap.values()){
-                if(b2.getNom().equals(a.getType())){
-                    System.out.println("dépendance");
+            for(int indexB2 : blocsMap.keySet()){
+                if(blocsMap.get(indexB2).getNom().equals(a.getType())){
+                    afficherFleche(derniereID, indexB2, Fleche.ASSOCIATION);
+                }
+            }
+        }
+
+        // Ajoute les flèches en fonction des attributs des autres blocs
+        for(int indexB2 : blocsMap.keySet()){
+            for(Attribut a : blocsMap.get(indexB2).getListAttributs()){
+                if(a.getType().equals(b.getNom())){
+                    afficherFleche(indexB2, derniereID, Fleche.ASSOCIATION);
                 }
             }
         }
@@ -91,11 +109,12 @@ public class Modele implements Sujet{
         notifierObs();
     }
 
-    public void afficherFleche(Fleche f){
+    public void afficherFleche(int depart, int arrivee, int type){
         derniereFlecheID++;
+        flechesMap.put(derniereFlecheID, new Fleche(depart, arrivee, type));
         VueFleche vf = new VueFleche(derniereFlecheID);
+        viewport.getChildren().addFirst(vf);
         ajouterObs(vf);
-        notifierObs();
     }
 
     public void updateFileExplorer(File directory) {
@@ -116,17 +135,44 @@ public class Modele implements Sujet{
 
     // Supprime le bloc sélectionné
     public void supprimerBlocSelect() {
-        Observateur aSupprimer = null;
+        ArrayList<Observateur> aSupprimer = new ArrayList<>();
+        ArrayList<Integer> flechesASupprimer = new ArrayList<>();
+
+        // Supprime le bloc de la liste
         blocsMap.remove(blocCourant);
+
+        // Trouver les flèches liées au bloc à supprimer
+        for(int idF : flechesMap.keySet()){
+            if(flechesMap.get(idF).getBlocDepart() == blocCourant || flechesMap.get(idF).getBlocArrivee() == blocCourant){
+                flechesASupprimer.add(idF);
+            }
+        }
+
+        // Supprimer les flèches de la liste
+        for(int idF : flechesASupprimer){
+            flechesMap.remove(idF);
+        }
+
+        // Trouver la vue du bloc et des flèches à supprimer
         for(Observateur obs : observateurs){
             if(obs instanceof VueBloc vb){
                 if(vb.getBlocId() == blocCourant){
-                    aSupprimer = obs;
+                    aSupprimer.add(obs);
+                }
+            }
+            if(obs instanceof VueFleche vf) {
+                if(flechesASupprimer.contains(vf.getFlecheId())){
+                    aSupprimer.add(obs);
                 }
             }
         }
+        // Notifier les vues de leur suppression
         notifierObs();
-        supprimerObs(aSupprimer);
+
+        // Supprimer les vues de la liste de observateurs
+        for(Observateur obs : aSupprimer) {
+            supprimerObs(obs);
+        }
     }
 
     // Déplace un bloc vers une nouvelle position
@@ -165,6 +211,15 @@ public class Modele implements Sujet{
     // Récupère un bloc par son id
     public Bloc getBlocById(int id) {
         return blocsMap.get(id);
+    }
+
+    public VueBloc getVueBlocById(int id){
+        for(Observateur obs : observateurs){
+            if(obs instanceof VueBloc vb && vb.getBlocId() == id){
+                return vb;
+            }
+        }
+        return null;
     }
 
     public void ajouterObs(Observateur observateur) {
@@ -209,6 +264,10 @@ public class Modele implements Sujet{
 
     public HashMap<Integer, Fleche> getFleches() {
         return flechesMap;
+    }
+
+    public Fleche getFlecheById(int id){
+        return flechesMap.get(id);
     }
 
     public int getDerniereID() {

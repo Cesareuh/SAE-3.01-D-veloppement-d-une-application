@@ -1,5 +1,6 @@
 package app;
 
+import app.vue.VueTextuel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeView;

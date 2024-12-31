@@ -1,6 +1,5 @@
-package app;
+package app.classes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Bloc {

@@ -1,14 +1,15 @@
 package app;
 
+import app.control.ControlButton;
+import app.control.ControlClicDroit;
+import app.control.ControlDragNDrop;
+import app.vue.VueTextuel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.DragEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 public class Main extends Application {
 

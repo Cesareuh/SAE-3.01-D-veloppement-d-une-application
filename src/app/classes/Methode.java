@@ -1,4 +1,4 @@
-package app;
+package app.classes;
 
 import java.util.List;
 

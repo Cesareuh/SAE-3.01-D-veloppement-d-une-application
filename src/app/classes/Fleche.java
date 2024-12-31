@@ -1,24 +1,19 @@
-package app;
+package app.classes;
 
 
 public class Fleche {
+    public static int ASSOCIATION = 0;
+    public static int HERITAGE = 1;
+    public static int IMPLEMENTATION = 2;
     private int blocDepart;
     private int blocArrivee;
 
-    private String type;
+    private int type;
 
-    public Fleche(int blocDepart, int blocArrivee, String type) {
+    public Fleche(int blocDepart, int blocArrivee, int type) {
         this.blocDepart = blocDepart;
         this.blocArrivee = blocArrivee;
         this.type = type;
-    }
-
-    public Position getPosDep(){
-       return null;
-    }
-
-    public Position getPosArr(){
-        return null;
     }
 
     public int getBlocDepart(){
@@ -29,7 +24,7 @@ public class Fleche {
         return blocArrivee;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 }

@@ -1,7 +1,11 @@
-package app;
+package app.control;
 
+import app.*;
+import app.vue.VueBloc;
+import app.vue.VueContext;
+import app.vue.VueMenuContextBloc;
+import app.vue.VueMenuContextVide;
 import javafx.event.EventHandler;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;

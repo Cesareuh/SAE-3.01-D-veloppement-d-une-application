@@ -1,4 +1,4 @@
-package app;
+package app.classes;
 
 public class Attribut {
     private String autorisation;

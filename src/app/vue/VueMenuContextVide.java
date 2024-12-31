@@ -1,5 +1,10 @@
-package app;
+package app.vue;
 
+import app.*;
+import app.classes.Attribut;
+import app.classes.Bloc;
+import app.classes.Methode;
+import app.classes.Position;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 

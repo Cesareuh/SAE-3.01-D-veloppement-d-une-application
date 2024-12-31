@@ -1,5 +1,6 @@
-package app;
+package app.control;
 
+import app.Modele;
 import javafx.event.EventHandler;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -9,7 +10,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 
 import java.io.File;
 import java.util.List;
