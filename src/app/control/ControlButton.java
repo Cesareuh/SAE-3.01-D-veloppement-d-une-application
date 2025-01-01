@@ -1,6 +1,7 @@
 package app.control;
 
 import app.Modele;
+import app.Repertoire;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
@@ -14,8 +15,7 @@ import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.IntBuffer;
 
 public class ControlButton implements EventHandler<ActionEvent> {
@@ -51,6 +51,31 @@ public class ControlButton implements EventHandler<ActionEvent> {
 					break;
 				case "Remove":
 					modele.supprimerBlocSelect();
+					break;
+				case "Generate plantuml" :
+					System.out.println("oui");
+					if(modele.getRep().isDirectory()){
+						Repertoire r = new Repertoire(modele.getRep());
+						File f = new File("src/uml/plantuml.puml");
+						if(f.exists()){
+							f.delete();
+						}
+                        try {
+							f.createNewFile();
+							BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+							bw.write("@startuml");
+							bw.newLine();
+							bw.write(r.genererPlantUML(""));
+							bw.newLine();
+							bw.write("@enduml");
+							bw.flush();
+							System.out.println("fini");
+
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
 					break;
 			}
 		}

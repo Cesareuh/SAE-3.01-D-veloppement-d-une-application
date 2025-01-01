@@ -1,6 +1,6 @@
 package app;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Repertoire extends FileComposite{
@@ -32,6 +32,15 @@ public class Repertoire extends FileComposite{
         for(FileComposite file : this.getFileCompositeArrayList()){
             res+=file.afficher(" "+prec);
             System.out.println(res);
+        }
+        return res;
+    }
+
+    @Override
+    public String genererPlantUML(String s) throws IOException {
+        String res = "";
+        for(FileComposite file : this.getFileCompositeArrayList()){
+            res+=file.genererPlantUML("\n"+s);
         }
         return res;
     }

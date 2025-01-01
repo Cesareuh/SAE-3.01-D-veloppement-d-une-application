@@ -2,13 +2,12 @@ package app;
 
 import app.classes.Bloc;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.io.*;
+import java.lang.reflect.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,10 +76,101 @@ public class Fichier extends FileComposite {
             prec += ") : " + method.getReturnType().getName() + "\n";
         }
         if(c.getSuperclass() != null) {
-            prec += "superClass : " + c.getSuperclass().getSimpleName() + "\n";
+            if(!c.getSuperclass().getSimpleName().equals("Object")) {
+                prec += "superClass : " + c.getSuperclass().getSimpleName() + "\n";
+            }
         }
 
         return prec + "}\n";
+    }
+
+    @Override
+    public String genererPlantUML(String s) throws IOException {
+        Class<?> c = getClasse();
+        // Vérifier si la classe est une interface ou une classe abstraite ou normale
+        if (c.isInterface()) {
+            s+="Interface " + c.getSimpleName() + " {\n";
+        } else {
+            if (Modifier.isAbstract(c.getModifiers())) {
+                s+="Abstract Class " + c.getSimpleName() + " {\n";
+            } else {
+                s+="Class " + c.getSimpleName() + " {\n";
+            }
+        }
+        HashMap<Field, String> lf = new HashMap<>();
+        // Ajouter les attributs
+        for (Field field : c.getDeclaredFields()) {
+            // Déterminer la visibilité
+            String modifierSymbol;
+            if (Modifier.isPublic(field.getModifiers())) {
+                modifierSymbol = "  +";
+            } else if (Modifier.isPrivate(field.getModifiers())) {
+                modifierSymbol = "  -";
+            } else if (Modifier.isProtected(field.getModifiers())) {
+                modifierSymbol = "  #";
+            } else {
+                modifierSymbol = "   ";
+            }
+            if(field.getType().isPrimitive() || field.getType().getSimpleName().equals("String")) {
+                s+=modifierSymbol + field.getName() + " : " + field.getType().getName()+"\n";
+            }else{
+                lf.put(field, modifierSymbol);
+            }
+        }
+
+        // Ajouter les méthodes
+        for (Method method : c.getDeclaredMethods()) {
+            // Déterminer la visibilité
+            String modifierSymbol;
+            if (Modifier.isPublic(method.getModifiers())) {
+                modifierSymbol = "  +";
+            } else if (Modifier.isPrivate(method.getModifiers())) {
+                modifierSymbol = "  -";
+            } else if (Modifier.isProtected(method.getModifiers())) {
+                modifierSymbol = "  #";
+            } else {
+                modifierSymbol = "   ";
+            }
+
+            // Construire la signature de la méthode
+            s+=modifierSymbol + method.getName() + "(";
+            Class<?>[] paramTypes = method.getParameterTypes();
+            for (int i = 0; i < paramTypes.length; i++) {
+                if (i > 0) {
+                    s+=", ";
+                }
+                s+=paramTypes[i].getTypeName();
+            }
+            s+=") : " + method.getReturnType().getName() + "\n";
+        }
+        s+="}\n";
+        if(c.getSuperclass() != null) {
+            if(!c.getSuperclass().getSimpleName().equals("Object")) {
+                s += c.getSimpleName() + " --|> " + c.getSuperclass().getSimpleName() + "\n";
+            }
+        }
+
+        for(Class i : c.getInterfaces()){
+            s+=c.getSimpleName()+" ..|> " + i.getSimpleName()+"\n";
+        }
+
+        for(Field field : lf.keySet()) {
+            if(Collection.class.isAssignableFrom(field.getType()) || Map.class.isAssignableFrom(field.getType())) {
+                Type t = field.getGenericType();
+                if(t instanceof ParameterizedType) {
+                    ParameterizedType pt = (ParameterizedType) t;
+                    Type[] types = pt.getActualTypeArguments();
+                    for(Type typeArg : types) {
+                        s+=c.getSimpleName()+ " -->\"*\"" + ((Class<?>)typeArg).getSimpleName() +" : "+ field.getName() + "\n";
+                    }
+                }
+            }else {
+                s += c.getSimpleName() + " --> " + field.getType().getSimpleName() + " : " + lf.get(field) + field.getName() + "\n";
+            }
+
+
+        }
+        return s;
     }
 
     public static String getNomCompletClasse(File file) throws IOException {

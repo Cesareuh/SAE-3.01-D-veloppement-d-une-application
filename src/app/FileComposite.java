@@ -1,6 +1,8 @@
 package app;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public abstract class FileComposite {
     //attributs
@@ -13,4 +15,10 @@ public abstract class FileComposite {
     }
     //methodes
     public abstract String afficher(String s);
+
+    public abstract String genererPlantUML(String s) throws IOException;
+
+    public File getF() {
+        return f;
+    }
 }
