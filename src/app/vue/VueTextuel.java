@@ -5,15 +5,16 @@ import app.*;
 import java.io.File;
 
 public class VueTextuel  implements Observateur {
-    private boolean appele = false;
+    private File fRep = null;
     //methodes
     @Override
     public void actualiser(Sujet s) {
-        if(!appele) {
+        Modele m = (Modele) s;
+        if(fRep != m.getRep()) {
             String res = "";
-            Modele m = (Modele) s;
             if (m.getRep() != null) {
                 File f = m.getRep();
+                fRep = f;
                 if (f.isFile() && f.getName().endsWith(".java") && !f.getName().equals("module-info.java")) {
                     Fichier fichier = new Fichier(f);
                     res += fichier.afficher("");
@@ -22,7 +23,6 @@ public class VueTextuel  implements Observateur {
                     res += repertoire.afficher("");
                 } else res = "erreur";
             }
-            appele = true;
             System.out.println("res : "+res);
         }
 

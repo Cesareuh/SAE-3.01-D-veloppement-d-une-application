@@ -42,7 +42,7 @@ public class Main extends Application {
         Modele m = new Modele(root, viewport, fileExplorer, primaryStage);
 
         //Création de la vue textuelle
-       VueTextuel vt = new VueTextuel();
+        VueTextuel vt = new VueTextuel();
         m.ajouterObs(vt);
         m.ajouterObs(fileExplorer);
 

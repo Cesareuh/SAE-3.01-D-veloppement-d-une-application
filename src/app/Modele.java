@@ -26,7 +26,6 @@ public class Modele implements Sujet{
     private File rep;
     private int blocCourant;
     private Pane viewport;
-    private VBox explorateur;
     private VBox root;
     private HashMap<Integer, Fleche> flechesMap;
     private int derniereFlecheID;
@@ -252,9 +251,6 @@ public class Modele implements Sujet{
         return viewport;
     }
 
-    public VBox getFileExplorer() {
-        return this.explorateur;
-    }
 
     public TreeView<String> getFileExplorerTree() {
         return fileExplorerTree; // TreeView<String> initialisé dans le Modele
@@ -286,6 +282,7 @@ public class Modele implements Sujet{
         return fichiers;
     }
 
+
     public void ajouterAttributDansBloc(String nomBloc, String autorisation, String nomAttribut, String typeAttribut) {
         for (Bloc bloc : blocs) {
             if (bloc.getNom().equals(nomBloc)) {
@@ -294,6 +291,7 @@ public class Modele implements Sujet{
             }
         }
     }
+
 
     public void modifierNomBloc(String newName) {
         Bloc bloc = getBlocById(blocCourant);
@@ -317,16 +315,11 @@ public class Modele implements Sujet{
         }
     }
 
-
-
     // Exemple de méthode pour ajouter un attribut dans un bloc
     public void ajouterAttributDansBloc(String nomBloc, String nomAttribut, String typeAttribut) {
         // Logique pour ajouter un attribut à un bloc
         System.out.println("Attribut ajouté : " + nomAttribut + " de type " + typeAttribut);
-          }
-
-
-
+    }
 
 }
 
