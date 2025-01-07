@@ -2,6 +2,8 @@ package app.control;
 
 import app.Fichier;
 import app.Modele;
+import app.classes.Bloc;
+import app.vue.VueBloc;
 import javafx.event.EventHandler;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -91,11 +93,15 @@ public class ControlDragNDrop implements EventHandler<DragEvent> {
                         break;
                     }
                 }
+                System.out.println(fichier.getName());
 
+                Bloc b = fichier.creerBloc();
+                modele.afficherBloc(b);
 
                 // Récupérer les informations de la classe
                 String classInfo = fichier.afficher("");
 
+                /*
                 // Crée un StackPane pour afficher les informations dans le Viewport
                 StackPane filePane = new StackPane();
                 Label fileLabel = new Label(file.getName() + "\n" + classInfo);
@@ -112,10 +118,11 @@ public class ControlDragNDrop implements EventHandler<DragEvent> {
                 filePane.setLayoutY(cursorY - labelHeight / 2);  // Centrer verticalement
 
                 // Ajouter un gestionnaire d'événements pour déplacer l'élément dans le viewport
-                setUpMouseDrag(filePane);
+                setUpMouseDrag(vb);
 
                 // Ajouter l'élément dans le viewport
-                viewport.getChildren().add(filePane);
+                viewport.getChildren().add(vb);
+                 */
             }
         }
 
@@ -124,7 +131,7 @@ public class ControlDragNDrop implements EventHandler<DragEvent> {
     }
 
     // Gérer le déplacement d'un élément dans le viewport
-    private void setUpMouseDrag(StackPane filePane) {
+    private void setUpMouseDrag(VueBloc filePane) {
         filePane.setOnMousePressed(event -> {
             // Enregistrer l'offset initial entre le curseur et le bloc
             offsetX = event.getSceneX() - filePane.getLayoutX();

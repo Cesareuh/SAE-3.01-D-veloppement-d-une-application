@@ -44,6 +44,7 @@ public class Modele implements Sujet{
         this.derniereFlecheID = 0;
         this.blocsMap = new HashMap<>();
         this.flechesMap = new HashMap<>();
+        this.derniereID = 0;
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -319,6 +320,9 @@ public class Modele implements Sujet{
     public void ajouterAttributDansBloc(String nomBloc, String nomAttribut, String typeAttribut) {
         // Logique pour ajouter un attribut à un bloc
         System.out.println("Attribut ajouté : " + nomAttribut + " de type " + typeAttribut);
+    }
+    public void ajouterBlocMap(Bloc b){
+        blocsMap.put(getDerniereID()+1, b);
     }
 
 }
