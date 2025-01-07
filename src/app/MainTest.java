@@ -1,4 +1,4 @@
-package app;
+/*package app;
 
 import app.vue.VueTextuel;
 import javafx.application.Application;
@@ -66,3 +66,6 @@ public class MainTest extends Application {
         primaryStage.show();
     }
 }
+
+
+ */

@@ -8,6 +8,7 @@ import app.control.ControlClicDroit;
 import app.control.ControlDeplacerBloc;
 import app.vue.VueBloc;
 import app.vue.VueFleche;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
@@ -34,8 +35,9 @@ public class Modele implements Sujet{
     private List<Observateur> observateurs = new ArrayList<>();
     private TreeView<String> fileExplorerTree;
     private List<Fichier> fichiers;
+    private MenuBar menuBar;
 
-    public Modele(VBox root, Pane viewport, TreeView<String> fileExplorerTree, Stage stage) {
+    public Modele(VBox root, Pane viewport, TreeView<String> fileExplorerTree, MenuBar menuBar, Stage stage) {
         this.root = root;
         this.viewport = viewport;
         this.fileExplorerTree = fileExplorerTree;
@@ -44,6 +46,7 @@ public class Modele implements Sujet{
         this.derniereFlecheID = 0;
         this.blocsMap = new HashMap<>();
         this.flechesMap = new HashMap<>();
+        this.menuBar = menuBar;
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -102,6 +105,7 @@ public class Modele implements Sujet{
                 }
             }
         }
+
         ajouterObs(vb);
         notifierObs();
     }
@@ -230,6 +234,9 @@ public class Modele implements Sujet{
 
     // Notifie tous les observateurs des changements
     public void notifierObs() {
+        // Ajuster la taille du viewport et du fileExplorer
+        viewport.setMinSize(stage.getWidth() * ((double) 3 / 4), stage.getHeight() - menuBar.getHeight());
+        fileExplorerTree.setMinSize(stage.getWidth() * ((double) 1 / 4), stage.getHeight() - menuBar.getHeight());
         for (Observateur observateur : observateurs) {
             observateur.actualiser(this);
         }
@@ -251,6 +258,9 @@ public class Modele implements Sujet{
         return viewport;
     }
 
+    public MenuBar getMenuBar(){
+        return this.menuBar;
+    }
 
     public TreeView<String> getFileExplorerTree() {
         return fileExplorerTree; // TreeView<String> initialisé dans le Modele
@@ -297,14 +307,10 @@ public class Modele implements Sujet{
         Bloc bloc = getBlocById(blocCourant);
         if (bloc != null) {
             bloc.setNom(newName); // Modifie le nom du bloc
-            notifierObservateurs();  }
+            notifierObs();  }
     }
 
 
-    public void notifierObservateurs() {
-        for (Observateur observateur : observateurs) {
-            observateur.actualiser(this);  }
-    }
 
     public void ajouterMethodeDansBloc(String nomBloc, String autorisation, String nomMethode, String typeRetour, List<String> parametres) {
         for (Bloc bloc : blocs) {

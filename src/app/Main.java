@@ -5,6 +5,8 @@ import app.control.ControlClicDroit;
 import app.control.ControlDragNDrop;
 import app.vue.VueTextuel;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -38,25 +40,27 @@ public class Main extends Application {
         fileExplorer.setBorder(border);
         viewport.setBorder(border);
 
+
+        // Création du menu
+        Menu fileMenu = new Menu("File");
+        MenuItem selectRep = new MenuItem("Select directory");
+        MenuItem export = new MenuItem("Export as image");
+        MenuItem plantuml = new MenuItem("Generate plantuml");
+        fileMenu.getItems().addAll(selectRep, export, plantuml);
+        Menu editMenu = new Menu("Edit");
+        menuBar.getMenus().addAll(fileMenu, editMenu);
+
         // Création du modèle (Modele gère les interactions)
-        Modele m = new Modele(root, viewport, fileExplorer, primaryStage);
+        Modele m = new Modele(root, viewport, fileExplorer, menuBar, primaryStage);
+
+        selectRep.setOnAction(new ControlButton(m));  // Action pour sélectionner un répertoire
+        export.setOnAction(new ControlButton(m));  // Action pour exporter en PNG
+        plantuml.setOnAction(new ControlButton(m));
 
         //Création de la vue textuelle
         VueTextuel vt = new VueTextuel();
         m.ajouterObs(vt);
         m.ajouterObs(fileExplorer);
-
-        // Création du menu
-        Menu fileMenu = new Menu("File");
-        MenuItem selectRep = new MenuItem("Select directory");
-        selectRep.setOnAction(new ControlButton(m));  // Action pour sélectionner un répertoire
-        MenuItem export = new MenuItem("Export as image");
-        export.setOnAction(new ControlButton(m));  // Action pour exporter en PNG
-        MenuItem plantuml = new MenuItem("Generate plantuml");
-        plantuml.setOnAction(new ControlButton(m));
-        fileMenu.getItems().addAll(selectRep, export, plantuml);
-        Menu editMenu = new Menu("Edit");
-        menuBar.getMenus().addAll(fileMenu, editMenu);
 
 
         // Ajouter les composants dans le layout principal
@@ -72,16 +76,10 @@ public class Main extends Application {
         // Gestion des clics droit
         root.setOnMouseClicked(new ControlClicDroit(m));
 
-        // Ajuster la taille du viewport et du fileExplorer
-        viewport.setMinSize(primaryStage.getWidth() * ((double) 3 / 4), primaryStage.getHeight() - menuBar.getHeight());
-        fileExplorer.setMinSize(primaryStage.getWidth() * ((double) 1 / 4), primaryStage.getHeight() - menuBar.getHeight());
-
-        // A SUPPRIMER
-        /*
-        Fleche f = new Fleche(1,1,"heritage");
-        m.afficherFleche(f);
-         */
-
+        // Ajuster taille éléments en fonction de la taille de la fenêtre
+        WindowListener wl = new WindowListener(m);
+        primaryStage.widthProperty().addListener(wl);
+        primaryStage.heightProperty().addListener(wl);
 
     }
 }
