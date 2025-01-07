@@ -5,7 +5,6 @@ import app.classes.Bloc;
 import app.classes.Fleche;
 import app.classes.Position;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class VueFleche extends Pane implements Observateur {

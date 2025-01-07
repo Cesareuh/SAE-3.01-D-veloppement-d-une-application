@@ -119,6 +119,26 @@ public class Modele implements Sujet{
         ajouterObs(vf);
     }
 
+    public void supprimerFleches(){
+        ArrayList<VueFleche> aSupprimerVue = new ArrayList<>();
+        ArrayList<Integer> aSupprimerFleche = new ArrayList<>(flechesMap.keySet());
+
+        for(Observateur obs : observateurs){
+            if(obs instanceof VueFleche vf){
+                aSupprimerVue.add(vf);
+            }
+        }
+
+        for (int id : aSupprimerFleche){
+            flechesMap.remove(id);
+        }
+
+        for(VueFleche vf : aSupprimerVue){
+            supprimerObs(vf);
+        }
+
+    }
+
     public void updateFileExplorer(File directory) {
         TreeItem<String> rootItem = new TreeItem<>(directory.getName());
         rootItem.setExpanded(true);
