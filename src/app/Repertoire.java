@@ -27,11 +27,8 @@ public class Repertoire extends FileComposite{
     @Override
     public String afficher(String prec) {
         String res = "";
-        System.out.println(this.f.getAbsolutePath());
-        System.out.println(this.getFileCompositeArrayList());
         for(FileComposite file : this.getFileCompositeArrayList()){
             res+=file.afficher(" "+prec);
-            System.out.println(res);
         }
         return res;
     }

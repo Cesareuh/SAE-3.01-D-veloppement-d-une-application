@@ -167,8 +167,6 @@ public class Fichier extends FileComposite {
             }else {
                 s += c.getSimpleName() + " --> " + field.getType().getSimpleName() + " : " + lf.get(field) + field.getName() + "\n";
             }
-
-
         }
         return s;
     }
