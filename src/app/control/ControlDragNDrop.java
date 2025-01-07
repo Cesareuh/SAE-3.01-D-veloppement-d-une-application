@@ -1,5 +1,6 @@
 package app.control;
 
+import app.Fichier;
 import app.Modele;
 import javafx.event.EventHandler;
 import javafx.scene.control.TreeItem;
@@ -82,9 +83,22 @@ public class ControlDragNDrop implements EventHandler<DragEvent> {
             for (File file : files) {
                 System.out.println("File dropped: " + file.getName());
 
-                // Crée un StackPane pour afficher l'élément dans le Viewport
+                // Crée une instance de Fichier pour traiter le fichier
+                Fichier fichier = null;
+                for(Fichier f : modele.getFichiers()){
+                    if(f.getName().equals(file.getName())){
+                        fichier= f;
+                        break;
+                    }
+                }
+
+
+                // Récupérer les informations de la classe
+                String classInfo = fichier.afficher("");
+
+                // Crée un StackPane pour afficher les informations dans le Viewport
                 StackPane filePane = new StackPane();
-                Label fileLabel = new Label(file.getName());
+                Label fileLabel = new Label(file.getName() + "\n" + classInfo);
                 filePane.getChildren().add(fileLabel);
 
                 // Calculer l'offset du curseur par rapport au Viewport
