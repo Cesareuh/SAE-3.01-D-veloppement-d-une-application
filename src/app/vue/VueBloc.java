@@ -18,6 +18,9 @@ public class VueBloc extends VBox implements Observateur {
         this.id = id;
         this.setBackground(new Background(new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
     }
+
+
+
     @Override
     public void actualiser(Sujet s) {
         Modele m = (Modele) s;
@@ -60,6 +63,9 @@ public class VueBloc extends VBox implements Observateur {
         }
 
     }
+
+
+
 
     public int getBlocId(){
         return id;

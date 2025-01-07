@@ -10,9 +10,8 @@ import app.vue.VueBloc;
 import app.vue.VueFleche;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.*;
-
-//import java.lang.classfile.Attribute;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -22,6 +21,7 @@ import java.util.List;
 
 public class Modele implements Sujet{
 
+    private List<Bloc> blocs;
     private final Stage stage;
     private File rep;
     private int blocCourant;
@@ -30,8 +30,6 @@ public class Modele implements Sujet{
     private VBox root;
     private HashMap<Integer, Fleche> flechesMap;
     private int derniereFlecheID;
-
-
     private HashMap<Integer, Bloc> blocsMap;
     private int derniereID;
     private List<Observateur> observateurs = new ArrayList<>();
@@ -288,5 +286,48 @@ public class Modele implements Sujet{
         return fichiers;
     }
 
+    public void ajouterAttributDansBloc(String nomBloc, String autorisation, String nomAttribut, String typeAttribut) {
+        for (Bloc bloc : blocs) {
+            if (bloc.getNom().equals(nomBloc)) {
+                bloc.ajouterAttribut(autorisation, nomAttribut, typeAttribut);  // Ajout avec l'autorisation
+                break;
+            }
+        }
+    }
+
+    public void modifierNomBloc(String newName) {
+        Bloc bloc = getBlocById(blocCourant);
+        if (bloc != null) {
+            bloc.setNom(newName); // Modifie le nom du bloc
+            notifierObservateurs();  }
+    }
+
+
+    public void notifierObservateurs() {
+        for (Observateur observateur : observateurs) {
+            observateur.actualiser(this);  }
+    }
+
+    public void ajouterMethodeDansBloc(String nomBloc, String autorisation, String nomMethode, String typeRetour, List<String> parametres) {
+        for (Bloc bloc : blocs) {
+            if (bloc.getNom().equals(nomBloc)) {
+                bloc.ajouterMethode(autorisation, nomMethode, typeRetour, parametres);  // Ajouter l'autorisation ici
+                break;
+            }
+        }
+    }
+
+
+
+    // Exemple de méthode pour ajouter un attribut dans un bloc
+    public void ajouterAttributDansBloc(String nomBloc, String nomAttribut, String typeAttribut) {
+        // Logique pour ajouter un attribut à un bloc
+        System.out.println("Attribut ajouté : " + nomAttribut + " de type " + typeAttribut);
+          }
+
+
+
 
 }
+
+

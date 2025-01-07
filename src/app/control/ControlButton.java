@@ -2,21 +2,27 @@ package app.control;
 
 import app.Modele;
 import app.Repertoire;
+import app.classes.Bloc;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class ControlButton implements EventHandler<ActionEvent> {
 
@@ -42,25 +48,33 @@ public class ControlButton implements EventHandler<ActionEvent> {
 						// Mettez à jour le modèle avec le répertoire sélectionné
 						modele.setRep(selectedDirectory);
 						modele.initialiserFichiers(selectedDirectory);
-
 					}
 					break;
+
 				case "Export as image":
 					// Action pour exporter le contenu en PNG
 					exportAsImage();
 					break;
+
 				case "Remove":
 					modele.supprimerBlocSelect();
+					System.out.println("Bloc supprimé.");
 					break;
-				case "Generate plantuml" :
+				case "Modifier": // Regrouper les options "Remove" et "Modifier"
+					System.out.println("Bloc modifié.");
+					// Appel de la méthode pour ouvrir un éditeur de bloc
+					ouvrirDialogueModification();
+					break;
+
+				case "Generate plantuml":
 					System.out.println("oui");
-					if(modele.getRep().isDirectory()){
+					if (modele.getRep().isDirectory()) {
 						Repertoire r = new Repertoire(modele.getRep());
 						File f = new File("src/uml/plantuml.puml");
-						if(f.exists()){
+						if (f.exists()) {
 							f.delete();
 						}
-                        try {
+						try {
 							f.createNewFile();
 							BufferedWriter bw = new BufferedWriter(new FileWriter(f));
 							bw.write("@startuml");
@@ -70,16 +84,16 @@ public class ControlButton implements EventHandler<ActionEvent> {
 							bw.write("@enduml");
 							bw.flush();
 							System.out.println("fini");
-
-
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+						} catch (IOException e) {
+							throw new RuntimeException(e);
+						}
+					}
 					break;
 			}
 		}
 	}
+
+
 
 
 	private TreeItem<String> createNode(File directory) {
@@ -174,5 +188,105 @@ public class ControlButton implements EventHandler<ActionEvent> {
 		int dotIndex = fileName.lastIndexOf('.'); // Cherche la dernière occurrence du point
 		return (dotIndex > 0) ? fileName.substring(dotIndex + 1) : ""; // Retourne l'extension
 	}
+
+	public void ajouterAttribut(String nomBloc, String autorisation, String nomAttribut, String typeAttribut) {
+		modele.ajouterAttributDansBloc(nomBloc, autorisation, nomAttribut, typeAttribut);
+		// Mise à jour de l'UI après ajout
+		mettreAJourVue();
+	}
+
+	// Méthode pour ajouter une méthode via l'UI
+	public void ajouterMethode(String nomBloc, String autorisation, String nomMethode, String typeRetour, List<String> parametres) {
+		modele.ajouterMethodeDansBloc(nomBloc, autorisation, nomMethode, typeRetour, parametres);
+		// Mise à jour de l'UI après ajout
+		mettreAJourVue();
+	}
+
+
+
+	// Méthode pour mettre à jour l'UI
+	private void mettreAJourVue() {
+		// Logique pour mettre à jour l'interface utilisateur (ex : rafraîchir l'affichage des blocs)
+		System.out.println("L'interface a été mise à jour.");
+	}
+	private void ouvrirDialogueModification() {
+		// Création d'une nouvelle fenêtre de dialogue
+		Stage stage = new Stage();
+		stage.setTitle("Modifier Bloc");
+
+		// Création des éléments de l'interface utilisateur
+		TextField nomBlocField = new TextField();
+		nomBlocField.setPromptText("Nouveau nom du bloc");
+
+		TextField attributNomField = new TextField();
+		attributNomField.setPromptText("Nom de l'attribut");
+
+		TextField attributTypeField = new TextField();
+		attributTypeField.setPromptText("Type de l'attribut");
+
+		Button ajouterAttributButton = new Button("Ajouter Attribut");
+		Button validerButton = new Button("Valider");
+
+		// Création d'un conteneur pour les attributs ajoutés
+		VBox attributsBox = new VBox(5);
+		List<String> attributs = new ArrayList<>();
+
+		// Action pour ajouter un attribut
+		ajouterAttributButton.setOnAction(e -> {
+			String nomAttribut = attributNomField.getText();
+			String typeAttribut = attributTypeField.getText();
+
+			if (!nomAttribut.isEmpty() && !typeAttribut.isEmpty()) {
+				attributs.add(nomAttribut + ": " + typeAttribut);
+				attributsBox.getChildren().add(new Label(nomAttribut + ": " + typeAttribut));
+				attributNomField.clear();
+				attributTypeField.clear();
+			}
+		});
+
+		// Action pour valider la modification du bloc
+		validerButton.setOnAction(e -> {
+			String nouveauNomBloc = nomBlocField.getText();
+			if (!nouveauNomBloc.isEmpty()) {
+				modele.modifierNomBloc(nouveauNomBloc); // Mise à jour du modèle avec le nouveau nom du bloc
+				System.out.println("Nom du bloc modifié : " + nouveauNomBloc);
+			}
+
+			// Ajouter les attributs au modèle
+			for (String attribut : attributs) {
+				String[] parts = attribut.split(": ");
+				modele.ajouterAttributDansBloc(nouveauNomBloc, parts[0], parts[1]); // Ajouter les attributs au bloc
+			}
+
+			stage.close(); // Fermer la fenêtre après validation
+		});
+
+		// Mise en place du layout
+		VBox layout = new VBox(10, nomBlocField, attributNomField, attributTypeField, ajouterAttributButton, attributsBox, validerButton);
+		layout.setPadding(new Insets(20));
+
+		Scene scene = new Scene(layout);
+		stage.setScene(scene);
+		stage.show();
+	}
+
+	private void ajouterAttribut(String nomBloc, String nomAttribut, String typeAttribut) {
+		modele.ajouterAttributDansBloc(nomBloc, nomAttribut, typeAttribut);
+		// Mettre à jour la vue après ajout
+		mettreAJourVue();
+	}
+
+
+
+	public void handleRemoveAction() {
+		modele.supprimerBlocSelect();
+		System.out.println("Bloc supprimé.");
+	}
+
+	public void handleModifyAction() {
+		System.out.println("Bloc modifié.");
+		ouvrirDialogueModification();  // Ouvre un dialogue de modification
+	}
+
 
 }

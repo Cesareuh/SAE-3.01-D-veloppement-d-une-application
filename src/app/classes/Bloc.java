@@ -61,4 +61,19 @@ public class Bloc {
         this.nom = className;
     }
 
+
+    public void ajouterAttribut(String autorisation, String nom, String type) {
+        Attribut nouvelAttribut = new Attribut(autorisation, type, nom);  // Création de l'attribut avec l'autorisation
+        attributs.add(nouvelAttribut);
+    }
+
+
+    public void ajouterMethode(String autorisation, String nom, String typeRetour, List<String> parametres) {
+        Methode nouvelleMethode = new Methode(autorisation, typeRetour, nom, parametres);  // Ajout de l'autorisation
+        methodes.add(nouvelleMethode);
+    }
+
+    public void modifierHeritage(String nouveauHeritage) {
+        this.heritage = nouveauHeritage;
+    }
 }
