@@ -65,7 +65,7 @@ class ControlClicDroit {
     + handle(event : MouseEvent) : void
 }
 
-class ControlDragAndDrop {
+class ControlDragAndDrop{
     - fileExplorer : TreeView<String>
     - viewport : Pane
     + ControlDragAndDrop(m : Modele)

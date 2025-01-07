@@ -1,290 +1,82 @@
 @startuml
 
 
-Class Attribut {
-  -autorisation : java.lang.String
-  -type : java.lang.String
-  -nom : java.lang.String
-  +getType() : java.lang.String
-  +getNom() : java.lang.String
-  +getAutorisation() : java.lang.String
+Class Chapeau {
+  +getLogo() : tpRene.src.MyImage
+}
+Chapeau --|> Accesoire
+
+
+Interface Logo {
+  +getLogo() : tpRene.src.MyImage
+  +combienCaCoute() : double
 }
 
 
-Class Bloc {
-  -affichageSimple : boolean
-  -nom : java.lang.String
-  -image : java.lang.String
-  -heritage : java.lang.String
-  +getImage() : java.lang.String
-  +getListAttributs() : java.util.List
-  +getNom() : java.lang.String
-  +getImplementation() : java.util.List
-  +getHeritage() : java.lang.String
-  +getListMethodes() : java.util.List
-  +setNom(java.lang.String) : void
-  +getPosition() : app.classes.Position
-  +setPosition(app.classes.Position) : void
+Class MyImage {
+  +paintOver(java.lang.String, int, int) : void
+  +textOver(java.lang.String, int, int) : void
+  #paintComponent(java.awt.Graphics) : void
+  +display() : void
 }
-Bloc -->"*"Methode : methodes
-Bloc -->"*"Attribut : attributs
-Bloc -->"*"String : implementation
-Bloc --> Position :   -pos
+MyImage --|> JPanel
+MyImage --> BufferedImage :    image
+MyImage --> Dimension :    size
 
 
-Class Fleche {
-  +ASSOCIATION : int
-  +HERITAGE : int
-  +IMPLEMENTATION : int
-  -blocDepart : int
-  -blocArrivee : int
-  -type : int
-  +getType() : int
-  +getBlocDepart() : int
-  +getBlocArrivee() : int
+Class Smiley {
+  +getLogo() : tpRene.src.MyImage
 }
+Smiley --|> Accesoire
 
-
-Class Methode {
-  -autorisation : java.lang.String
-  -type : java.lang.String
-  -nom : java.lang.String
-  +getType() : java.lang.String
-  +getNom() : java.lang.String
-  +getAutorisation() : java.lang.String
-  +getParam() : java.util.List
-}
-Methode -->"*"String : param
-
-
-Class Position {
-  -x : double
-  -y : double
-  +setY(double) : void
-  +setX(double) : void
-  +getY() : double
-  +getX() : double
-}
-
-
-Class ControlButton {
-  +handle(javafx.event.Event) : void
-  +handle(javafx.event.ActionEvent) : void
-  -createNode(java.io.File) : javafx.scene.control.TreeItem
-  -getFileExtension(java.io.File) : java.lang.String
-  -exportAsImage() : void
-}
-ControlButton ..|> EventHandler
-ControlButton --> Modele :   -modele
-
-
-Class ControlClic {
-  +handle() : void
-}
-
-
-Class ControlClicDroit {
-  +handle(javafx.scene.input.MouseEvent) : void
-  +handle(javafx.event.Event) : void
-}
-ControlClicDroit ..|> EventHandler
-ControlClicDroit --> Modele :   -m
-
-
-Class ControlDeplacerBloc {
-  +handle(javafx.scene.input.MouseEvent) : void
-  +handle(javafx.event.Event) : void
-}
-ControlDeplacerBloc ..|> EventHandler
-ControlDeplacerBloc --> Modele :   -m
-ControlDeplacerBloc --> TreeView :   -fileExplorer
-ControlDeplacerBloc --> Pane :   -viewport
-
-
-Class ControlDragNDrop {
-  -offsetX : double
-  -offsetY : double
-  +handle(javafx.event.Event) : void
-  +handle(javafx.scene.input.DragEvent) : void
-  -lambda$setUpViewportDragAndDrop$1(javafx.scene.input.DragEvent) : void
-  -lambda$setUpTreeViewDragAndDrop$0(javafx.scene.input.MouseEvent) : void
-  -lambda$setUpViewportDragAndDrop$2(javafx.scene.input.DragEvent) : void
-  -lambda$setUpMouseDrag$5(javafx.scene.input.MouseEvent) : void
-  -lambda$setUpMouseDrag$4(javafx.scene.layout.StackPane, javafx.scene.input.MouseEvent) : void
-  -lambda$setUpMouseDrag$3(javafx.scene.layout.StackPane, javafx.scene.input.MouseEvent) : void
-  -setUpTreeViewDragAndDrop() : void
-  -setUpViewportDragAndDrop() : void
-  -handleDragDropped(javafx.scene.input.DragEvent) : void
-  -setUpMouseDrag(javafx.scene.layout.StackPane) : void
-  -handleDragOver(javafx.scene.input.DragEvent) : void
-}
-ControlDragNDrop ..|> EventHandler
-ControlDragNDrop --> Modele :   -modele
-ControlDragNDrop --> Pane :   -viewport
-ControlDragNDrop --> TreeView :   -fileExplorer
-
-Class FabriqueAbstract {
-  +creerBloc(app.Fichier) : app.classes.Bloc
-}
-FabriqueAbstract --|> FabriqueBloc
-
-Abstract Class FabriqueBloc {
-  +creerBloc(app.Fichier) : app.classes.Bloc
-}
-
-Class FabriqueClass {
-  +creerBloc(app.Fichier) : app.classes.Bloc
-}
-FabriqueClass --|> FabriqueBloc
-
-Class FabriqueInterface {
-  +creerBloc(app.Fichier) : app.classes.Bloc
-}
-FabriqueInterface --|> FabriqueBloc
-
-Class Fichier {
-  +getName() : java.lang.String
-  +getNomCompletClasse(java.io.File) : java.lang.String
-  +afficher(java.lang.String) : java.lang.String
-  +genererPlantUML(java.lang.String) : java.lang.String
-  +creerBloc() : app.classes.Bloc
-  +getClasse() : java.lang.Class
-}
-Fichier --|> FileComposite
-
-Abstract Class FileComposite {
-  +afficher(java.lang.String) : java.lang.String
-  +genererPlantUML(java.lang.String) : java.lang.String
-  +getF() : java.io.File
-}
-FileComposite --> File :   #f
 
 Class Main {
   +main(java.lang.String[]) : void
-  +start(javafx.stage.Stage) : void
-}
-Main --|> Application
-
-Class MainTest {
-  +main(java.lang.String[]) : void
-  +start(javafx.stage.Stage) : void
-}
-MainTest --|> Application
-
-Class Modele {
-  -blocCourant : int
-  -derniereFlecheID : int
-  -derniereID : int
-  +getViewport() : javafx.scene.layout.Pane
-  +getFichiers() : java.util.List
-  +updateFileExplorer(java.io.File) : void
-  +afficherFleche(int, int, int) : void
-  +getDerniereID() : int
-  +supprimerObs(app.Observateur) : void
-  +getVueBlocById(int) : app.vue.VueBloc
-  +getBlocById(int) : app.classes.Bloc
-  +notifierObs() : void
-  -chercherDependance(int) : java.util.List
-  +afficherBloc(app.classes.Bloc) : void
-  +translaterBloc(int, int, int) : void
-  +resetDerniereID() : void
-  +getFileExplorer() : javafx.scene.layout.VBox
-  +setBlocCourant(int) : void
-  +getBlocCourant() : int
-  +getFlecheById(int) : app.classes.Fleche
-  +initialiserFichiers(java.io.File) : void
-  +getFileExplorerTree() : javafx.scene.control.TreeView
-  +supprimerBlocSelect() : void
-  +screenPosToViewportPos(app.classes.Position) : app.classes.Position
-  +setRep(java.io.File) : void
-  +getFleches() : java.util.HashMap
-  +getRep() : java.io.File
-  +ajouterObs(app.Observateur) : void
-  +getStage() : javafx.stage.Stage
-}
-Modele ..|> Sujet
-Modele --> File :   -rep
-Modele --> TreeView :   -fileExplorerTree
-Modele --> VBox :   -explorateur
-Modele --> VBox :   -root
-Modele --> Stage :   -stage
-Modele -->"*"Integer : flechesMap
-Modele -->"*"Fleche : flechesMap
-Modele --> Pane :   -viewport
-Modele -->"*"Fichier : fichiers
-Modele -->"*"Observateur : observateurs
-Modele -->"*"Integer : blocsMap
-Modele -->"*"Bloc : blocsMap
-
-Interface Observateur {
-  +actualiser(app.Sujet) : void
-}
-
-Class Repertoire {
-  +getFileCompositeArrayList() : java.util.ArrayList
-  +getFichiers() : java.util.ArrayList
-  +afficher(java.lang.String) : java.lang.String
-  +genererPlantUML(java.lang.String) : java.lang.String
-  +addFiles(java.lang.String) : void
-}
-Repertoire --|> FileComposite
-Repertoire -->"*"FileComposite : fileCompositeArrayList
-
-Interface Sujet {
-  +supprimerObs(app.Observateur) : void
-  +notifierObs() : void
-  +ajouterObs(app.Observateur) : void
 }
 
 
-Class VueBloc {
-  -id : int
-  +actualiser(app.Sujet) : void
-  +getBlocId() : int
+Class CrazyFrog {
+  -nomImg : java.lang.String
+  +prix : double
+  +getLogo() : tpRene.src.MyImage
+  +combienCaCoute() : double
 }
-VueBloc --|> VBox
-VueBloc ..|> Observateur
+CrazyFrog ..|> Logo
 
 
-Abstract Class VueContext {
-  +actualiser(app.Sujet) : void
+Class Lunettes {
+  +getLogo() : tpRene.src.MyImage
 }
-VueContext --|> ContextMenu
-VueContext ..|> Observateur
+Lunettes --|> Accesoire
 
 
-Class VueFleche {
-  -id : int
-  +actualiser(app.Sujet) : void
-  +getFlecheId() : int
+Class Text {
+  -text : java.lang.String
+  +getLogo() : tpRene.src.MyImage
 }
-VueFleche --|> Pane
-VueFleche ..|> Observateur
+Text --|> Accesoire
 
 
-Class VueMenuContextBloc {
-  +actualiser(app.Sujet) : void
+Class ReneLaTaupe {
+  -nomIm : java.lang.String
+  -prix : double
+  +getLogo() : tpRene.src.MyImage
+  +combienCaCoute() : double
 }
-VueMenuContextBloc --|> VueContext
+ReneLaTaupe ..|> Logo
 
 
-Class VueMenuContextVide {
-  -lambda$new$0(app.Modele, javafx.event.ActionEvent) : void
-  -lambda$new$1(app.Modele, javafx.event.ActionEvent) : void
-  +actualiser(app.Sujet) : void
+Class Candy {
+  +getLogo() : tpRene.src.MyImage
 }
-VueMenuContextVide --|> VueContext
+Candy --|> Accesoire
 
 
-Class VueTextuel {
-  +actualiser(app.Sujet) : void
+Abstract Class Accesoire {
+  #prix : double
+  +combienCaCoute() : double
 }
-VueTextuel ..|> Observateur
-
-Class VueFichiers {
-  +actualiser(app.Sujet) : void
-}
-VueFichiers --|> TreeView
-VueFichiers ..|> Observateur
+Accesoire ..|> Logo
+Accesoire --> Logo :   #composant
 
 @enduml
