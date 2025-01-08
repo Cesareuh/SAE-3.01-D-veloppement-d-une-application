@@ -4,19 +4,17 @@ import app.classes.Attribut;
 import app.classes.Bloc;
 import app.classes.Fleche;
 import app.classes.Position;
-import app.control.ControlClicDroit;
+import app.control.ControlClic;
 import app.control.ControlDeplacerBloc;
 import app.vue.VueBloc;
-import app.vue.VueFleche;
+import app.vue.VueFleches;
 import app.vue.VueViewport;
+import javafx.application.Platform;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 
 import javax.tools.JavaCompiler;
@@ -42,6 +40,7 @@ public class Modele implements Sujet{
     private TreeView<String> fileExplorerTree;
     private List<Fichier> fichiers;
     private MenuBar menuBar;
+    private VueFleches vueFleches;
 
 
     public Modele(VBox root, VueViewport viewport, TreeView<String> fileExplorerTree, MenuBar menuBar, Stage stage) {
@@ -49,12 +48,18 @@ public class Modele implements Sujet{
         this.viewport = viewport;
         this.fileExplorerTree = fileExplorerTree;
         this.stage = stage;
-        this.derniereID = 0;
         this.derniereFlecheID = 0;
         this.blocsMap = new HashMap<>();
         this.flechesMap = new HashMap<>();
         this.derniereID = 0;
         this.menuBar = menuBar;
+        this.vueFleches = new VueFleches();
+        viewport.getChildren().addFirst(vueFleches);
+        ajouterObs(vueFleches);
+    }
+
+    public void refresh(){
+        notifierObs();
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -69,13 +74,12 @@ public class Modele implements Sujet{
         derniereID++;
         blocsMap.put(derniereID, b);
         VueBloc vb = new VueBloc(derniereID, this);
-        vb.actualiser(this);  // Assure-toi de passer l'instance du modele ici
         vb.setOnMouseDragged(new ControlDeplacerBloc(this));
-        vb.setOnMouseClicked(new ControlClicDroit(this));
+        vb.setOnMouseClicked(new ControlClic(this));
         viewport.getChildren().add(vb);
 
-        actualiserFleches();
         ajouterObs(vb);
+        actualiserFleches();
         notifierObs();
     }
 
@@ -85,9 +89,6 @@ public class Modele implements Sujet{
     public void afficherFleche(int depart, int arrivee, int type){
         derniereFlecheID++;
         flechesMap.put(derniereFlecheID, new Fleche(depart, arrivee, type));
-        VueFleche vf = new VueFleche(derniereFlecheID);
-        viewport.getChildren().add(vf);
-        ajouterObs(vf);
     }
 
     public void actualiserFleches(){
@@ -127,24 +128,13 @@ public class Modele implements Sujet{
     }
 
     public void supprimerFleches(){
-        ArrayList<VueFleche> aSupprimerVue = new ArrayList<>();
         ArrayList<Integer> aSupprimerFleche = new ArrayList<>(flechesMap.keySet());
-
-        for(Observateur obs : observateurs){
-            if(obs instanceof VueFleche vf){
-                aSupprimerVue.add(vf);
-            }
-        }
 
         for (int id : aSupprimerFleche){
             flechesMap.remove(id);
         }
 
         notifierObs();
-
-        for(VueFleche vf : aSupprimerVue){
-            supprimerObs(vf);
-        }
 
     }
 
@@ -188,11 +178,6 @@ public class Modele implements Sujet{
         for(Observateur obs : observateurs){
             if(obs instanceof VueBloc vb){
                 if(vb.getBlocId() == blocCourant){
-                    aSupprimer.add(obs);
-                }
-            }
-            if(obs instanceof VueFleche vf) {
-                if(flechesASupprimer.contains(vf.getFlecheId())){
                     aSupprimer.add(obs);
                 }
             }

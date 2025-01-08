@@ -3,6 +3,7 @@ package app.control;
 import app.Fichier;
 import app.Modele;
 import app.classes.Bloc;
+import app.classes.Position;
 import app.vue.VueBloc;
 import javafx.event.EventHandler;
 import javafx.scene.control.TreeItem;
@@ -96,6 +97,7 @@ public class ControlDragNDrop implements EventHandler<DragEvent> {
                 System.out.println(fichier.getName());
 
                 Bloc b = fichier.creerBloc();
+                b.setPosition(new Position(dragEvent.getX(), dragEvent.getY()));
                 modele.afficherBloc(b);
 
                 // Récupérer les informations de la classe
