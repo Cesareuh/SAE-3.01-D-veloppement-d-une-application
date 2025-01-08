@@ -55,7 +55,7 @@ public class FabriqueAbstract extends FabriqueBloc {
             }
             methodes.add(new Methode(aut, method.getReturnType().getSimpleName(), method.getName(), params));
         }
-        return new Bloc(nom, null, implementation, heritage, attributs, methodes);
+        return new Bloc(nom, "abstract.png", implementation, heritage, attributs, methodes);
         //return new Bloc(nom, image, implementation, heritage);
     }
 }

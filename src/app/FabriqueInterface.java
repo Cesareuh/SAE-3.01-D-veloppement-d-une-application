@@ -38,7 +38,7 @@ public class FabriqueInterface extends FabriqueBloc {
             }
             methodes.add(new Methode(aut, method.getReturnType().getSimpleName(), method.getName(), params));
         }
-        return new Bloc(nom, null, implementation, null, null, methodes);
+        return new Bloc(nom, "interface.png", implementation, null, null, methodes);
 
         //return new Bloc(nom, image, implementation, heritage);
     }

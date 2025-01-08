@@ -43,9 +43,10 @@ public class VueBloc extends VBox implements Observateur {
             Bloc b = m.getBlocById(id);
             this.relocate(b.getPosition().getX(), b.getPosition().getY());
             HBox titre = new HBox();
+            titre.setSpacing(10);
             Image image;
             try{
-                image = new Image(b.getImage());
+                image = new Image(b.getImage(), 30,30, true, false);
             }catch(NullPointerException e) {
                 image = null;
             }
