@@ -216,11 +216,19 @@ public class Modele implements Sujet{
     // Initialisation des blocs à partir d'un répertoire
     public void initialiserFichiers(File repertoire) {
         this.fichiers = new ArrayList<>();
-        if(repertoire.isDirectory()){
+        if(repertoire.isDirectory()) {
             Repertoire rep = new Repertoire(repertoire);
             fichiers.addAll(rep.getFichiers());
-        }else fichiers.add(new Fichier(repertoire));
+        } else {
+            fichiers.add(new Fichier(repertoire));
+        }
         notifierObs();
+    }
+
+    public void ajouterFichier(File fichier) {
+        // Ajout du fichier à la liste
+        fichiers.add(new Fichier(fichier));
+        notifierObs(); // Mise à jour de l'affichage
     }
 
     // Définit le bloc courant
