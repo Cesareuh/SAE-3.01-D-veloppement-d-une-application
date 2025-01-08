@@ -7,13 +7,14 @@ public class Fleche {
     public static int IMPLEMENTATION = 2;
     private int blocDepart;
     private int blocArrivee;
-
     private int type;
+    private Position centre;
 
     public Fleche(int blocDepart, int blocArrivee, int type) {
         this.blocDepart = blocDepart;
         this.blocArrivee = blocArrivee;
         this.type = type;
+        this.centre = new Position(-1,-1);
     }
 
     public int getBlocDepart(){
@@ -26,6 +27,14 @@ public class Fleche {
 
     public int getType() {
         return type;
+    }
+
+    public Position getCentre(){
+        return this.centre;
+    }
+
+    public void setCentre(Position p){
+        this.centre = p;
     }
 }
 
