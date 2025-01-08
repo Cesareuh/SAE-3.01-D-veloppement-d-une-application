@@ -16,21 +16,22 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
-public class VueMenuContextVide extends VueContext{
+public class VueMenuContextVide extends VueContext {
 
-    public VueMenuContextVide(Modele m){
+    public VueMenuContextVide(Modele m) {
         super(m);
         Menu affichage = new Menu("Global view");
         MenuItem simple = new MenuItem("Simple");
         MenuItem complexe = new MenuItem("Complex");
         affichage.getItems().addAll(simple, complexe);
 
-        // DEBUG
-        // A SUPPRIMER
+        // Menu Debug
         Menu debug = new Menu("Debug");
-        // tester affichage classes
+
+        // Menu items for adding blocs
         MenuItem add = new MenuItem("add");
         add.setOnAction((e) -> {
             ArrayList<Attribut> a = new ArrayList<>();
@@ -48,6 +49,8 @@ public class VueMenuContextVide extends VueContext{
             b.setPosition(new Position((int) new_pos.getX(), (int) new_pos.getY()));
             m.afficherBloc(b);
         });
+
+        // More debug menu items
         MenuItem add2 = new MenuItem("add2");
         add2.setOnAction((e) -> {
             ArrayList<Attribut> a = new ArrayList<>();
@@ -65,44 +68,28 @@ public class VueMenuContextVide extends VueContext{
             b.setPosition(new Position((int) new_pos.getX(), (int) new_pos.getY()));
             m.afficherBloc(b);
         });
-        MenuItem add3 = new MenuItem("add3");
-        add3.setOnAction((e) -> {
-            ArrayList<Attribut> a = new ArrayList<>();
-            Attribut a1 = new Attribut("-", "Int", "attribut");
-            Attribut a2 = new Attribut("-", "String", "attribut2");
-            a.add(a1);
-            a.add(a2);
-            ArrayList<Methode> meth = new ArrayList<>();
-            Methode m1 = new Methode("+", "void", "foo()", null);
-            Methode m2 = new Methode("+", "String", "foo2(x : int)", null);
-            meth.add(m1);
-            meth.add(m2);
-            Bloc b = new Bloc("Heritez-Moi", "Image", null, "OUII", a, meth);
-            Position new_pos = m.screenPosToViewportPos(new Position(this.getX(), this.getY()));
-            b.setPosition(new Position((int) new_pos.getX(), (int) new_pos.getY()));
-            m.afficherBloc(b);
-        });
-        MenuItem add4 = new MenuItem("add4");
-        add4.setOnAction((e) -> {
-            ArrayList<Attribut> a = new ArrayList<>();
-            Attribut a1 = new Attribut("-", "Int", "attribut");
-            Attribut a2 = new Attribut("-", "String", "attribut2");
-            a.add(a1);
-            a.add(a2);
-            ArrayList<Methode> meth = new ArrayList<>();
-            Methode m1 = new Methode("+", "void", "foo()", null);
-            Methode m2 = new Methode("+", "String", "foo2(x : int)", null);
-            meth.add(m1);
-            meth.add(m2);
-            ArrayList<String> imp = new ArrayList<>();
-            imp.add("Test");
-            Bloc b = new Bloc("Yay", "Image", null, null, a, meth);
-            Position new_pos = m.screenPosToViewportPos(new Position(this.getX(), this.getY()));
-            b.setPosition(new Position((int) new_pos.getX(), (int) new_pos.getY()));
-            m.afficherBloc(b);
-        });
-        debug.getItems().addAll(add, add2, add3, add4);
 
+        // Add the menu items to the debug menu
+        debug.getItems().addAll(add, add2);
+
+        // Global view action handlers
+        simple.setOnAction(event -> {
+            // Applique la vue simple à chaque bloc
+            for (Bloc bloc : m.getBlocsMap().values()) {
+                bloc.setAffichageSimple(true);
+                m.notifierObs();
+            }
+        });
+
+        complexe.setOnAction(event -> {
+            // Applique la vue complexe à chaque bloc
+            for (Bloc bloc : m.getBlocsMap().values()) {
+                bloc.setAffichageSimple(false);
+                m.notifierObs();
+            }
+        });
+
+        // New menu item to create and save files
         MenuItem New = new MenuItem("New");
 
         New.setOnAction((e) -> {
@@ -132,8 +119,8 @@ public class VueMenuContextVide extends VueContext{
                         if (newFile.createNewFile()) {
                             System.out.println("Fichier créé: " + newFile.getAbsolutePath());
 
-                            // Ajouter ce fichier à la liste dans le modèle (moyennant une méthode ajouterFichier)
-                            m.ajouterFichier(newFile); // Met à jour le modèle en ajoutant ce fichier
+                            // Ajouter ce fichier à la liste dans le modèle
+                            m.ajouterFichier(newFile);
 
                             // Déterminer le package basé sur le répertoire sélectionné
                             String packageName = getPackageName(selectedFile.getParent());
@@ -191,6 +178,8 @@ public class VueMenuContextVide extends VueContext{
                 }
             }
         });
+
+        // Ajouter tous les éléments au menu
         this.getItems().addAll(affichage, debug, New);
     }
 
@@ -208,10 +197,8 @@ public class VueMenuContextVide extends VueContext{
         return packageName.isEmpty() ? "default" : packageName;
     }
 
-
-
     @Override
     public void actualiser(Sujet s) {
-        //TODO
+        // TODO: Implémenter la mise à jour du menu si nécessaire
     }
 }

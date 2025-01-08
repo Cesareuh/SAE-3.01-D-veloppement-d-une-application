@@ -368,6 +368,10 @@ public class Modele implements Sujet{
         return blocsMap.get(blocCourant);
     }
 
+    public HashMap<Integer, Bloc> getBlocsMap() {
+        return blocsMap;
+    }
+
 }
 
 

@@ -23,7 +23,7 @@ public class VueMenuContextBloc extends VueContext {
             Bloc blocSelectionne = m.getBlocSelectionne(); // Récupère le bloc sélectionné dans le modèle
             if (blocSelectionne != null) {
                 blocSelectionne.setAffichageSimple(true); // Active la vue simple
-                m.notifierObs();                // Notifie les vues pour se mettre à jour
+                m.notifierObs();
                 System.out.println("Vue simple activée pour le bloc : " + blocSelectionne.getNom());
             } else {
                 System.out.println("Aucun bloc sélectionné.");
@@ -34,11 +34,12 @@ public class VueMenuContextBloc extends VueContext {
             Bloc blocSelectionne = m.getBlocSelectionne(); // Récupère le bloc sélectionné dans le modèle
             if (blocSelectionne != null) {
                 blocSelectionne.setAffichageSimple(false); // Active la vue complexe
-                m.notifierObs();                 // Notifie les vues pour se mettre à jour
+                m.notifierObs();
                 System.out.println("Vue complexe activée pour le bloc : " + blocSelectionne.getNom());
             } else {
                 System.out.println("Aucun bloc sélectionné.");
             }
+
         });
 
 
