@@ -16,6 +16,7 @@
  - Modifier affichage classe
  - Courbure flèche
  - Importation projet tous fichiers
+ - Cardinalités flèches asso
 
 ## Diagramme de classe
 ![Diagramme de classe](./plantuml.png)
