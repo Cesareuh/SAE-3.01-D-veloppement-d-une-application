@@ -3,7 +3,7 @@
 
 ## Itérations
 [Itération 1](iterations/iteration_1/iteration_1.md)   
-[Itération 2](iterations/iteration_2/iteration_2.md)
+[Itération 2](iterations/iteration_2/iteration_2.md)   
 [Itération 2](iterations/iteration_3/iteration_3.md)
 ## Diagrammes de classe
 ### Itération 1
