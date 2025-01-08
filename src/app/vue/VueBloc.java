@@ -46,10 +46,13 @@ public class VueBloc extends VBox implements Observateur {
             titre.setBorder(border);
 
             VBox attrs = new VBox();
-            for (Attribut a : b.getListAttributs()) {
-                String attribut = a.getAutorisation() + " " + a.getNom() + " : " + a.getType();
-                attrs.getChildren().add(new Label(attribut));
+            String attribut=" ";
+            if(b.getListAttributs()!=null) {
+                for (Attribut a : b.getListAttributs()) {
+                    attribut = a.getAutorisation() + " " + a.getNom() + " : " + a.getType();
+                }
             }
+            attrs.getChildren().add(new Label(attribut));
             attrs.setBorder(border);
 
             VBox meths = new VBox();
