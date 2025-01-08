@@ -5,6 +5,7 @@ import app.control.ControlClicDroit;
 import app.control.ControlDragNDrop;
 import app.vue.VueFichiers;
 import app.vue.VueTextuel;
+import app.vue.VueViewport;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,7 +31,7 @@ public class Main extends Application {
 
         // File Explorer (TreeView pour afficher l'arborescence)
         VueFichiers fileExplorer = new VueFichiers();
-        Pane viewport = new Pane();
+        VueViewport viewport = new VueViewport();
 
         // Définir une bordure autour du fileExplorer et du viewport
         BorderStroke bs = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2));

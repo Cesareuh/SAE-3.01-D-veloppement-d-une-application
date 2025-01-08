@@ -8,6 +8,7 @@ import app.control.ControlClicDroit;
 import app.control.ControlDeplacerBloc;
 import app.vue.VueBloc;
 import app.vue.VueFleche;
+import app.vue.VueViewport;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -29,7 +30,7 @@ public class Modele implements Sujet{
     private final Stage stage;
     private File rep;
     private int blocCourant;
-    private Pane viewport;
+    private VueViewport viewport;
     private VBox root;
     private HashMap<Integer, Fleche> flechesMap;
     private int derniereFlecheID;
@@ -41,7 +42,7 @@ public class Modele implements Sujet{
     private MenuBar menuBar;
 
 
-    public Modele(VBox root, Pane viewport, TreeView<String> fileExplorerTree, MenuBar menuBar, Stage stage) {
+    public Modele(VBox root, VueViewport viewport, TreeView<String> fileExplorerTree, MenuBar menuBar, Stage stage) {
         this.root = root;
         this.viewport = viewport;
         this.fileExplorerTree = fileExplorerTree;
