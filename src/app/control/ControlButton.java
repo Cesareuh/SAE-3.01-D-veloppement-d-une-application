@@ -189,26 +189,11 @@ public class ControlButton implements EventHandler<ActionEvent> {
 		return (dotIndex > 0) ? fileName.substring(dotIndex + 1) : ""; // Retourne l'extension
 	}
 
-	public void ajouterAttribut(String nomBloc, String autorisation, String nomAttribut, String typeAttribut) {
-		modele.ajouterAttributDansBloc(nomBloc, autorisation, nomAttribut, typeAttribut);
-
-		mettreAJourVue();
-	}
-
-	// Méthode pour ajouter une méthode via l'UI
-	public void ajouterMethode(String nomBloc, String autorisation, String nomMethode, String typeRetour, List<String> parametres) {
-		modele.ajouterMethodeDansBloc(nomBloc, autorisation, nomMethode, typeRetour, parametres);
-		// Mise à jour de l'UI après ajout
-		mettreAJourVue();
-	}
 
 
 
-	// Méthode pour mettre à jour l'UI
-	private void mettreAJourVue() {
-		// Logique pour mettre à jour l'interface utilisateur (ex : rafraîchir l'affichage des blocs)
-		System.out.println("L'interface a été mise à jour.");
-	}
+
+
 	private void ouvrirDialogueModification() {
 		// Création d'une nouvelle fenêtre de dialogue
 		Stage stage = new Stage();
@@ -270,12 +255,6 @@ public class ControlButton implements EventHandler<ActionEvent> {
 		stage.show();
 	}
 
-	private void ajouterAttribut(String nomBloc, String nomAttribut, String typeAttribut) {
-		modele.ajouterAttributDansBloc(nomBloc, nomAttribut, typeAttribut);
-		// Mettre à jour la vue après ajout
-		mettreAJourVue();
-	}
-
 
 
 	public void handleRemoveAction() {
@@ -286,23 +265,6 @@ public class ControlButton implements EventHandler<ActionEvent> {
 	public void handleModifyAction() {
 		System.out.println("Bloc modifié.");
 		ouvrirDialogueModification();  // Ouvre un dialogue de modification
-	}
-
-
-	public void handleSimpleViewAction() {
-		// Logique pour afficher une vue simple
-		System.out.println("Passage à la vue simple");
-		// Active la vue simple dans le modèle
-		modele.setVueSimple(true);  // Cette méthode est déjà définie dans ton modèle
-		mettreAJourVue();  // Met à jour l'affichage en fonction de la vue simple
-	}
-
-	public void handleComplexViewAction() {
-		// Logique pour afficher une vue complexe
-		System.out.println("Passage à la vue complexe");
-		// Active la vue complexe dans le modèle
-		modele.setVueComplexe(true);  // Cette méthode est déjà définie dans ton modèle
-		mettreAJourVue();  // Met à jour l'affichage en fonction de la vue complexe
 	}
 
 
