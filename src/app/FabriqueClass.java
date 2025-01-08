@@ -15,12 +15,9 @@ public class FabriqueClass extends FabriqueBloc {
 
     @Override
     public Bloc creerBloc(Fichier f) {
+
         Class<?> c = f.getClasse();
-        String nom = c.getSimpleName();
-        List<String> implementation = new ArrayList<>();
-        for(Class<?> i : c.getInterfaces()){
-            implementation.add(i.getSimpleName());
-        }
+        Bloc b = super.creerBloc(f);
         String heritage = null;
         if(!c.getSuperclass().getSimpleName().equals("Object")){
             heritage = c.getSuperclass().getSimpleName();
@@ -39,26 +36,11 @@ public class FabriqueClass extends FabriqueBloc {
             attributs.add(new Attribut(aut, field.getType().getSimpleName(),field.getName()));
         }
 
-        List<Methode> methodes = new ArrayList<>();
-        for (Method method : c.getDeclaredMethods()) {
-            String aut = null;
-            if (Modifier.isPublic(method.getModifiers())) {
-                aut = "+";
-            } else if (Modifier.isPrivate(method.getModifiers())) {
-                aut = "-";
-            } else if (Modifier.isProtected(method.getModifiers())) {
-                aut = "#";
-            }
-            List<String> params = new ArrayList<>();
-            for (Parameter p : method.getParameters()) {
-                String param = p.getType().getSimpleName() + " : " + p.getName();
-                params.add(param);
-            }
-            methodes.add(new Methode(aut, method.getReturnType().getSimpleName(), method.getName(), params));
-        }
-
         //return null;
-        return new Bloc(nom, "class.png", implementation, heritage, attributs, methodes);
+        b.setAttributs(attributs);
+        b.setHeritage(heritage);
+        b.setImage("class.png");
+        return b;
         //return new Bloc(nom, image, implementation, heritage);
     }
 }
