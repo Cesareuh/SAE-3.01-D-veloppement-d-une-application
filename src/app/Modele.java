@@ -36,6 +36,8 @@ public class Modele implements Sujet{
     private TreeView<String> fileExplorerTree;
     private List<Fichier> fichiers;
     private MenuBar menuBar;
+    private boolean vueSimple;
+    private boolean vueComplexe;
 
     public Modele(VBox root, Pane viewport, TreeView<String> fileExplorerTree, MenuBar menuBar, Stage stage) {
         this.root = root;
@@ -48,6 +50,8 @@ public class Modele implements Sujet{
         this.flechesMap = new HashMap<>();
         this.derniereID = 0;
         this.menuBar = menuBar;
+        this.vueSimple = false;
+        this.vueComplexe = true;
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -58,10 +62,11 @@ public class Modele implements Sujet{
     }
 
     // Affiche un bloc dans le diagramme
-    public void afficherBloc(Bloc b){
+    public void afficherBloc(Bloc b) {
         derniereID++;
         blocsMap.put(derniereID, b);
-        VueBloc vb = new VueBloc(derniereID);
+        VueBloc vb = new VueBloc(derniereID, this);
+        vb.actualiser(this);  // Assure-toi de passer l'instance du modele ici
         vb.setOnMouseDragged(new ControlDeplacerBloc(this));
         vb.setOnMouseClicked(new ControlClicDroit(this));
         viewport.getChildren().add(vb);
@@ -70,6 +75,9 @@ public class Modele implements Sujet{
         ajouterObs(vb);
         notifierObs();
     }
+
+
+
 
     public void afficherFleche(int depart, int arrivee, int type){
         derniereFlecheID++;
@@ -345,6 +353,39 @@ public class Modele implements Sujet{
     public void ajouterBlocMap(Bloc b){
         blocsMap.put(getDerniereID()+1, b);
     }
+
+    public boolean isVueSimple() {
+        return vueSimple;
+    }
+
+    public boolean isVueComplexe() {
+        return vueComplexe;
+    }
+    public void modifierVueBloc(String nomBloc) {
+        Bloc bloc = getBlocById(blocCourant); // Utilisation du bloc courant
+        if (bloc != null) {
+            // Mettre à jour la vue en fonction de la vue active
+            if (vueSimple) {
+                bloc.setNom(nomBloc);  // Met à jour le nom du bloc pour la vue simple
+            } else if (vueComplexe) {
+                bloc.setNom(nomBloc);  // Restaure le nom complet pour la vue complexe
+                // Ajoute d'autres détails pour la vue complexe (attributs, méthodes, etc.)
+            }
+        }
+    }
+
+
+
+
+    public void setVueSimple(boolean vueSimple) {
+        this.vueSimple = vueSimple;
+        notifierObs();   }
+
+    public void setVueComplexe(boolean vueComplexe) {
+        this.vueComplexe = vueComplexe;
+        notifierObs(); }
+
+
 
 }
 

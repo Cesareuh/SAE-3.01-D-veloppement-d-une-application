@@ -1,11 +1,15 @@
-package app;
+package app.vue;
 
+import app.Fichier;
+import app.Modele;
+import app.Observateur;
+import app.Sujet;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.util.List;
 
-public class VueFichiers extends TreeView implements Observateur{
+public class VueFichiers extends TreeView implements Observateur {
     @Override
     public void actualiser(Sujet s) {
         List<Fichier> f = ((Modele) s).getFichiers();
