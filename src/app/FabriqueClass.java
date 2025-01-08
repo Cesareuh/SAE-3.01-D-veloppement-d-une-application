@@ -58,7 +58,7 @@ public class FabriqueClass extends FabriqueBloc {
         }
 
         //return null;
-        return new Bloc(nom, "images/class.png", implementation, heritage, attributs, methodes);
+        return new Bloc(nom, "class.png", implementation, heritage, attributs, methodes);
         //return new Bloc(nom, image, implementation, heritage);
     }
 }
