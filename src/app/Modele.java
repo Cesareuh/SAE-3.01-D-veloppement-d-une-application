@@ -13,6 +13,9 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -75,7 +78,7 @@ public class Modele implements Sujet{
         derniereFlecheID++;
         flechesMap.put(derniereFlecheID, new Fleche(depart, arrivee, type));
         VueFleche vf = new VueFleche(derniereFlecheID);
-        viewport.getChildren().addFirst(vf);
+        viewport.getChildren().add(vf);
         ajouterObs(vf);
     }
 
