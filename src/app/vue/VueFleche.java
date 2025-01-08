@@ -16,7 +16,7 @@ public class VueFleche extends Pane implements Observateur {
 
     @Override
     public void actualiser(Sujet s) {
-        //TODO factoriser, commenter, traiter le cas où les flèches sont verticales, bug à la création
+        //TODO cardinalités
         Modele m = (Modele)s;
 
         if(m.getFlecheById(id) == null) {
@@ -45,7 +45,6 @@ public class VueFleche extends Pane implements Observateur {
             Position arrivee = new Position();
 
             // Dessiner la ligne
-
             if(departCentre.getX() - arriveeCentre.getX() < 0) {
                 setStartEnd(depart, arrivee, bDep, bArrivee, vDep, vArrivee);
             }else{
@@ -54,23 +53,22 @@ public class VueFleche extends Pane implements Observateur {
 
             double inclinaison = 5 * Math.PI / 6;
             int taille = 15;
-            double angle = Math.atan2(arrivee.getY() - depart.getY(), arrivee.getX() - depart.getX()) - inclinaison;
-            double x = Math.cos(angle);
-            double y = Math.sin(angle);
+            double angle = Math.atan2(arrivee.getY() - depart.getY(), arrivee.getX() - depart.getX());
+            double x = Math.cos((angle-inclinaison));
+            double y = Math.sin((angle-inclinaison));
             Line brancheHaut = new Line();
             brancheHaut.setStartX(arrivee.getX());
             brancheHaut.setStartY(arrivee.getY());
             brancheHaut.setEndX(arrivee.getX() + x * taille);
             brancheHaut.setEndY(arrivee.getY() + y * taille);
 
-            angle = Math.atan2(arrivee.getY() - depart.getY(), arrivee.getX() - depart.getX()) + inclinaison;
-            x = Math.cos(-angle);
-            y = Math.sin(-angle);
+            x = Math.cos((angle+inclinaison));
+            y = Math.sin((angle+inclinaison));
             Line brancheBas = new Line();
             brancheBas.setStartX(arrivee.getX());
             brancheBas.setStartY(arrivee.getY());
             brancheBas.setEndX(arrivee.getX() + x * taille);
-            brancheBas.setEndY(arrivee.getY() - y * taille);
+            brancheBas.setEndY(arrivee.getY() + y * taille);
             this.getChildren().addAll(brancheHaut, brancheBas);
 
             if(f.getType() != Fleche.ASSOCIATION){
@@ -98,12 +96,15 @@ public class VueFleche extends Pane implements Observateur {
     }
 
     private void setStartEnd(Position posA, Position posB, Bloc bPosA, Bloc bPosB, VueBloc vPosA, VueBloc vPosB){
+        // Calcul du centre de chaque point
         Position aCentre = new Position();
         aCentre.setX((bPosA.getPosition().getX() + bPosA.getPosition().getX() + vPosA.getWidth())/2);
         aCentre.setY((bPosA.getPosition().getY() + bPosA.getPosition().getY() + vPosA.getHeight())/2);
         Position bCentre = new Position();
         bCentre.setX((bPosB.getPosition().getX() + bPosB.getPosition().getX() + vPosB.getWidth())/2);
         bCentre.setY((bPosB.getPosition().getY() + bPosB.getPosition().getY() + vPosB.getHeight())/2);
+
+        // Gère le cas où les points sont à la verticale
         if(aCentre.getX() == bCentre.getX()){
             if(aCentre.getY() < bCentre.getY()) {
                 posA.setX(aCentre.getX());
