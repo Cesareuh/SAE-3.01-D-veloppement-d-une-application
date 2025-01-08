@@ -376,6 +376,7 @@ public class Modele implements Sujet{
         return blocsMap;
     }
 
+
     public void compiler(){
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         List<String> arguments = new ArrayList<>();
@@ -395,7 +396,6 @@ public class Modele implements Sujet{
             System.out.println("Erreur lors de la compilation");
         }
     }
-
 }
 
 
