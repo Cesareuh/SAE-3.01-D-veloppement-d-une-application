@@ -4,10 +4,12 @@ import app.*;
 import app.classes.Bloc;
 import app.classes.Fleche;
 import app.classes.Position;
+import app.control.ControlDeplacerBloc;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Line;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 
-public class VueFleche extends Pane implements Observateur {
+public class VueFleche extends Path implements Observateur {
     private int id;
 
     public VueFleche(int id){
@@ -25,9 +27,9 @@ public class VueFleche extends Pane implements Observateur {
             }
         }else {
 
-            this.getChildren().removeAll(this.getChildren());
+            this.getElements().removeAll(this.getElements());
+            //this.getChildren().removeAll(this.getChildren());
 
-            Line l = new Line();
             Fleche f = m.getFlecheById(id);
             Bloc bDep = m.getBlocById(f.getBlocDepart());
             Bloc bArrivee = m.getBlocById(f.getBlocArrivee());
@@ -41,8 +43,8 @@ public class VueFleche extends Pane implements Observateur {
             arriveeCentre.setX((bArrivee.getPosition().getX() + bArrivee.getPosition().getX() + vArrivee.getWidth())/2);
             arriveeCentre.setY((bArrivee.getPosition().getY() + bArrivee.getPosition().getY() + vArrivee.getHeight())/2);
 
-            Position depart = new Position();
-            Position arrivee = new Position();
+            MoveTo depart = new MoveTo();
+            MoveTo arrivee = new MoveTo();
 
             // Dessiner la ligne
             if(departCentre.getX() - arriveeCentre.getX() < 0) {
@@ -56,46 +58,33 @@ public class VueFleche extends Pane implements Observateur {
             double angle = Math.atan2(arrivee.getY() - depart.getY(), arrivee.getX() - depart.getX());
             double x = Math.cos((angle-inclinaison));
             double y = Math.sin((angle-inclinaison));
-            Line brancheHaut = new Line();
-            brancheHaut.setStartX(arrivee.getX());
-            brancheHaut.setStartY(arrivee.getY());
-            brancheHaut.setEndX(arrivee.getX() + x * taille);
-            brancheHaut.setEndY(arrivee.getY() + y * taille);
+            LineTo brancheHaut = new LineTo();
+            brancheHaut.setX(arrivee.getX() + x * taille);
+            brancheHaut.setY(arrivee.getY() + y * taille);
 
             x = Math.cos((angle+inclinaison));
             y = Math.sin((angle+inclinaison));
-            Line brancheBas = new Line();
-            brancheBas.setStartX(arrivee.getX());
-            brancheBas.setStartY(arrivee.getY());
-            brancheBas.setEndX(arrivee.getX() + x * taille);
-            brancheBas.setEndY(arrivee.getY() + y * taille);
-            this.getChildren().addAll(brancheHaut, brancheBas);
+            LineTo brancheBas = new LineTo();
+            brancheBas.setX(arrivee.getX() + x * taille);
+            brancheBas.setY(arrivee.getY() + y * taille);
 
+            MoveTo arrivee2 = new MoveTo(arrivee.getX(), arrivee.getY());
+            this.getElements().addAll(arrivee, brancheHaut, arrivee, brancheBas);
             if(f.getType() != Fleche.ASSOCIATION){
-                Line brancheMilieu = new Line();
-                brancheMilieu.setStartX(brancheHaut.getEndX());
-                brancheMilieu.setStartY(brancheHaut.getEndY());
-                brancheMilieu.setEndX(brancheBas.getEndX());
-                brancheMilieu.setEndY(brancheBas.getEndY());
-                this.getChildren().add(brancheMilieu);
-                arrivee.setX((brancheMilieu.getStartX()+brancheMilieu.getEndX())/2);
-                arrivee.setY((brancheMilieu.getStartY()+brancheMilieu.getEndY())/2);
+                this.getElements().add(brancheHaut);
+                arrivee2.setX((brancheHaut.getX()+brancheBas.getX())/2);
+                arrivee2.setY((brancheHaut.getY()+brancheBas.getY())/2);
             }
+            this.getElements().add(arrivee2);
+            this.getElements().add(new LineTo(depart.getX(), depart.getY()));
 
             if(f.getType() == Fleche.IMPLEMENTATION){
-                l.getStrokeDashArray().add(15d);
+                this.getStrokeDashArray().add(5d);
             }
-
-            l.setStartX(depart.getX());
-            l.setStartY(depart.getY());
-            l.setEndX(arrivee.getX());
-            l.setEndY(arrivee.getY());
-            this.getChildren().add(l);
-
         }
     }
 
-    private void setStartEnd(Position posA, Position posB, Bloc bPosA, Bloc bPosB, VueBloc vPosA, VueBloc vPosB){
+    private void setStartEnd(MoveTo posA, MoveTo posB, Bloc bPosA, Bloc bPosB, VueBloc vPosA, VueBloc vPosB){
         // Calcul du centre de chaque point
         Position aCentre = new Position();
         aCentre.setX((bPosA.getPosition().getX() + bPosA.getPosition().getX() + vPosA.getWidth())/2);

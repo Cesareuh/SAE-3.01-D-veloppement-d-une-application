@@ -1,5 +1,6 @@
 package app.classes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bloc {
@@ -27,6 +28,18 @@ public class Bloc {
             pos = new Position();
         }
         this.pos = pos;
+    }
+
+    public void setAttributs(List attrs){
+        this.attributs = attrs;
+    }
+
+    public void setHeritage(String h){
+        this.heritage = h;
+    }
+
+    public void setImage(String i){
+        this.image = i;
     }
 
     public Position getPosition() {

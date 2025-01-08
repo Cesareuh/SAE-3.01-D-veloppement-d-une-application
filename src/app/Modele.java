@@ -13,6 +13,9 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -83,7 +86,7 @@ public class Modele implements Sujet{
         derniereFlecheID++;
         flechesMap.put(derniereFlecheID, new Fleche(depart, arrivee, type));
         VueFleche vf = new VueFleche(derniereFlecheID);
-        viewport.getChildren().addFirst(vf);
+        viewport.getChildren().add(vf);
         ajouterObs(vf);
     }
 
@@ -224,11 +227,19 @@ public class Modele implements Sujet{
     // Initialisation des blocs à partir d'un répertoire
     public void initialiserFichiers(File repertoire) {
         this.fichiers = new ArrayList<>();
-        if(repertoire.isDirectory()){
+        if(repertoire.isDirectory()) {
             Repertoire rep = new Repertoire(repertoire);
             fichiers.addAll(rep.getFichiers());
-        }else fichiers.add(new Fichier(repertoire));
+        } else {
+            fichiers.add(new Fichier(repertoire));
+        }
         notifierObs();
+    }
+
+    public void ajouterFichier(File fichier) {
+        // Ajout du fichier à la liste
+        fichiers.add(new Fichier(fichier));
+        notifierObs(); // Mise à jour de l'affichage
     }
 
     // Définit le bloc courant
