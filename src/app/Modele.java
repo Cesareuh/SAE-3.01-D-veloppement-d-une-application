@@ -89,24 +89,7 @@ public class Modele implements Sujet{
         vb.setOnMouseClicked(new ControlClicDroit(this));
         viewport.getChildren().add(vb);
 
-        // Ajoute les flèches du bloc en fonction des attributs
-        for(Attribut a : b.getListAttributs()){
-            for(int indexB2 : blocsMap.keySet()){
-                if(blocsMap.get(indexB2).getNom().equals(a.getType())){
-                    afficherFleche(derniereID, indexB2, Fleche.ASSOCIATION);
-                }
-            }
-        }
-
-        // Ajoute les flèches en fonction des attributs des autres blocs
-        for(int indexB2 : blocsMap.keySet()){
-            for(Attribut a : blocsMap.get(indexB2).getListAttributs()){
-                if(a.getType().equals(b.getNom())){
-                    afficherFleche(indexB2, derniereID, Fleche.ASSOCIATION);
-                }
-            }
-        }
-
+        actualiserFleches();
         ajouterObs(vb);
         notifierObs();
     }
@@ -117,6 +100,22 @@ public class Modele implements Sujet{
         VueFleche vf = new VueFleche(derniereFlecheID);
         viewport.getChildren().addFirst(vf);
         ajouterObs(vf);
+    }
+
+    public void actualiserFleches(){
+        supprimerFleches();
+        for(int idB : blocsMap.keySet()) {
+            // Ajoute les flèches du bloc en fonction des attributs
+            if(getBlocById(idB).getListAttributs() != null) {
+                for (Attribut a : getBlocById(idB).getListAttributs()) {
+                    for (int indexB2 : blocsMap.keySet()) {
+                        if (blocsMap.get(indexB2).getNom().equals(a.getType())) {
+                            afficherFleche(idB, indexB2, Fleche.ASSOCIATION);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void supprimerFleches(){
@@ -132,6 +131,8 @@ public class Modele implements Sujet{
         for (int id : aSupprimerFleche){
             flechesMap.remove(id);
         }
+
+        notifierObs();
 
         for(VueFleche vf : aSupprimerVue){
             supprimerObs(vf);

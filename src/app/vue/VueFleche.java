@@ -46,49 +46,11 @@ public class VueFleche extends Pane implements Observateur {
             // Dessiner la ligne
             if(f.getType() == Fleche.ASSOCIATION || f.getType() == Fleche.HERITAGE) {
 
-                // Pour calculer y du départ et de l'arrivée, je vais utiliser ax + b qui part du milieu du premier bloc et arrive au milieu du deuxième
-                // a -> coefficient directeur (yb - ya)/(xb - xa)
-                double a = (arriveeCentre.getY() - departCentre.getY())/(arriveeCentre.getX() - departCentre.getX());
-                // b = y - ax
-                double b = departCentre.getY() - departCentre.getX()*a;
                 // On peut maintenant trouver la position de la flèche au départ et à l'arrivée
                 if(departCentre.getX() - arriveeCentre.getX() < 0) {
-                    depart.setX(departCentre.getX());
-                    depart.setY(departCentre.getY());
-                    double x = departCentre.getX();
-                    while (depart.getX() - bDep.getPosition().getX() < vDep.getWidth() && depart.getX() > bDep.getPosition().getX() && depart.getY() - bDep.getPosition().getY() < vDep.getHeight() && depart.getY() > bDep.getPosition().getY()) {
-                        depart.setX(x);
-                        depart.setY(a * x + b);
-                        x += .1;
-                    }
-
-                    arrivee.setX(arriveeCentre.getX());
-                    arrivee.setY(arriveeCentre.getY());
-                    x = arriveeCentre.getX();
-                    while (arrivee.getX() - bArrivee.getPosition().getX() < vArrivee.getWidth() && arrivee.getX() > bArrivee.getPosition().getX() && arrivee.getY() - bArrivee.getPosition().getY() < vArrivee.getHeight() && arrivee.getY() > bArrivee.getPosition().getY()) {
-                        arrivee.setX(x);
-                        arrivee.setY(a * x + b);
-                        x-=.1;
-                    }
+                    setStartEnd(depart, arrivee, bDep, bArrivee, vDep, vArrivee);
                 }else{
-                    arrivee.setX(arriveeCentre.getX());
-                    arrivee.setY(arriveeCentre.getY());
-                    double x = arriveeCentre.getX();
-                    while (arrivee.getX() - bArrivee.getPosition().getX() < vArrivee.getWidth() && arrivee.getX() > bArrivee.getPosition().getX() && arrivee.getY() - bArrivee.getPosition().getY() < vArrivee.getHeight() && arrivee.getY() > bArrivee.getPosition().getY()) {
-                        arrivee.setX(x);
-                        arrivee.setY(a * x + b);
-                        x+=.1;
-                    }
-
-                    depart.setX(departCentre.getX());
-                    depart.setY(departCentre.getY());
-                    x = departCentre.getX();
-                    while (depart.getX() - bDep.getPosition().getX() < vDep.getWidth() && depart.getX() > bDep.getPosition().getX() && depart.getY() - bDep.getPosition().getY() < vDep.getHeight() && depart.getY() > bDep.getPosition().getY()) {
-                        depart.setX(x);
-                        depart.setY(a * x + b);
-                        x-=.1;
-                    }
-
+                    setStartEnd(arrivee, depart, bArrivee, bDep, vArrivee, vDep);
                 }
 
                 Line l = new Line();
@@ -102,7 +64,7 @@ public class VueFleche extends Pane implements Observateur {
 
             if(f.getType() == Fleche.ASSOCIATION) {
                 double inclinaison = 5 * Math.PI / 6;
-                int taille = 10;
+                int taille = 15;
                 double angle = Math.atan2(arrivee.getY() - depart.getY(), arrivee.getX() - depart.getX()) - inclinaison;
                 double x = Math.cos(angle);
                 double y = Math.sin(angle);
@@ -130,6 +92,53 @@ public class VueFleche extends Pane implements Observateur {
         l.getStrokeDashArray().add(15d);
 
          */
+    }
+
+    private void setStartEnd(Position posA, Position posB, Bloc bPosA, Bloc bPosB, VueBloc vPosA, VueBloc vPosB){
+        Position aCentre = new Position();
+        aCentre.setX((bPosA.getPosition().getX() + bPosA.getPosition().getX() + vPosA.getWidth())/2);
+        aCentre.setY((bPosA.getPosition().getY() + bPosA.getPosition().getY() + vPosA.getHeight())/2);
+        Position bCentre = new Position();
+        bCentre.setX((bPosB.getPosition().getX() + bPosB.getPosition().getX() + vPosB.getWidth())/2);
+        bCentre.setY((bPosB.getPosition().getY() + bPosB.getPosition().getY() + vPosB.getHeight())/2);
+        if(aCentre.getX() == bCentre.getX()){
+            if(aCentre.getY() < bCentre.getY()) {
+                posA.setX(aCentre.getX());
+                posA.setY(aCentre.getY() + vPosA.getHeight()/2);
+                posB.setX(bCentre.getX());
+                posB.setY(bCentre.getY() - vPosB.getHeight()/2);
+            }else{
+                posB.setX(bCentre.getX());
+                posB.setY(bCentre.getY() + vPosA.getHeight()/2);
+                posA.setX(aCentre.getX());
+                posA.setY(aCentre.getY() - vPosB.getHeight()/2);
+            }
+        }else {
+            // Pour calculer y du départ et de l'arrivée, je vais utiliser ax + b qui part du milieu du premier bloc et arrive au milieu du deuxième
+            // a -> coefficient directeur (yb - ya)/(xb - xa)
+            double a = (bCentre.getY() - aCentre.getY()) / (bCentre.getX() - aCentre.getX());
+            // b = y - ax
+            double b = aCentre.getY() - aCentre.getX() * a;
+
+            // On peut maintenant trouver la position de la flèche au départ et à l'arrivée
+            posA.setX(aCentre.getX());
+            posA.setY(aCentre.getY());
+            double x = aCentre.getX();
+            while (posA.getX() - bPosA.getPosition().getX() < vPosA.getWidth() && posA.getX() > bPosA.getPosition().getX() && posA.getY() - bPosA.getPosition().getY() < vPosA.getHeight() && posA.getY() > bPosA.getPosition().getY()) {
+                posA.setX(x);
+                posA.setY(a * x + b);
+                x += .1;
+            }
+
+            posB.setX(bCentre.getX());
+            posB.setY(bCentre.getY());
+            x = bCentre.getX();
+            while (posB.getX() - bPosB.getPosition().getX() < vPosB.getWidth() && posB.getX() > bPosB.getPosition().getX() && posB.getY() - bPosB.getPosition().getY() < vPosB.getHeight() && posB.getY() > bPosB.getPosition().getY()) {
+                posB.setX(x);
+                posB.setY(a * x + b);
+                x -= .1;
+            }
+        }
     }
 
     public int getFlecheId(){

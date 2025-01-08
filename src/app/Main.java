@@ -76,6 +76,10 @@ public class Main extends Application {
         // Gestion des clics droit
         root.setOnMouseClicked(new ControlClicDroit(m));
 
+        // Ajuster la taille du viewport et du fileExplorer
+        viewport.setMinSize(primaryStage.getWidth() * ((double) 3 / 4), primaryStage.getHeight() - menuBar.getHeight());
+        fileExplorer.setMinSize(primaryStage.getWidth() * ((double) 1 / 4), primaryStage.getHeight() - menuBar.getHeight());
+
         // Ajuster taille éléments en fonction de la taille de la fenêtre
         WindowListener wl = new WindowListener(m);
         primaryStage.widthProperty().addListener(wl);
