@@ -115,6 +115,26 @@ public class Modele implements Sujet{
                     }
                 }
             }
+
+            // Ajoute les flèches en fonction des héritages
+            if(getBlocById(idB).getHeritage() != null){
+                for (int indexB2 : blocsMap.keySet()) {
+                    if(getBlocById(indexB2).getNom().contains(getBlocById(idB).getHeritage())){
+                        afficherFleche(idB, indexB2, Fleche.HERITAGE);
+                    }
+                }
+            }
+
+            // Ajoute les flèches d'implémentation
+            if(getBlocById(idB).getImplementation() != null){
+                for (String imp : getBlocById(idB).getImplementation()) {
+                    for (int indexB2 : blocsMap.keySet()) {
+                        if (getBlocById(indexB2).getNom().contains(imp)){
+                            afficherFleche(idB, indexB2, Fleche.IMPLEMENTATION);
+                        }
+                    }
+                }
+            }
         }
     }
 

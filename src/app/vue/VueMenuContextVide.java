@@ -56,7 +56,24 @@ public class VueMenuContextVide extends VueContext{
             b.setPosition(new Position((int) new_pos.getX(), (int) new_pos.getY()));
             m.afficherBloc(b);
         });
-        debug.getItems().addAll(add, add2);
+        MenuItem add3 = new MenuItem("add3");
+        add3.setOnAction((e) -> {
+            ArrayList<Attribut> a = new ArrayList<>();
+            Attribut a1 = new Attribut("-", "Int", "attribut");
+            Attribut a2 = new Attribut("-", "String", "attribut2");
+            a.add(a1);
+            a.add(a2);
+            ArrayList<Methode> meth = new ArrayList<>();
+            Methode m1 = new Methode("+", "void", "foo()", null);
+            Methode m2 = new Methode("+", "String", "foo2(x : int)", null);
+            meth.add(m1);
+            meth.add(m2);
+            Bloc b = new Bloc("Heritez-Moi", "Image", null, "OUII", a, meth);
+            Position new_pos = m.screenPosToViewportPos(new Position(this.getX(), this.getY()));
+            b.setPosition(new Position((int) new_pos.getX(), (int) new_pos.getY()));
+            m.afficherBloc(b);
+        });
+        debug.getItems().addAll(add, add2, add3);
         this.getItems().addAll(affichage, debug);
     }
     @Override
