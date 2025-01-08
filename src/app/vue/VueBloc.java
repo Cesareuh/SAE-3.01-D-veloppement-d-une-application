@@ -7,6 +7,8 @@ import app.classes.Methode;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -41,7 +43,13 @@ public class VueBloc extends VBox implements Observateur {
             Bloc b = m.getBlocById(id);
             this.relocate(b.getPosition().getX(), b.getPosition().getY());
             HBox titre = new HBox();
-            titre.getChildren().addAll(new Label(b.getImage()), new Label(b.getNom()));
+            Image image;
+            try{
+                image = new Image(b.getImage());
+            }catch(NullPointerException e) {
+                image = null;
+            }
+            titre.getChildren().addAll(new ImageView(image), new Label(b.getNom()));
             titre.setAlignment(Pos.CENTER);
             titre.setBorder(border);
 
