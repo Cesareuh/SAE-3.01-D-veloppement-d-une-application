@@ -27,6 +27,7 @@ public class VueFleche extends Pane implements Observateur {
 
             this.getChildren().removeAll(this.getChildren());
 
+            Line l = new Line();
             Fleche f = m.getFlecheById(id);
             Bloc bDep = m.getBlocById(f.getBlocDepart());
             Bloc bArrivee = m.getBlocById(f.getBlocArrivee());
@@ -44,54 +45,56 @@ public class VueFleche extends Pane implements Observateur {
             Position arrivee = new Position();
 
             // Dessiner la ligne
-            if(f.getType() == Fleche.ASSOCIATION || f.getType() == Fleche.HERITAGE) {
 
-                // On peut maintenant trouver la position de la flèche au départ et à l'arrivée
-                if(departCentre.getX() - arriveeCentre.getX() < 0) {
-                    setStartEnd(depart, arrivee, bDep, bArrivee, vDep, vArrivee);
-                }else{
-                    setStartEnd(arrivee, depart, bArrivee, bDep, vArrivee, vDep);
-                }
-
-                Line l = new Line();
-                l.setStartX(depart.getX());
-                l.setStartY(depart.getY());
-                l.setEndX(arrivee.getX());
-                l.setEndY(arrivee.getY());
-                this.getChildren().add(l);
-
+            if(departCentre.getX() - arriveeCentre.getX() < 0) {
+                setStartEnd(depart, arrivee, bDep, bArrivee, vDep, vArrivee);
+            }else{
+                setStartEnd(arrivee, depart, bArrivee, bDep, vArrivee, vDep);
             }
 
-            if(f.getType() == Fleche.ASSOCIATION) {
-                double inclinaison = 5 * Math.PI / 6;
-                int taille = 15;
-                double angle = Math.atan2(arrivee.getY() - depart.getY(), arrivee.getX() - depart.getX()) - inclinaison;
-                double x = Math.cos(angle);
-                double y = Math.sin(angle);
-                Line brancheHaut = new Line();
-                brancheHaut.setStartX(arrivee.getX());
-                brancheHaut.setStartY(arrivee.getY());
-                brancheHaut.setEndX(arrivee.getX() + x * taille);
-                brancheHaut.setEndY(arrivee.getY() + y * taille);
+            double inclinaison = 5 * Math.PI / 6;
+            int taille = 15;
+            double angle = Math.atan2(arrivee.getY() - depart.getY(), arrivee.getX() - depart.getX()) - inclinaison;
+            double x = Math.cos(angle);
+            double y = Math.sin(angle);
+            Line brancheHaut = new Line();
+            brancheHaut.setStartX(arrivee.getX());
+            brancheHaut.setStartY(arrivee.getY());
+            brancheHaut.setEndX(arrivee.getX() + x * taille);
+            brancheHaut.setEndY(arrivee.getY() + y * taille);
 
-                angle = Math.atan2(arrivee.getY() - depart.getY(), arrivee.getX() - depart.getX()) + inclinaison;
-                x = Math.cos(-angle);
-                y = Math.sin(-angle);
-                Line brancheBas = new Line();
-                brancheBas.setStartX(arrivee.getX());
-                brancheBas.setStartY(arrivee.getY());
-                brancheBas.setEndX(arrivee.getX() + x * taille);
-                brancheBas.setEndY(arrivee.getY() - y * taille);
+            angle = Math.atan2(arrivee.getY() - depart.getY(), arrivee.getX() - depart.getX()) + inclinaison;
+            x = Math.cos(-angle);
+            y = Math.sin(-angle);
+            Line brancheBas = new Line();
+            brancheBas.setStartX(arrivee.getX());
+            brancheBas.setStartY(arrivee.getY());
+            brancheBas.setEndX(arrivee.getX() + x * taille);
+            brancheBas.setEndY(arrivee.getY() - y * taille);
+            this.getChildren().addAll(brancheHaut, brancheBas);
 
-                this.getChildren().addAll(brancheHaut, brancheBas);
+            if(f.getType() != Fleche.ASSOCIATION){
+                Line brancheMilieu = new Line();
+                brancheMilieu.setStartX(brancheHaut.getEndX());
+                brancheMilieu.setStartY(brancheHaut.getEndY());
+                brancheMilieu.setEndX(brancheBas.getEndX());
+                brancheMilieu.setEndY(brancheBas.getEndY());
+                this.getChildren().add(brancheMilieu);
+                arrivee.setX((brancheMilieu.getStartX()+brancheMilieu.getEndX())/2);
+                arrivee.setY((brancheMilieu.getStartY()+brancheMilieu.getEndY())/2);
             }
+
+            if(f.getType() == Fleche.IMPLEMENTATION){
+                l.getStrokeDashArray().add(15d);
+            }
+
+            l.setStartX(depart.getX());
+            l.setStartY(depart.getY());
+            l.setEndX(arrivee.getX());
+            l.setEndY(arrivee.getY());
+            this.getChildren().add(l);
+
         }
-
-        /*
-         FAIRE UNE FLECHE POINTILLES
-        l.getStrokeDashArray().add(15d);
-
-         */
     }
 
     private void setStartEnd(Position posA, Position posB, Bloc bPosA, Bloc bPosB, VueBloc vPosA, VueBloc vPosB){
