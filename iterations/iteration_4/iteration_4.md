@@ -18,4 +18,4 @@
  - Importation projet tous fichiers
 
 ## Diagramme de classe
-![Diagramme de classe](./plantuml.md)
+![Diagramme de classe](./plantuml.png)
