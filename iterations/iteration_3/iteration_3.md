@@ -27,4 +27,4 @@
 
 Diagramme de Classe
 
-![img.png](img.png)
+![Plantuml](plantuml.png)

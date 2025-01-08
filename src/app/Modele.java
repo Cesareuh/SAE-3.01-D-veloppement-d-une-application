@@ -57,29 +57,6 @@ public class Modele implements Sujet{
         return dependances;
     }
 
-    /*
-    // Crée une flèche entre deux blocs avec un type donné
-    public void creerFleche(int blocDepart, int blocArrivee, String type) {
-        Fleche nouvelleFleche = new Fleche(blocDepart, blocArrivee, type);
-        fleches.add(nouvelleFleche);
-    }
-
-    // Crée un nouveau bloc à partir d'une classe et d'une position
-    public void creerBloc(Class className, Position position) {
-        // Génère un ID unique pour le nouveau bloc
-        int id = derniereID++;
-
-        // Crée une nouvelle instance de Bloc
-        Bloc nouveauBloc = new Bloc("NomBloc", "ImageBloc", "ImplementationBloc", "HeritageBloc");
-
-        // Initialise les attributs du bloc
-        nouveauBloc.setPosition(position.getX(), position.getY());
-
-        // Ajoute le bloc dans la HashMap avec l'ID unique
-        blocsMap.put(id, nouveauBloc);
-    }
-     */
-
     // Affiche un bloc dans le diagramme
     public void afficherBloc(Bloc b){
         derniereID++;
@@ -276,9 +253,6 @@ public class Modele implements Sujet{
 
     // Notifie tous les observateurs des changements
     public void notifierObs() {
-        // Ajuster la taille du viewport et du fileExplorer
-        viewport.setMinSize(stage.getWidth() * ((double) 3 / 4), stage.getHeight() - menuBar.getHeight());
-        fileExplorerTree.setMinSize(stage.getWidth() * ((double) 1 / 4), stage.getHeight() - menuBar.getHeight());
         for (Observateur observateur : observateurs) {
             observateur.actualiser(this);
         }

@@ -33,15 +33,16 @@ class Position {
 }
 Position "1" <-- Bloc : - pos
 
-class Bloc{
+class Bloc {
     - affichageSimple : boolean
     - nom : String
     - image : String
     - implementation : List<String>
     - heritage : String
+
     + Bloc(n : String, i : String, impl : List<String>, h : String, attr : List<Attribut>, meth : List<Methode>)
     + getPosition() : Position
-    + setPosition (p : Position) : void
+    + setPosition(p : Position) : void
     + getImage() : String
     + getNom() : String
     + setNom(n : String) : void
@@ -49,29 +50,43 @@ class Bloc{
     + getImplementation() : List<String>
     + getListAttributs() : List<Attribut>
     + getListMethodes() : List<Methode>
+    + <color:green>ajouterAttribut(autorisation : String, nom : String, type : String) : void
+    + <color:green>ajouterMethode(autorisation : String, nom : String, typeRetour : String, parametres : List<String>) : void
 }
 Bloc "*" <-- Modele : - blocsMap
 
 class ControlButton {
     + ControlButton(m : Modele)
-    + handle(event : ActionEvent) : void
+    + <color:orange>handle(event : ActionEvent) : void</color>
     - createNode(dir : File) : TreeItem<String>
-    - exportAsImage(): void
+    - exportAsImage() : void
     - getFileExtension(f : File) : String
+    + <color:green>ouvrirDialogueModification()</color>
+    + <color:green>handleRemoveAction()</color>
+    + <color:green>handleModifyAction()</color>
 }
+
+
 
 class ControlClicDroit {
     + ControlClicDroit(m : Modele)
     + handle(event : MouseEvent) : void
 }
 
-class ControlDragAndDrop{
+class ControlDragNDrop #green {
     - fileExplorer : TreeView<String>
     - viewport : Pane
-    + ControlDragAndDrop(m : Modele)
-    + handle(event : MouseEvent) : void
-}
 
+    + ControlDragAndDrop(m : Modele)
+    + <color:yellow>ControlDragNDrop(Modele modele)</color>
+    + <color:yellow>setUpTreeViewDragAndDrop() : void</color>
+    + <color:yellow>setUpViewportDragAndDrop() : void</color>
+    + <color:yellow>handle(event : MouseEvent) : void</color>
+    + <color:yellow>handle(DragEvent dragEvent) : void</color>
+    + <color:yellow>handleDragOver(DragEvent dragEvent) : void</color>
+    + <color:yellow>handleDragDropped(DragEvent dragEvent) : void</color>
+    + <color:yellow>setUpMouseDrag(StackPane filePane) : void</color>
+}
 class FabriqueBloc {
     + creerBloc(f : Fichier) : Bloc
 }
@@ -95,6 +110,7 @@ abstract class FileComposite {
     # f : File
     + FileComposite(f : File)
     + afficher(s : String) : String
+    <abstract> <color: green> genererPlantUML(s : String) : String 
 }
 
 FileComposite <|-- Fichier
@@ -106,6 +122,7 @@ class Fichier {
     + afficher(prec : String) : String
     + getNomCompletClasse(f : File) : String
     + getClasse() : Class
+    + <color:green>genererPlantUML(s : String) : String  <color>
 }
 Fichier "*" <-- Modele : - fichiers
 
@@ -114,8 +131,8 @@ class Repertoire {
     + afficher(prec : String) : String
     + getFileCompositeArrayList() : ArrayList<FileComposite>
     + getFichiers() : ArrayList<Fichier>
+    + <color : green>genererPlantUML(s : String) : String
 }
-
 class Fleche {
     - blocDepart : int
     - blocArrivee : int
@@ -135,7 +152,7 @@ interface Sujet {
     + supprimerObs(o : Observateur) : void
     + notifierObs() : void
 }
-Sujet  <|.. Bloc
+Sujet  <|.. Modele
 
 class Modele {
     - stage : Stage
@@ -147,11 +164,18 @@ class Modele {
     - derniereID : int
     - derniereFlecheID : int
     - fileExplorerTree : TreeView<String>
+
+    + <color:green>ajouterAttributDansBloc(nomBloc : String, autorisation : String, nomAttribut : String, typeAttribut : String)</color>
+    + <color:green>modifierNomBloc(newName : String)</color>
+    + <color:green>ajouterMethodeDansBloc(nomBloc : String, autorisation : String, nomMethode : String, typeRetour : String, parametres : List<String>)</color>
+    + <color:green>ajouterAttributDansBloc(nomBloc : String, nomAttribut : String, typeAttribut : String)</color>
 }
+
+
 
 Modele "1" <-- ControlButton : - modele
 Modele "1" <-- ControlClicDroit : - modele
-Modele "1" <-- ControlDragAndDrop : - modele
+Modele "1" <-- ControlDragNDrop : - modele
 
 interface Observateur {
     + actualiser(s : Sujet) : void
@@ -186,7 +210,7 @@ class VueMenuContextVide{
     + actualiser(s : Sujet) : void
 }
 
-class VueFleche {
+class VueFleche #green {
     - id : int
     + VueFleche(i : int)
     + actualiser(s : Sujet) : void
