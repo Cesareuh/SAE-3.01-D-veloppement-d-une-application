@@ -21,4 +21,6 @@ public abstract class FileComposite {
     public File getF() {
         return f;
     }
+
+    public abstract void supp();
 }

@@ -4,10 +4,10 @@ import app.classes.Bloc;
 
 import java.io.*;
 import java.lang.reflect.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -171,7 +171,7 @@ public class Fichier extends FileComposite {
         return s;
     }
 
-    public static String getNomCompletClasse(File file) throws IOException {
+    public static String getNomCompletClasse(File file) {
         String packageName = null;
         String className = file.getName().replace(".java", ""); // Nom du fichier sans extension
 
@@ -185,6 +185,10 @@ public class Fichier extends FileComposite {
                     break;
                 }
             }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         // Construire le nom complet
@@ -196,15 +200,8 @@ public class Fichier extends FileComposite {
     }
 
     public Bloc creerBloc(){
-        Class<?> c;
+        Class<?> c = getClasse();
         Bloc bloc = null;
-        try {
-            c = Class.forName(getNomCompletClasse(f));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         if (c.isInterface()) {
             FabriqueInterface fab = new FabriqueInterface();
             bloc = fab.creerBloc(this);
@@ -219,12 +216,28 @@ public class Fichier extends FileComposite {
     }
 
     public Class<?> getClasse(){
+        File file = new File("./projClass");
+        System.out.println("Fichier existe : " + file.exists());
+        String classPath = null;
+        try {
+            classPath = file.getCanonicalPath();
+            System.out.println("Chemin absolu : " + file.getCanonicalPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        URL[] urls;
+        try {
+            urls = new URL[]{new URL("file:/"+classPath+"/")};
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        URLClassLoader ucl = new URLClassLoader(urls);
         Class<?> c = null;
         try {
-            c = Class.forName(getNomCompletClasse(f));
+            System.out.println(getNomCompletClasse(f));
+            System.out.println(Arrays.toString(ucl.getURLs()));
+            c = ucl.loadClass(getNomCompletClasse(f));
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return c;
@@ -232,6 +245,12 @@ public class Fichier extends FileComposite {
 
     public String getName(){
         return f.getName();
+    }
+
+    public void supp(){
+        if(f.delete()){
+            System.out.println("reussite supp");
+        }else System.out.println("erreur supp");
     }
 
 }

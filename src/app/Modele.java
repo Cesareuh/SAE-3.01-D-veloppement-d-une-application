@@ -19,6 +19,8 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -231,6 +233,7 @@ public class Modele implements Sujet{
         } else {
             fichiers.add(new Fichier(repertoire));
         }
+        compiler();
         notifierObs();
     }
 
@@ -368,8 +371,29 @@ public class Modele implements Sujet{
         return blocsMap.get(blocCourant);
     }
 
+
     public HashMap<Integer, Bloc> getBlocsMap() {
         return blocsMap;
+    }
+
+    public void compiler(){
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        List<String> arguments = new ArrayList<>();
+        List<String> sourceFichier = new ArrayList<>();
+        String[] compileArguments;
+        for(Fichier f : fichiers){
+            sourceFichier.add(f.getF().getAbsolutePath());
+        }
+        arguments.add("-d");
+        arguments.add("projClass");
+        arguments.addAll(sourceFichier);
+        compileArguments = arguments.toArray(new String[0]);
+        int res = compiler.run(null, null, null, compileArguments);
+        if(res == 0){
+            System.out.println("Compilation reussie");
+        }else{
+            System.out.println("Erreur lors de la compilation");
+        }
     }
 
 }
