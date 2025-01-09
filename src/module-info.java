@@ -7,4 +7,5 @@ module javafx {
     exports app.control;
     exports app.vue;
     exports app.classes;
+    exports app.vue.fleche;
 }

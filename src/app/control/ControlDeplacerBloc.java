@@ -1,9 +1,10 @@
 package app.control;
 
 import app.Modele;
+import app.classes.Fleche;
 import app.classes.Position;
 import app.vue.VueBloc;
-import app.vue.VueFleches;
+import app.vue.fleche.VueFleche;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.event.EventHandler;
@@ -16,19 +17,8 @@ public class ControlDeplacerBloc implements EventHandler<MouseEvent>{
     private Pane viewport;
     private Modele m;
 
-    /*
-    public ControlDragAndDrop(Modele m, TreeView<String> fileExplorer, Pane viewport) {
-        this.fileExplorer = fileExplorer;
-        this.viewport = viewport;
-        this.m = m;
-    }
-
-     */
-
     public ControlDeplacerBloc(Modele m) {
         this.m = m;
-        this.fileExplorer = m.getFileExplorerTree();
-        this.viewport = m.getViewport();
     }
 
     @Override
@@ -62,6 +52,14 @@ public class ControlDeplacerBloc implements EventHandler<MouseEvent>{
                 }
                 m.translaterBloc(id, x, y);
             }
+
+            if(event.getSource() instanceof VueFleche vf){
+                Fleche f = m.getFlecheById(vf.getFlecheId());
+                f.setCentre(new Position(event.getX(), event.getY()));
+                m.refresh();
+            }
+
+            System.out.println(event.getTarget());
         }
     }
 }

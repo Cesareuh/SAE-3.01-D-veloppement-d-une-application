@@ -7,11 +7,11 @@ import app.classes.Position;
 import app.control.ControlClic;
 import app.control.ControlDeplacerBloc;
 import app.vue.VueBloc;
-import app.vue.VueFleches;
+import app.vue.fleche.*;
 import app.vue.VueViewport;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -39,7 +39,6 @@ public class Modele implements Sujet{
     private HashMap<Integer, Bloc> blocsMap; // Classes affichées sur le diagramme
     private int derniereFlecheID; // Id de la dernière flèche
     private HashMap<Integer, Fleche> flechesMap; // Flèches affichées sur le diagramme
-    private VueFleches vueFleches; // La vue qui affiche les flèches
     private List<Observateur> observateurs = new ArrayList<>();
     private TreeView<String> fileExplorerTree;
     private List<Fichier> fichiers;
@@ -56,9 +55,6 @@ public class Modele implements Sujet{
         this.flechesMap = new HashMap<>();
         this.derniereID = 0;
         this.menuBar = menuBar;
-        this.vueFleches = new VueFleches();
-        viewport.getChildren().addFirst(vueFleches);
-        ajouterObs(vueFleches);
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -80,16 +76,35 @@ public class Modele implements Sujet{
         refresh();
     }
 
-
-
-
     public void afficherFleche(Fleche f){
+        for(Fleche f2 : flechesMap.values()){
+            if(f2.equals(f))return;
+        }
         derniereFlecheID++;
         flechesMap.put(derniereFlecheID, f);
+
+        VueCorpsFleche vcf = new VueCorpsFleche(derniereFlecheID);
+        VueHitboxFleche vhf = new VueHitboxFleche(derniereFlecheID);
+        vhf.setOnMouseDragged(new ControlDeplacerBloc(this));
+        VuePointeFleche vpf = new VuePointeFleche(derniereFlecheID);
+        viewport.getChildren().addFirst(vhf);
+        viewport.getChildren().addFirst(vcf);
+        viewport.getChildren().addFirst(vpf);
+        ajouterObs(vcf);
+        ajouterObs(vpf);
+        ajouterObs(vhf);
+        if(f.getType() == Fleche.ASSOCIATION) {
+            VueNomFleche vnf = new VueNomFleche(derniereFlecheID);
+            VueCardFleche vCardf = new VueCardFleche(derniereFlecheID);
+            viewport.getChildren().addFirst(vnf);
+            viewport.getChildren().addFirst(vCardf);
+            ajouterObs(vnf);
+            ajouterObs(vCardf);
+        }
     }
 
     public void actualiserFleches(){
-        supprimerFleches();
+        //supprimerFleches();
         for(int idB : blocsMap.keySet()) {
 
             // Ajoute les flèches du bloc en fonction des attributs
@@ -119,6 +134,41 @@ public class Modele implements Sujet{
                         }
                     }
                 }
+            }
+        }
+
+        for(Fleche f : flechesMap.values()){
+            Bloc bDep = getBlocById(f.getBlocDepart());
+            Bloc bArrivee = getBlocById(f.getBlocArrivee());
+            VueBloc vDep = getVueBlocById(f.getBlocDepart());
+            VueBloc vArrivee = getVueBlocById(f.getBlocArrivee());
+            Position[] positions;
+
+            if (bDep.getPosition().getX() + vDep.getWidth()/2 < bArrivee.getPosition().getX() + vArrivee.getWidth()/2) {
+                positions = Fleche.getStartEnd(bDep, bArrivee, vDep, vArrivee);
+                f.setDepart(positions[0]);
+                f.setArrivee(positions[1]);
+            } else {
+                positions = Fleche.getStartEnd(bArrivee, bDep, vArrivee, vDep);
+                f.setDepart(positions[1]);
+                f.setArrivee(positions[0]);
+            }
+
+            if(f.getType() != Fleche.ASSOCIATION){
+                Position arr = new Position();
+                arr.setX((f.getBranches()[0].getX() + f.getBranches()[1].getX())/2);
+                arr.setY((f.getBranches()[0].getY() + f.getBranches()[1].getY())/2);
+                f.setArrivee2(arr);
+            }else {
+                f.setArrivee2(f.getArrivee());
+            }
+
+            if(f.getCentre().getX() == -1){
+                double x = (f.getDepart().getX() + f.getArrivee().getX()) / 2;
+                double y = (f.getDepart().getY() + f.getArrivee().getY()) / 2;
+                double rand = Math.random()*200-100;
+                double rand2 = Math.random()*200-100;
+                f.setCentre(new Position(x + rand, y+rand2));
             }
         }
         notifierObs();
@@ -208,7 +258,7 @@ public class Modele implements Sujet{
         if (bloc != null) {
             bloc.setPosition(new Position(x,y));
         }
-        notifierObs();
+        refresh();
     }
 
     // Transforme une position sur l'écran en position par rapport au viewport
@@ -280,7 +330,7 @@ public class Modele implements Sujet{
     public void refresh(){
         // Quand un bloc est créé, sa largeur est initialisée à 0 car javafx n'a pas eu le temps de calculer sa taille
         // Il faut donc attendre un peu avant de pouvoir l'utiliser
-        Timeline t = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+        Timeline t = new Timeline(new KeyFrame(Duration.millis(30), event -> {
             actualiserFleches();
         }));
         t.setCycleCount(1);

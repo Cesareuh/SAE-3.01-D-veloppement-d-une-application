@@ -1,5 +1,7 @@
 package app.classes;
 
+import java.util.Objects;
+
 public class Attribut {
     private String autorisation;
     private String type;
@@ -21,5 +23,16 @@ public class Attribut {
 
     public String getAutorisation() {
         return autorisation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Attribut attribut)) return false;
+        return Objects.equals(autorisation, attribut.autorisation) && Objects.equals(type, attribut.type) && Objects.equals(nom, attribut.nom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(autorisation, type, nom);
     }
 }

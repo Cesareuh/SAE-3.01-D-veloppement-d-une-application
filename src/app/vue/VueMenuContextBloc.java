@@ -42,8 +42,6 @@ public class VueMenuContextBloc extends VueContext {
 
         });
 
-
-
         affichage.getItems().addAll(simple, complexe);
 
         // Création des MenuItems "Remove" et "Modify"

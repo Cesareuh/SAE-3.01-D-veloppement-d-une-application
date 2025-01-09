@@ -31,15 +31,11 @@ public class ControlClic implements EventHandler<MouseEvent> {
             }else if (event.getSource() instanceof VueBloc vb) {
                 afficherContextBloc(event, vc, vb);
             }
-            if (event.getTarget() instanceof VueViewport || event.getTarget() instanceof VueFleches) {
+            if (event.getTarget() instanceof VueViewport) {
                 vc = new VueMenuContextVide(m);
                 m.setBlocCourant(0);
                 vc.show(m.getStage(), event.getScreenX(), event.getScreenY());
             }
-
-            System.out.println("Target : " + event.getTarget());
-            System.out.println("Source : " + event.getSource());
-
         }
 
         m.notifierObs();
