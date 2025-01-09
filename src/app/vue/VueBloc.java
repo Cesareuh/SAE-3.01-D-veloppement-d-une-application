@@ -74,8 +74,10 @@ public class VueBloc extends VBox implements Observateur {
                     VBox attrs = new VBox();
                     if (b.getListAttributs() != null) {
                         for (Attribut a : b.getListAttributs()) {
-                            String attribut = a.getAutorisation() + " " + a.getNom() + " : " + a.getType();
-                            attrs.getChildren().add(new Label(attribut));
+                            if(modele.getAssociation(a) == -1) {
+                                String attribut = a.getAutorisation() + " " + a.getNom() + " : " + a.getType();
+                                attrs.getChildren().add(new Label(attribut));
+                            }
                         }
                     } else {
                         attrs.getChildren().add(new Label("Aucun attribut"));
