@@ -89,6 +89,8 @@ public class Main extends Application {
         primaryStage.widthProperty().addListener(wl);
         primaryStage.heightProperty().addListener(wl);
 
+        // Raccourcis clavier
+        // D pour supprimer un bloc sélectionné
         root.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {

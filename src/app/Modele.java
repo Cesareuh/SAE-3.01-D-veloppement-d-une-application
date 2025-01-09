@@ -9,6 +9,8 @@ import app.control.ControlDeplacerBloc;
 import app.vue.VueBloc;
 import app.vue.VueFleches;
 import app.vue.VueViewport;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeItem;
@@ -16,6 +18,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -77,10 +80,16 @@ public class Modele implements Sujet{
         vb.setOnMouseDragged(new ControlDeplacerBloc(this));
         vb.setOnMouseClicked(new ControlClic(this));
         viewport.getChildren().add(vb);
-
         ajouterObs(vb);
-        actualiserFleches();
         notifierObs();
+
+        // Quand un bloc est créé, sa largeur est initialisée à 0 car javafx n'a pas eu le temps de calculer sa taille
+        // Il faut donc attendre un peu avant de pouvoir l'utiliser
+        Timeline t = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+            actualiserFleches();
+        }));
+        t.setCycleCount(1);
+        t.play();
     }
 
 
@@ -125,6 +134,7 @@ public class Modele implements Sujet{
                 }
             }
         }
+        notifierObs();
     }
 
     public void supprimerFleches(){

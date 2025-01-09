@@ -4,6 +4,8 @@ import app.*;
 import app.classes.Attribut;
 import app.classes.Bloc;
 import app.classes.Methode;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 public class VueBloc extends VBox implements Observateur {
 
@@ -101,6 +104,7 @@ public class VueBloc extends VBox implements Observateur {
                 this.getChildren().addAll(titre, details);
 
             }
+
 
     }
 
