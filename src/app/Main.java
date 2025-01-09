@@ -47,8 +47,9 @@ public class Main extends Application {
         MenuItem export = new MenuItem("Export as image");
         MenuItem plantuml = new MenuItem("Generate plantuml");
         fileMenu.getItems().addAll(selectRep, export, plantuml);
-        Menu editMenu = new Menu("Edit");
-        menuBar.getMenus().addAll(fileMenu, editMenu);
+
+
+        menuBar.getMenus().addAll(fileMenu);
 
         // Création du modèle (Modele gère les interactions)
         Modele m = new Modele(root, viewport, fileExplorer, menuBar, primaryStage);

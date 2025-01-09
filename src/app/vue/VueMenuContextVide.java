@@ -5,6 +5,7 @@ import app.classes.Attribut;
 import app.classes.Bloc;
 import app.classes.Methode;
 import app.classes.Position;
+import app.control.ControlButton;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
@@ -27,6 +28,8 @@ public class VueMenuContextVide extends VueContext {
         MenuItem simple = new MenuItem("Simple");
         MenuItem complexe = new MenuItem("Complex");
         affichage.getItems().addAll(simple, complexe);
+
+        ControlButton controlButton = new ControlButton(m);
 
         // Menu Debug
         Menu debug = new Menu("Debug");
@@ -178,9 +181,12 @@ public class VueMenuContextVide extends VueContext {
                 }
             }
         });
-
+        MenuItem supprT  = new MenuItem("Clear");
+        supprT.setOnAction(e -> controlButton.handleRemoveAAction());
         // Ajouter tous les éléments au menu
-        this.getItems().addAll(affichage, debug, New);
+        this.getItems().addAll(affichage, debug, New, supprT);
+
+
     }
 
     private String getPackageName(String path) {

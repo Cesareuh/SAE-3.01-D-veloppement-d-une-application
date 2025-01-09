@@ -268,5 +268,26 @@ public class ControlButton implements EventHandler<ActionEvent> {
 	}
 
 
+	public void handleRemoveAAction() {
+		// Vérifie si le modèle est nul pour éviter des erreurs
+		if (modele == null) {
+			System.out.println("Le modèle est nul. Impossible de supprimer.");
+			return;
+		}
+
+		// Supprime toutes les flèches du modèle
+		modele.getFlechesMap().clear();
+
+		// Supprime tous les blocs du modèle
+		modele.getBlocsMap().clear();
+
+		// Notifie les observateurs pour mettre à jour l'interface
+		modele.notifierObs();
+
+		// Affiche un message de confirmation
+		System.out.println("Tous les blocs et les flèches ont été supprimés.");
+	}
+
+
 }
 

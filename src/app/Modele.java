@@ -307,6 +307,7 @@ public class Modele implements Sujet{
         return flechesMap.get(id);
     }
 
+
     public int getDerniereID() {
         return derniereID;
     }
@@ -372,6 +373,9 @@ public class Modele implements Sujet{
         return blocsMap;
     }
 
+    public HashMap<Integer, Fleche> getFlechesMap() {
+        return flechesMap;
+    }
 }
 
 
