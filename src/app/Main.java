@@ -1,14 +1,17 @@
 package app;
 
 import app.control.ControlButton;
-import app.control.ControlClicDroit;
+import app.control.ControlClic;
 import app.control.ControlDragNDrop;
 import app.vue.VueFichiers;
 import app.vue.VueTextuel;
 import app.vue.VueViewport;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -75,7 +78,7 @@ public class Main extends Application {
         primaryStage.show();
 
         // Gestion des clics droit
-        root.setOnMouseClicked(new ControlClicDroit(m));
+        root.setOnMouseClicked(new ControlClic(m));
 
         // Ajuster la taille du viewport et du fileExplorer
         viewport.setMinSize(primaryStage.getWidth() * ((double) 3 / 4), primaryStage.getHeight() - menuBar.getHeight());
@@ -86,5 +89,14 @@ public class Main extends Application {
         primaryStage.widthProperty().addListener(wl);
         primaryStage.heightProperty().addListener(wl);
 
+        root.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if(keyEvent.getCode() == KeyCode.D) {
+                    m.supprimerBlocSelect();
+                }
+                m.refresh();
+            }
+        });
     }
 }

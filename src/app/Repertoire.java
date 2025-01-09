@@ -57,4 +57,22 @@ public class Repertoire extends FileComposite{
         }
         return fichiers;
     }
+
+    public void supp(){
+        File[] files = this.f.listFiles();
+        if(files != null) {
+            for (File f : files) {
+                FileComposite fichier;
+                if(f.isFile()) {
+                    fichier = new Fichier(f);
+                }else{
+                    fichier = new Repertoire(f);
+                }
+                fichier.supp();
+            }
+        }
+        if(f.delete()){
+            System.out.println("reussite supp");
+        }else System.out.println("erreur supp");
+    }
 }

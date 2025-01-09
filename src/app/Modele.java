@@ -4,21 +4,21 @@ import app.classes.Attribut;
 import app.classes.Bloc;
 import app.classes.Fleche;
 import app.classes.Position;
-import app.control.ControlClicDroit;
+import app.control.ControlClic;
 import app.control.ControlDeplacerBloc;
 import app.vue.VueBloc;
-import app.vue.VueFleche;
+import app.vue.VueFleches;
 import app.vue.VueViewport;
+import javafx.application.Platform;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +40,7 @@ public class Modele implements Sujet{
     private TreeView<String> fileExplorerTree;
     private List<Fichier> fichiers;
     private MenuBar menuBar;
+    private VueFleches vueFleches;
 
 
     public Modele(VBox root, VueViewport viewport, TreeView<String> fileExplorerTree, MenuBar menuBar, Stage stage) {
@@ -47,12 +48,18 @@ public class Modele implements Sujet{
         this.viewport = viewport;
         this.fileExplorerTree = fileExplorerTree;
         this.stage = stage;
-        this.derniereID = 0;
         this.derniereFlecheID = 0;
         this.blocsMap = new HashMap<>();
         this.flechesMap = new HashMap<>();
         this.derniereID = 0;
         this.menuBar = menuBar;
+        this.vueFleches = new VueFleches();
+        viewport.getChildren().addFirst(vueFleches);
+        ajouterObs(vueFleches);
+    }
+
+    public void refresh(){
+        notifierObs();
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -67,13 +74,12 @@ public class Modele implements Sujet{
         derniereID++;
         blocsMap.put(derniereID, b);
         VueBloc vb = new VueBloc(derniereID, this);
-        vb.actualiser(this);  // Assure-toi de passer l'instance du modele ici
         vb.setOnMouseDragged(new ControlDeplacerBloc(this));
-        vb.setOnMouseClicked(new ControlClicDroit(this));
+        vb.setOnMouseClicked(new ControlClic(this));
         viewport.getChildren().add(vb);
 
-        actualiserFleches();
         ajouterObs(vb);
+        actualiserFleches();
         notifierObs();
     }
 
@@ -83,9 +89,6 @@ public class Modele implements Sujet{
     public void afficherFleche(int depart, int arrivee, int type){
         derniereFlecheID++;
         flechesMap.put(derniereFlecheID, new Fleche(depart, arrivee, type));
-        VueFleche vf = new VueFleche(derniereFlecheID);
-        viewport.getChildren().add(vf);
-        ajouterObs(vf);
     }
 
     public void actualiserFleches(){
@@ -125,24 +128,13 @@ public class Modele implements Sujet{
     }
 
     public void supprimerFleches(){
-        ArrayList<VueFleche> aSupprimerVue = new ArrayList<>();
         ArrayList<Integer> aSupprimerFleche = new ArrayList<>(flechesMap.keySet());
-
-        for(Observateur obs : observateurs){
-            if(obs instanceof VueFleche vf){
-                aSupprimerVue.add(vf);
-            }
-        }
 
         for (int id : aSupprimerFleche){
             flechesMap.remove(id);
         }
 
         notifierObs();
-
-        for(VueFleche vf : aSupprimerVue){
-            supprimerObs(vf);
-        }
 
     }
 
@@ -189,11 +181,6 @@ public class Modele implements Sujet{
                     aSupprimer.add(obs);
                 }
             }
-            if(obs instanceof VueFleche vf) {
-                if(flechesASupprimer.contains(vf.getFlecheId())){
-                    aSupprimer.add(obs);
-                }
-            }
         }
         // Notifier les vues de leur suppression
         notifierObs();
@@ -231,6 +218,7 @@ public class Modele implements Sujet{
         } else {
             fichiers.add(new Fichier(repertoire));
         }
+        compiler();
         notifierObs();
     }
 
@@ -307,7 +295,6 @@ public class Modele implements Sujet{
         return flechesMap.get(id);
     }
 
-
     public int getDerniereID() {
         return derniereID;
     }
@@ -369,12 +356,33 @@ public class Modele implements Sujet{
         return blocsMap.get(blocCourant);
     }
 
+
     public HashMap<Integer, Bloc> getBlocsMap() {
         return blocsMap;
     }
 
     public HashMap<Integer, Fleche> getFlechesMap() {
         return flechesMap;
+    }
+
+    public void compiler(){
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        List<String> arguments = new ArrayList<>();
+        List<String> sourceFichier = new ArrayList<>();
+        String[] compileArguments;
+        for(Fichier f : fichiers){
+            sourceFichier.add(f.getF().getAbsolutePath());
+        }
+        arguments.add("-d");
+        arguments.add("projClass");
+        arguments.addAll(sourceFichier);
+        compileArguments = arguments.toArray(new String[0]);
+        int res = compiler.run(null, null, null, compileArguments);
+        if(res == 0){
+            System.out.println("Compilation reussie");
+        }else{
+            System.out.println("Erreur lors de la compilation");
+        }
     }
 }
 

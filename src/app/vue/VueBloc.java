@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class VueBloc extends VBox implements Observateur {
 
@@ -41,7 +42,6 @@ public class VueBloc extends VBox implements Observateur {
 
 
     public void actualiser(Sujet s) {
-        Platform.runLater(() -> {
             this.getChildren().clear();  // Supprime les anciens enfants
 
             Bloc b = modele.getBlocById(id);
@@ -86,18 +86,22 @@ public class VueBloc extends VBox implements Observateur {
                         meths.getChildren().add(new Label(methode));
                     }
 
+                    attrs.setBorder(border);
+                    meths.setBorder(border);
                     details.getChildren().addAll(attrs, meths);
                 } else {
                     // Vue simple : Afficher uniquement le titre
                     details.getChildren().add(new Label("Vue simple"));
                 }
 
-                details.setBorder(border);
+                titre.setBorder(border);
+                this.setBorder(border);
 
                 // Ajouter le titre et les détails à la vue
                 this.getChildren().addAll(titre, details);
+
             }
-        });
+
     }
 
 

@@ -3,7 +3,7 @@ package app.control;
 import app.Modele;
 import app.classes.Position;
 import app.vue.VueBloc;
-import app.vue.VueFleche;
+import app.vue.VueFleches;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.event.EventHandler;
@@ -61,11 +61,6 @@ public class ControlDeplacerBloc implements EventHandler<MouseEvent>{
                     y = (int) (viewport.getHeight() - vb.getHeight() - ecart);
                 }
                 m.translaterBloc(id, x, y);
-            }
-
-            if (event.getSource() instanceof VueFleche vf) {
-
-                System.out.println("test");
             }
         }
     }

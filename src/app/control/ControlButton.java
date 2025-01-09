@@ -1,5 +1,6 @@
 package app.control;
 
+import app.FileComposite;
 import app.Modele;
 import app.Repertoire;
 import app.classes.Bloc;
@@ -37,6 +38,9 @@ public class ControlButton implements EventHandler<ActionEvent> {
 		if (event.getSource() instanceof MenuItem source) { // Récupère l'élément qui a déclenché l'événement
 			switch (source.getText()) {
 				case "Select directory":
+					File file = new File("./projClass");
+					Repertoire rep = new Repertoire(file);
+					rep.supp();
 					// Ouvre un dialogue pour sélectionner un répertoire
 					DirectoryChooser dirChooser = new DirectoryChooser();
 					dirChooser.setTitle("Select Directory");
