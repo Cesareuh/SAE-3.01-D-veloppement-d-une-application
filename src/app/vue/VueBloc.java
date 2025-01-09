@@ -15,8 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 
 public class VueBloc extends VBox implements Observateur {
 
@@ -92,12 +90,8 @@ public class VueBloc extends VBox implements Observateur {
                     attrs.setBorder(border);
                     meths.setBorder(border);
                     details.getChildren().addAll(attrs, meths);
-                } else {
-                    // Vue simple : Afficher uniquement le titre
-                    details.getChildren().add(new Label("Vue simple"));
                 }
 
-                titre.setBorder(border);
                 this.setBorder(border);
 
                 // Ajouter le titre et les détails à la vue

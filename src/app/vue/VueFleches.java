@@ -1,12 +1,15 @@
 package app.vue;
 
 import app.*;
+import app.classes.Attribut;
 import app.classes.Bloc;
 import app.classes.Fleche;
 import app.classes.Position;
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.shape.*;
+import javafx.scene.text.Text;
 
 public class VueFleches extends Pane implements Observateur {
 
@@ -22,8 +25,8 @@ public class VueFleches extends Pane implements Observateur {
         // Utilisation de Platform.runLater pour exécuter du code après que la scène a été affichée
         this.getChildren().removeAll(this.getChildren());
         for (int idF : m.getFleches().keySet()) {
-            Path path = new Path();
-            path.getElements().removeAll(path.getElements());
+            Path pCorps = new Path();
+            Path pPointe = new Path();
 
             Fleche f = m.getFlecheById(idF);
             Bloc bDep = m.getBlocById(f.getBlocDepart());
@@ -48,6 +51,7 @@ public class VueFleches extends Pane implements Observateur {
                 setStartEnd(arrivee, depart, bArrivee, bDep, vArrivee, vDep);
             }
 
+            // 2 branches du bout de la flèche
             double inclinaison = 5 * Math.PI / 6;
             int taille = 15;
             double angle = Math.atan2(arrivee.getY() - depart.getY(), arrivee.getX() - depart.getX());
@@ -64,20 +68,54 @@ public class VueFleches extends Pane implements Observateur {
             brancheBas.setY(arrivee.getY() + y * taille);
 
             MoveTo arrivee2 = new MoveTo(arrivee.getX(), arrivee.getY());
-            path.getElements().addAll(arrivee, brancheHaut, arrivee, brancheBas);
+            pPointe.getElements().addAll(arrivee, brancheHaut, arrivee, brancheBas);
+
+            // Actions en fonction du type de la flèche
             if (f.getType() != Fleche.ASSOCIATION) {
-                path.getElements().add(brancheHaut);
+                // Ferme la flèche
+                pPointe.getElements().add(brancheHaut);
                 arrivee2.setX((brancheHaut.getX() + brancheBas.getX()) / 2);
                 arrivee2.setY((brancheHaut.getY() + brancheBas.getY()) / 2);
-            }
-            path.getElements().add(arrivee2);
-            path.getElements().add(new LineTo(depart.getX(), depart.getY()));
+                if (f.getType() == Fleche.IMPLEMENTATION) {
+                    pCorps.getStrokeDashArray().add(5d);
+                }
+            }else{
+                // Affiche les cardinalités de la flèche
+                Attribut a = f.getAttribut();
+                Text nomAttribut = new Text(a.getNom());
+                Text card = new Text("1");
+                if(a.getType().contains("List") || a.getType().contains("Map")){
+                    card.setText("*");
+                }
 
-            if (f.getType() == Fleche.IMPLEMENTATION) {
-                path.getStrokeDashArray().add(5d);
-            }
+                double dist = 25;
+                double textAngle = angle + Math.PI/2;
+                double cardAngle = angle + 5*Math.PI/6;
 
-            this.getChildren().add(path);
+                double arrX;
+                double arrY;
+
+                arrX = (depart.getX() + arrivee.getX()) / 2 + Math.cos(textAngle) * dist;
+                arrY = (depart.getY() + arrivee.getY()) / 2 + Math.sin(textAngle) * dist;
+
+                if(arrivee.getY() > depart.getY()) {
+                    arrX = (depart.getX() + arrivee.getX()) / 2 - Math.cos(textAngle) * dist;
+                    arrY = (depart.getY() + arrivee.getY()) / 2 - Math.sin(textAngle) * dist;
+                }
+
+                nomAttribut.setX(arrX);
+                nomAttribut.setY(arrY);
+
+                card.setX(arrivee.getX() + Math.cos(cardAngle) * dist);
+                card.setY(arrivee.getY() + Math.sin(cardAngle) * dist);
+
+                this.getChildren().addAll(nomAttribut, card);
+
+            }
+            pCorps.getElements().add(arrivee2);
+            pCorps.getElements().add(new LineTo(depart.getX(), depart.getY()));
+
+            this.getChildren().addAll(pPointe, pCorps);
         }
     }
 

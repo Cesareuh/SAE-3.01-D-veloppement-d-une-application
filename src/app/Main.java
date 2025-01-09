@@ -78,7 +78,7 @@ public class Main extends Application {
         primaryStage.show();
 
         // Gestion des clics droit
-        root.setOnMouseClicked(new ControlClic(m));
+        viewport.setOnMouseClicked(new ControlClic(m));
 
         // Ajuster la taille du viewport et du fileExplorer
         viewport.setMinSize(primaryStage.getWidth() * ((double) 3 / 4), primaryStage.getHeight() - menuBar.getHeight());
@@ -97,7 +97,7 @@ public class Main extends Application {
                 if(keyEvent.getCode() == KeyCode.D) {
                     m.supprimerBlocSelect();
                 }
-                m.refresh();
+                m.notifierObs();
             }
         });
     }

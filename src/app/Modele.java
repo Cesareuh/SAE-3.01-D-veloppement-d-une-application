@@ -32,18 +32,18 @@ public class Modele implements Sujet{
     private List<Bloc> blocs;
     private final Stage stage;
     private File rep;
-    private int blocCourant;
+    private int blocCourant; // Bloc sélectionné
     private VueViewport viewport;
     private VBox root;
-    private HashMap<Integer, Fleche> flechesMap;
-    private int derniereFlecheID;
-    private HashMap<Integer, Bloc> blocsMap;
-    private int derniereID;
+    private int derniereID; // Id du dernier bloc
+    private HashMap<Integer, Bloc> blocsMap; // Classes affichées sur le diagramme
+    private int derniereFlecheID; // Id de la dernière flèche
+    private HashMap<Integer, Fleche> flechesMap; // Flèches affichées sur le diagramme
+    private VueFleches vueFleches; // La vue qui affiche les flèches
     private List<Observateur> observateurs = new ArrayList<>();
     private TreeView<String> fileExplorerTree;
     private List<Fichier> fichiers;
     private MenuBar menuBar;
-    private VueFleches vueFleches;
 
 
     public Modele(VBox root, VueViewport viewport, TreeView<String> fileExplorerTree, MenuBar menuBar, Stage stage) {
@@ -59,10 +59,6 @@ public class Modele implements Sujet{
         this.vueFleches = new VueFleches();
         viewport.getChildren().addFirst(vueFleches);
         ajouterObs(vueFleches);
-    }
-
-    public void refresh(){
-        notifierObs();
     }
 
     // Cherche les dépendances d'un bloc donné par son id
@@ -81,35 +77,26 @@ public class Modele implements Sujet{
         vb.setOnMouseClicked(new ControlClic(this));
         viewport.getChildren().add(vb);
         ajouterObs(vb);
-        notifierObs();
-
-        // Quand un bloc est créé, sa largeur est initialisée à 0 car javafx n'a pas eu le temps de calculer sa taille
-        // Il faut donc attendre un peu avant de pouvoir l'utiliser
-        Timeline t = new Timeline(new KeyFrame(Duration.millis(10), event -> {
-            actualiserFleches();
-        }));
-        t.setCycleCount(1);
-        t.play();
+        refresh();
     }
 
 
 
 
-    public void afficherFleche(int depart, int arrivee, int type){
+    public void afficherFleche(Fleche f){
         derniereFlecheID++;
-        flechesMap.put(derniereFlecheID, new Fleche(depart, arrivee, type));
+        flechesMap.put(derniereFlecheID, f);
     }
 
     public void actualiserFleches(){
         supprimerFleches();
         for(int idB : blocsMap.keySet()) {
+
             // Ajoute les flèches du bloc en fonction des attributs
             if(getBlocById(idB).getListAttributs() != null) {
                 for (Attribut a : getBlocById(idB).getListAttributs()) {
-                    for (int indexB2 : blocsMap.keySet()) {
-                        if (blocsMap.get(indexB2).getNom().equals(a.getType())) {
-                            afficherFleche(idB, indexB2, Fleche.ASSOCIATION);
-                        }
+                    if(getAssociation(a) != -1){
+                        afficherFleche(new Fleche(idB, getAssociation(a), Fleche.ASSOCIATION, a));
                     }
                 }
             }
@@ -118,7 +105,7 @@ public class Modele implements Sujet{
             if(getBlocById(idB).getHeritage() != null){
                 for (int indexB2 : blocsMap.keySet()) {
                     if(getBlocById(indexB2).getNom().contains(getBlocById(idB).getHeritage())){
-                        afficherFleche(idB, indexB2, Fleche.HERITAGE);
+                        afficherFleche(new Fleche(idB, indexB2, Fleche.HERITAGE));
                     }
                 }
             }
@@ -128,7 +115,7 @@ public class Modele implements Sujet{
                 for (String imp : getBlocById(idB).getImplementation()) {
                     for (int indexB2 : blocsMap.keySet()) {
                         if (getBlocById(indexB2).getNom().contains(imp)){
-                            afficherFleche(idB, indexB2, Fleche.IMPLEMENTATION);
+                            afficherFleche(new Fleche(idB, indexB2, Fleche.IMPLEMENTATION));
                         }
                     }
                 }
@@ -146,6 +133,20 @@ public class Modele implements Sujet{
 
         notifierObs();
 
+    }
+
+    /**
+     * Retourne le bloc correspondant à l'attribut sur le diagramme
+     * @param a
+     * @return
+     */
+    public int getAssociation(Attribut a){
+        for (int indexB2 : blocsMap.keySet()) {
+            if (a.getType().contains(getBlocById(indexB2).getNom()+">") || a.getType().contains("<"+getBlocById(indexB2).getNom()) || a.getType().equals(getBlocById(indexB2).getNom())) {
+                return indexB2;
+            }
+        }
+        return -1;
     }
 
     public void updateFileExplorer(File directory) {
@@ -271,6 +272,20 @@ public class Modele implements Sujet{
         for (Observateur observateur : observateurs) {
             observateur.actualiser(this);
         }
+    }
+
+    /**
+     * Actualise l'affichage
+     */
+    public void refresh(){
+        // Quand un bloc est créé, sa largeur est initialisée à 0 car javafx n'a pas eu le temps de calculer sa taille
+        // Il faut donc attendre un peu avant de pouvoir l'utiliser
+        Timeline t = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+            actualiserFleches();
+        }));
+        t.setCycleCount(1);
+        t.play();
+        notifierObs();
     }
 
     public File getRep() {

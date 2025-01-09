@@ -9,12 +9,23 @@ public class Fleche {
     private int blocArrivee;
     private int type;
     private Position centre;
+    private Attribut attribut;
 
     public Fleche(int blocDepart, int blocArrivee, int type) {
         this.blocDepart = blocDepart;
         this.blocArrivee = blocArrivee;
         this.type = type;
         this.centre = new Position(-1,-1);
+        this.attribut = null;
+    }
+
+    public Fleche(int blocDepart, int blocArrivee, int type, Attribut a) {
+        this(blocDepart, blocArrivee, type);
+        this.attribut = a;
+    }
+
+    public Attribut getAttribut(){
+        return this.attribut;
     }
 
     public int getBlocDepart(){

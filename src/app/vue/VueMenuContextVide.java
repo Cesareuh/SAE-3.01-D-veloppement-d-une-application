@@ -31,56 +31,12 @@ public class VueMenuContextVide extends VueContext {
 
         ControlButton controlButton = new ControlButton(m);
 
-        // Menu Debug
-        Menu debug = new Menu("Debug");
-
-        // Menu items for adding blocs
-        MenuItem add = new MenuItem("add");
-        add.setOnAction((e) -> {
-            ArrayList<Attribut> a = new ArrayList<>();
-            Attribut a1 = new Attribut("-", "int", "attribut");
-            Attribut a2 = new Attribut("-", "String", "attribut2");
-            a.add(a1);
-            a.add(a2);
-            ArrayList<Methode> meth = new ArrayList<>();
-            Methode m1 = new Methode("+", "void", "foo()", null);
-            Methode m2 = new Methode("+", "String", "foo2(x : int)", null);
-            meth.add(m1);
-            meth.add(m2);
-            Bloc b = new Bloc("Test", "Image", null, null, a, meth);
-            Position new_pos = m.screenPosToViewportPos(new Position(this.getX(), this.getY()));
-            b.setPosition(new Position((int) new_pos.getX(), (int) new_pos.getY()));
-            m.afficherBloc(b);
-        });
-
-        // More debug menu items
-        MenuItem add2 = new MenuItem("add2");
-        add2.setOnAction((e) -> {
-            ArrayList<Attribut> a = new ArrayList<>();
-            Attribut a1 = new Attribut("-", "Test", "attribut");
-            Attribut a2 = new Attribut("-", "String", "attribut2");
-            a.add(a1);
-            a.add(a2);
-            ArrayList<Methode> meth = new ArrayList<>();
-            Methode m1 = new Methode("+", "void", "foo()", null);
-            Methode m2 = new Methode("+", "String", "foo2(x : int)", null);
-            meth.add(m1);
-            meth.add(m2);
-            Bloc b = new Bloc("OUII", "Image", null, null, a, meth);
-            Position new_pos = m.screenPosToViewportPos(new Position(this.getX(), this.getY()));
-            b.setPosition(new Position((int) new_pos.getX(), (int) new_pos.getY()));
-            m.afficherBloc(b);
-        });
-
-        // Add the menu items to the debug menu
-        debug.getItems().addAll(add, add2);
-
         // Global view action handlers
         simple.setOnAction(event -> {
             // Applique la vue simple à chaque bloc
             for (Bloc bloc : m.getBlocsMap().values()) {
                 bloc.setAffichageSimple(true);
-                m.notifierObs();
+                m.refresh();
             }
         });
 
@@ -88,7 +44,7 @@ public class VueMenuContextVide extends VueContext {
             // Applique la vue complexe à chaque bloc
             for (Bloc bloc : m.getBlocsMap().values()) {
                 bloc.setAffichageSimple(false);
-                m.notifierObs();
+                m.refresh();
             }
         });
 
@@ -184,7 +140,7 @@ public class VueMenuContextVide extends VueContext {
         MenuItem supprT  = new MenuItem("Clear");
         supprT.setOnAction(e -> controlButton.handleRemoveAAction());
         // Ajouter tous les éléments au menu
-        this.getItems().addAll(affichage, debug, New, supprT);
+        this.getItems().addAll(affichage,  New, supprT);
 
 
     }
