@@ -63,7 +63,7 @@ public class ControlButton implements EventHandler<ActionEvent> {
 					System.out.println("Bloc supprimé.");
 					break;
 
-				case "Modifier": // Regrouper les options "Remove" et "Modifier"
+				case "Modifier":
 					System.out.println("Bloc modifié.");
 					// Appel de la méthode pour ouvrir un éditeur de bloc
 					ouvrirDialogueModification();
