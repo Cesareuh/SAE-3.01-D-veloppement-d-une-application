@@ -218,16 +218,10 @@ public class Fichier extends FileComposite {
     public Class<?> getClasse(){
         File file = new File("./projClass");
         System.out.println("Fichier existe : " + file.exists());
-        String classPath = null;
-        try {
-            classPath = file.getCanonicalPath();
-            System.out.println("Chemin absolu : " + file.getCanonicalPath());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        
         URL[] urls;
         try {
-            urls = new URL[]{new URL("file:/"+classPath+"/")};
+            urls = new URL[]{file.toURI().toURL()};
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
