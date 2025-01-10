@@ -1,6 +1,6 @@
 package app.control;
 
-import app.*;
+import app.classes.Modele;
 import app.vue.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;

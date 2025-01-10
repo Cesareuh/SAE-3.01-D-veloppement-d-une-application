@@ -1,7 +1,7 @@
 package app.vue.fleche;
 
-import app.Modele;
-import app.Sujet;
+import app.classes.Modele;
+import app.classes.Sujet;
 import app.classes.Fleche;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.LineTo;

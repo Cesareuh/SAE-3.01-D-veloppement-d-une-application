@@ -1,11 +1,10 @@
 package app.control;
 
-import app.Modele;
+import app.classes.Modele;
 import app.classes.Fleche;
 import app.classes.Position;
 import app.vue.VueBloc;
 import app.vue.fleche.VueFleche;
-import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;

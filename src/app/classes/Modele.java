@@ -1,11 +1,10 @@
-package app;
+package app.classes;
 
-import app.classes.Attribut;
-import app.classes.Bloc;
-import app.classes.Fleche;
-import app.classes.Position;
 import app.control.ControlClic;
 import app.control.ControlDeplacer;
+import app.introspection.Fichier;
+import app.introspection.Repertoire;
+import app.vue.Observateur;
 import app.vue.VueBloc;
 import app.vue.fleche.*;
 import app.vue.VueViewport;

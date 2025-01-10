@@ -1,9 +1,8 @@
 package app.vue;
 
-import app.Fichier;
-import app.Modele;
-import app.Observateur;
-import app.Sujet;
+import app.introspection.Fichier;
+import app.classes.Modele;
+import app.classes.Sujet;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 

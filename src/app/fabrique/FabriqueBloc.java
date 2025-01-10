@@ -1,5 +1,6 @@
-package app;
+package app.fabrique;
 
+import app.introspection.Fichier;
 import app.classes.Bloc;
 import app.classes.Methode;
 

@@ -1,10 +1,6 @@
 package app.vue;
 
-import app.*;
-import app.classes.Attribut;
-import app.classes.Bloc;
-import app.classes.Methode;
-import app.classes.Position;
+import app.classes.*;
 import app.control.ControlButton;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -16,8 +12,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Optional;
 
 public class VueMenuContextVide extends VueContext {
@@ -112,12 +106,14 @@ public class VueMenuContextVide extends VueContext {
                             // Ajouter les méthodes à la classe
                             for (String method : methods) {
                                 String[] val = method.split(" ");
-                                content.append("    ").append(method.trim()).append(" {\n");
-                                content.append("        // TODO: Implémenter la méthode\n");
-                                if (!val[1].equals("void")) {
-                                    content.append("        return null;");
+                                if (val.length > 1) {
+                                    content.append("    ").append(method.trim()).append(" {\n");
+                                    content.append("        // TODO: Implémenter la méthode\n");
+                                    if (!val[1].equals("void")) {
+                                        content.append("        return null;");
+                                    }
+                                    content.append("    }\n\n");
                                 }
-                                content.append("    }\n\n");
                             }
 
                             // Fermer la classe

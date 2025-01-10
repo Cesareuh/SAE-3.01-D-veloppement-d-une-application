@@ -1,7 +1,6 @@
-package app;
+package app.introspection;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public abstract class FileComposite {

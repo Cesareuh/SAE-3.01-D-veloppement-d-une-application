@@ -1,8 +1,7 @@
 package app.control;
 
-import app.FileComposite;
-import app.Modele;
-import app.Repertoire;
+import app.classes.Modele;
+import app.introspection.Repertoire;
 import app.classes.Bloc;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,7 +22,6 @@ import java.io.*;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ControlButton implements EventHandler<ActionEvent> {
 
