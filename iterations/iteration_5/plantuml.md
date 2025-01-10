@@ -207,7 +207,7 @@ interface Observateur {
 Observateur "*" <-- Modele : - observateurs
 Observateur <|.. VueBloc
 Observateur <|.. VueContext
-Observateur <|.. VueFleche
+Observateur <|... VueFleche
 Observateur <|.. VueTextuel
 
 class VueBloc {

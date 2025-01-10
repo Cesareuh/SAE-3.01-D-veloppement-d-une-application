@@ -13,8 +13,6 @@ import javafx.scene.input.MouseEvent;
 
 public class ControlDeplacer implements EventHandler<MouseEvent>{
 
-    private TreeView<String> fileExplorer;
-    private Pane viewport;
     private Modele m;
 
     public ControlDeplacer(Modele m) {
@@ -58,8 +56,6 @@ public class ControlDeplacer implements EventHandler<MouseEvent>{
                 f.setCentre(new Position(event.getX(), event.getY()));
                 m.refresh();
             }
-
-            System.out.println(event.getTarget());
         }
     }
 }
