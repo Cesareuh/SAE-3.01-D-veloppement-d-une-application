@@ -217,8 +217,6 @@ public class Fichier extends FileComposite {
 
     public Class<?> getClasse(){
         File file = new File("./projClass");
-        System.out.println("Fichier existe : " + file.exists());
-        
         URL[] urls;
         try {
             urls = new URL[]{file.toURI().toURL()};
@@ -228,8 +226,6 @@ public class Fichier extends FileComposite {
         URLClassLoader ucl = new URLClassLoader(urls);
         Class<?> c = null;
         try {
-            System.out.println(getNomCompletClasse(f));
-            System.out.println(Arrays.toString(ucl.getURLs()));
             c = ucl.loadClass(getNomCompletClasse(f));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

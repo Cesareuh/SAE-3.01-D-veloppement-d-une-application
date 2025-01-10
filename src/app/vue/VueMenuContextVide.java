@@ -78,8 +78,6 @@ public class VueMenuContextVide extends VueContext {
                         if (newFile.createNewFile()) {
                             System.out.println("Fichier créé: " + newFile.getAbsolutePath());
 
-                            // Ajouter ce fichier à la liste dans le modèle
-                            m.ajouterFichier(newFile);
 
                             // Déterminer le package basé sur le répertoire sélectionné
                             String packageName = getPackageName(selectedFile.getParent());
@@ -113,8 +111,12 @@ public class VueMenuContextVide extends VueContext {
 
                             // Ajouter les méthodes à la classe
                             for (String method : methods) {
-                                content.append("    public ").append(method.trim()).append(" {\n");
+                                String[] val = method.split(" ");
+                                content.append("    ").append(method.trim()).append(" {\n");
                                 content.append("        // TODO: Implémenter la méthode\n");
+                                if (!val[1].equals("void")) {
+                                    content.append("        return null;");
+                                }
                                 content.append("    }\n\n");
                             }
 
@@ -135,6 +137,7 @@ public class VueMenuContextVide extends VueContext {
                 } else {
                     System.out.println("Le fichier existe déjà.");
                 }
+                m.ajouterClass(newFile);
             }
         });
         MenuItem supprT  = new MenuItem("Clear");

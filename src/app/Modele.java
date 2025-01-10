@@ -320,9 +320,7 @@ public class Modele implements Sujet{
         return null;
     }
 
-    public void ajouterObs(Observateur observateur) {
-        observateurs.add(observateur);
-    }
+    public void ajouterObs(Observateur observateur) {observateurs.add(observateur);}
 
     // Retirer un observateur
     public void supprimerObs(Observateur observateur) {
@@ -470,6 +468,23 @@ public class Modele implements Sujet{
         }else{
             System.out.println("Erreur lors de la compilation");
         }
+    }
+
+    public void ajouterClass(File f){
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        int res = compiler.run(null, null, null, "-d", "projClass", f.getAbsolutePath());
+        if(res == 0){
+            System.out.println("Compilation reussie");
+            ajouterFichier(f);
+        }else{
+            System.out.println("Erreur lors de la compilation");
+        }
+    }
+
+    public void suppRepClass(){
+        File file = new File("./projClass");
+        Repertoire repertoire = new Repertoire(file);
+        repertoire.supp();
     }
 }
 
