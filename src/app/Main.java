@@ -31,6 +31,7 @@ public class Main extends Application {
         VBox root = new VBox();
         HBox base = new HBox();
         MenuBar menuBar = new MenuBar();
+        menuBar.setUseSystemMenuBar(true);
 
         // File Explorer (TreeView pour afficher l'arborescence)
         VueFichiers fileExplorer = new VueFichiers();
@@ -43,14 +44,12 @@ public class Main extends Application {
         fileExplorer.setBorder(border);
         viewport.setBorder(border);
 
-
         // Création du menu
         Menu fileMenu = new Menu("File");
         MenuItem selectRep = new MenuItem("Select directory");
         MenuItem export = new MenuItem("Export as image");
         MenuItem plantuml = new MenuItem("Generate plantuml");
         fileMenu.getItems().addAll(selectRep, export, plantuml);
-
 
         menuBar.getMenus().addAll(fileMenu);
 
