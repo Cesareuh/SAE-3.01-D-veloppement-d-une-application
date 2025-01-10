@@ -55,7 +55,7 @@ class Bloc  {
 }
 Bloc "*" <-- Modele : - blocsMap
 
-class ControlButton {
+class ControlButton #yellow {
     + ControlButton(m : Modele)
     + handle(event : ActionEvent) : void
     - createNode(dir : File) : TreeItem<String>
@@ -76,7 +76,7 @@ class ControlClicDroit {
     + handle(event : MouseEvent) : void
 }
 
-class ControlDragNDrop {
+class ControlDragNDrop #yellow {
     - fileExplorer : TreeView<String>
     - viewport : Pane
 
@@ -109,7 +109,7 @@ class FabriqueInterface {
     + creerBloc(f : Fichier) : Bloc
 }
 
-abstract class FileComposite {
+abstract class FileComposite #yellow {
     # f : File
     + FileComposite(f : File)
     + afficher(s : String) : String
@@ -120,7 +120,7 @@ FileComposite <|-- Fichier
 FileComposite <|-- Repertoire
 FileComposite "*" <-- Repertoire : - fileCompositeArrayList
 
-class Fichier {
+class Fichier #yellow {
     + Fichier(f : File)
     + afficher(prec : String) : String
     + getNomCompletClasse(f : File) : String
@@ -129,7 +129,7 @@ class Fichier {
 }
 Fichier "*" <-- Modele : - fichiers
 
-class Repertoire {
+class Repertoire #yellow {
     + Repertoire(f : File)
     + afficher(prec : String) : String
     + getFileCompositeArrayList() : ArrayList<FileComposite>
@@ -175,7 +175,7 @@ interface Sujet {
 }
 Sujet  <|.. Modele
 
-class Modele  {
+class Modele  #yellow {
     - stage : Stage
     - rep : File
     - blocCourant : int
@@ -205,16 +205,22 @@ interface Observateur {
     + actualiser(s : Sujet) : void
 }
 Observateur "*" <-- Modele : - observateurs
+Observateur <|... VueFleche
 Observateur <|.. VueBloc
 Observateur <|.. VueContext
-Observateur <|... VueFleche
 Observateur <|.. VueTextuel
+Observateur <|.. VueFichiers
 
 class VueBloc {
     - id : int
     + VueBloc(i : int)
     + actualiser(s : Sujet) : void
     + getBlocId() : int
+}
+
+class VueFichiers #green {
+    - f : List<Fichier>
+    + actualiser(s : Sujet) : void
 }
 
 class VueContext{
@@ -229,7 +235,7 @@ class VueMenuContextBloc{
     + actualiser(s : Sujet) : void
 }
 
-class VueMenuContextVide  {
+class VueMenuContextVide #yellow {
     + VueMenuContextBloc(m : Modele)
     + actualiser(s : Sujet) : void
     - getPackageName(path : String ) : String 
