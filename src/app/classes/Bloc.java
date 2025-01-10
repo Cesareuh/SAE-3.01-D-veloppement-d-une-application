@@ -1,5 +1,6 @@
 package app.classes;
 
+import javafx.scene.paint.Color;
 import java.util.List;
 
 public class Bloc {
@@ -11,7 +12,7 @@ public class Bloc {
     private Position pos;
     private List<Attribut> attributs;
     private List<Methode> methodes;
-
+    private Color backgroundColor;
     // Constructeur
     public Bloc(String nom, String image, List<String> implementation, String heritage, List attrs, List meths) {
         this.nom = nom;
@@ -22,9 +23,24 @@ public class Bloc {
         this.attributs = attrs;
         this.methodes = meths;
         this.affichageSimple = false; // Par défaut, la vue est complexe
+        this.backgroundColor = Color.YELLOW;  // Couleur de fond par défaut
     }
 
-    // Getter et setter pour affichageSimple
+    // Getter et setter pour la couleur de fond
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    // Nouvelle méthode pour valider la couleur
+    public void appliquerCouleurValidee(Color couleur) {
+        this.backgroundColor = couleur;
+    }
+
+    // Autres getters et setters
     public boolean isAffichageSimple() {
         return affichageSimple;
     }
@@ -33,7 +49,6 @@ public class Bloc {
         this.affichageSimple = affichageSimple;
     }
 
-    // Autres getters et setters
     public void setPosition(Position pos) {
         if (pos == null) {
             pos = new Position();
@@ -61,7 +76,7 @@ public class Bloc {
         return image;
     }
 
-    public List<String>  getImplementation() {
+    public List<String> getImplementation() {
         return implementation;
     }
 
@@ -95,7 +110,4 @@ public class Bloc {
         methodes.add(nouvelleMethode);
     }
 
-    public void modifierHeritage(String nouveauHeritage) {
-        this.heritage = nouveauHeritage;
-    }
 }

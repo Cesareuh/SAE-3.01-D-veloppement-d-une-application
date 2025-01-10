@@ -62,10 +62,16 @@ public class ControlButton implements EventHandler<ActionEvent> {
 					modele.supprimerBlocSelect();
 					System.out.println("Bloc supprimé.");
 					break;
+
 				case "Modifier": // Regrouper les options "Remove" et "Modifier"
 					System.out.println("Bloc modifié.");
 					// Appel de la méthode pour ouvrir un éditeur de bloc
 					ouvrirDialogueModification();
+					break;
+
+				case "Change Background Color":
+					// Action pour changer la couleur de fond
+					openColorPicker();
 					break;
 
 				case "Generate plantuml":
@@ -94,7 +100,6 @@ public class ControlButton implements EventHandler<ActionEvent> {
 			}
 		}
 	}
-
 
 
 
@@ -267,6 +272,37 @@ public class ControlButton implements EventHandler<ActionEvent> {
 	public void handleModifyAction() {
 		System.out.println("Bloc modifié.");
 		ouvrirDialogueModification();  // Ouvre un dialogue de modification
+	}
+
+	private void openColorPicker() {
+		// Récupérer le bloc sélectionné
+		Bloc selectedBloc = modele.getBlocSelectionne();
+		if (selectedBloc != null) {
+			// Créer un sélecteur de couleur
+			ColorPicker colorPicker = new ColorPicker();
+			colorPicker.setValue(selectedBloc.getBackgroundColor());  // Définir la couleur actuelle du bloc
+
+			// Créer une nouvelle fenêtre pour afficher le sélecteur de couleur
+			Stage colorStage = new Stage();
+			colorStage.setTitle("Choose Background Color");
+
+			// Lorsque l'utilisateur choisit une couleur
+			colorPicker.setOnAction(e -> {
+				// Mettre à jour la couleur de fond du bloc sélectionné
+				selectedBloc.setBackgroundColor(colorPicker.getValue());
+
+				// Rafraîchir l'UI ou mettre à jour l'affichage du bloc
+				modele.notifierObs();  // Notifier les observateurs pour que l'interface soit mise à jour
+			});
+
+			// Mise en place du layout
+			VBox layout = new VBox(10, colorPicker);
+			layout.setPadding(new Insets(20));
+
+			Scene scene = new Scene(layout);
+			colorStage.setScene(scene);
+			colorStage.show();
+		}
 	}
 
 
