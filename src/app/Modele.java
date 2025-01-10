@@ -118,7 +118,7 @@ public class Modele implements Sujet{
             // Ajoute les flèches en fonction des héritages
             if(getBlocById(idB).getHeritage() != null){
                 for (int indexB2 : blocsMap.keySet()) {
-                    if(getBlocById(indexB2).getNom().contains(getBlocById(idB).getHeritage())){
+                    if(getBlocById(indexB2).getNom().equals(getBlocById(idB).getHeritage())){
                         afficherFleche(new Fleche(idB, indexB2, Fleche.HERITAGE));
                     }
                 }
@@ -128,7 +128,7 @@ public class Modele implements Sujet{
             if(getBlocById(idB).getImplementation() != null){
                 for (String imp : getBlocById(idB).getImplementation()) {
                     for (int indexB2 : blocsMap.keySet()) {
-                        if (getBlocById(indexB2).getNom().contains(imp)){
+                        if (getBlocById(indexB2).getNom().equals(imp)){
                             afficherFleche(new Fleche(idB, indexB2, Fleche.IMPLEMENTATION));
                         }
                     }
@@ -141,8 +141,11 @@ public class Modele implements Sujet{
             Bloc bArrivee = getBlocById(f.getBlocArrivee());
             VueBloc vDep = getVueBlocById(f.getBlocDepart());
             VueBloc vArrivee = getVueBlocById(f.getBlocArrivee());
-            Position[] positions;
             Position[] positionsCentre;
+
+            Position centreBDep = new Position();
+            centreBDep.setX((bDep.getPosition().getX()*2 + vDep.getWidth())/2);
+            centreBDep.setY((bDep.getPosition().getY()*2 + vDep.getHeight())/2);
 
             Position departPos;
             Position departTaille;
@@ -155,14 +158,12 @@ public class Modele implements Sujet{
             }
 
             if (departPos.getX() + departTaille.getWidth()/2 < bArrivee.getPosition().getX() + vArrivee.getWidth()/2) {
-                positions = f.getStartEnd(bDep.getPosition(), bArrivee.getPosition(), new Position(vDep.getWidth(), vDep.getHeight()), new Position(vArrivee.getWidth(), vArrivee.getHeight()));
                 positionsCentre = f.getStartEnd(departPos, bArrivee.getPosition(), new Position(departTaille.getWidth(), departTaille.getHeight()), new Position(vArrivee.getWidth(), vArrivee.getHeight()));
-                f.setDepart(positions[0]);
+                f.setDepart(centreBDep);
                 f.setArrivee(positionsCentre[1]);
             } else {
-                positions = f.getStartEnd(bArrivee.getPosition(), bDep.getPosition(), new Position(vArrivee.getWidth(), vArrivee.getHeight()), new Position(vDep.getWidth(), vDep.getHeight()));
                 positionsCentre = f.getStartEnd(bArrivee.getPosition(), departPos, new Position(vArrivee.getWidth(), vArrivee.getHeight()), new Position(departTaille.getWidth(), departTaille.getHeight()));
-                f.setDepart(positions[1]);
+                f.setDepart(centreBDep);
                 f.setArrivee(positionsCentre[0]);
             }
 
@@ -178,8 +179,8 @@ public class Modele implements Sujet{
             if(f.getCentre().getX() == -1){
                 double x = (f.getDepart().getX() + f.getArrivee().getX()) / 2;
                 double y = (f.getDepart().getY() + f.getArrivee().getY()) / 2;
-                double rand = Math.random()*200-100;
-                double rand2 = Math.random()*200-100;
+                double rand = Math.random()*100-50;
+                double rand2 = Math.random()*100-50;
                 f.setCentre(new Position(x + rand, y+rand2));
             }
         }

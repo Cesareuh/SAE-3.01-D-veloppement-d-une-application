@@ -1,12 +1,5 @@
 package app.classes;
 
-
-import app.vue.VueBloc;
-import javafx.geometry.Pos;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Fleche {
