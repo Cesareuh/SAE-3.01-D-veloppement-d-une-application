@@ -1,8 +1,7 @@
 package app.vue;
 
-import app.Modele;
-import app.Observateur;
-import app.Sujet;
+import app.classes.Modele;
+import app.classes.Sujet;
 import javafx.scene.control.ContextMenu;
 
 public abstract class VueContext extends ContextMenu implements Observateur {

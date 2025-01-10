@@ -1,13 +1,7 @@
 package app.vue.fleche;
 
-import app.Modele;
-import app.Sujet;
-import app.classes.Fleche;
-import javafx.scene.layout.Pane;
+import app.classes.Sujet;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.QuadCurveTo;
 
 public class VueHitboxFleche extends VueCorpsFleche{
 

@@ -1,7 +1,7 @@
 package app.vue;
 
-import app.Modele;
-import app.Sujet;
+import app.classes.Modele;
+import app.classes.Sujet;
 import app.classes.Bloc;
 import app.control.ControlButton;
 import javafx.event.ActionEvent;

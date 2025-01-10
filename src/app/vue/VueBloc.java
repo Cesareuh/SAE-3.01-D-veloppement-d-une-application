@@ -1,9 +1,6 @@
 package app.vue;
 
-import app.*;
-import app.classes.Attribut;
-import app.classes.Bloc;
-import app.classes.Methode;
+import app.classes.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;

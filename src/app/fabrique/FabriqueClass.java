@@ -1,8 +1,8 @@
-package app;
+package app.fabrique;
 
+import app.introspection.Fichier;
 import app.classes.Attribut;
 import app.classes.Bloc;
-import app.classes.Methode;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;

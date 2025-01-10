@@ -1,5 +1,7 @@
 package app;
 
+import app.classes.Modele;
+import app.classes.WindowListener;
 import app.control.ControlButton;
 import app.control.ControlClic;
 import app.control.ControlDragNDrop;

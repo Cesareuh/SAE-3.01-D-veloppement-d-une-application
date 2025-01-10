@@ -1,6 +1,9 @@
-package app;
+package app.introspection;
 
 import app.classes.Bloc;
+import app.fabrique.FabriqueAbstract;
+import app.fabrique.FabriqueClass;
+import app.fabrique.FabriqueInterface;
 
 import java.io.*;
 import java.lang.reflect.*;

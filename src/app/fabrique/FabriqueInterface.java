@@ -1,13 +1,7 @@
-package app;
+package app.fabrique;
 
+import app.introspection.Fichier;
 import app.classes.Bloc;
-import app.classes.Methode;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FabriqueInterface extends FabriqueBloc {
 

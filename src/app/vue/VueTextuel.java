@@ -1,6 +1,9 @@
 package app.vue;
 
-import app.*;
+import app.classes.Modele;
+import app.classes.Sujet;
+import app.introspection.Fichier;
+import app.introspection.Repertoire;
 
 import java.io.File;
 

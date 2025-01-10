@@ -1,4 +1,6 @@
-package app;
+package app.classes;
+
+import app.vue.Observateur;
 
 public interface Sujet {
     //methodes pour gerer les observateurs du model

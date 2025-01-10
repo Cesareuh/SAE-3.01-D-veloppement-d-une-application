@@ -1,7 +1,7 @@
 package app.control;
 
-import app.Fichier;
-import app.Modele;
+import app.introspection.Fichier;
+import app.classes.Modele;
 import app.classes.Bloc;
 import app.classes.Position;
 import app.vue.VueBloc;
@@ -12,8 +12,6 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.control.Label;
 
 import java.io.File;
 import java.util.List;

@@ -8,4 +8,6 @@ module javafx {
     exports app.vue;
     exports app.classes;
     exports app.vue.fleche;
+    exports app.fabrique;
+    exports app.introspection;
 }
