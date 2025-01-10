@@ -84,47 +84,51 @@ public class ControlDragNDrop implements EventHandler<DragEvent> {
             success = true;
 
             for (File file : files) {
-                System.out.println("File dropped: " + file.getName());
 
-                // Crée une instance de Fichier pour traiter le fichier
-                Fichier fichier = null;
-                for(Fichier f : modele.getFichiers()){
-                    if(f.getName().equals(file.getName())){
-                        fichier= f;
-                        break;
+                    System.out.println("File dropped: " + file.getName());
+
+                    // Crée une instance de Fichier pour traiter le fichier
+                    Fichier fichier = null;
+                    for (Fichier f : modele.getFichiers()) {
+                        if (f.getName().equals(file.getName()) && f.getF().isFile()) {
+                            fichier = f;
+                            break;
+                        }
                     }
-                }
-                System.out.println(fichier.getName());
+                    if(fichier != null) {
+                        System.out.println(fichier.getName());
 
-                Bloc b = fichier.creerBloc();
-                b.setPosition(new Position(dragEvent.getX(), dragEvent.getY()));
-                modele.afficherBloc(b);
+                        Bloc b = fichier.creerBloc();
+                        b.setPosition(new Position(dragEvent.getX(), dragEvent.getY()));
+                        modele.afficherBloc(b);
 
-                // Récupérer les informations de la classe
-                String classInfo = fichier.afficher("");
+                        // Récupérer les informations de la classe
+                        String classInfo = fichier.afficher("");
 
-                /*
-                // Crée un StackPane pour afficher les informations dans le Viewport
-                StackPane filePane = new StackPane();
-                Label fileLabel = new Label(file.getName() + "\n" + classInfo);
-                filePane.getChildren().add(fileLabel);
+                        /*
+                        // Crée un StackPane pour afficher les informations dans le Viewport
+                        StackPane filePane = new StackPane();
+                        Label fileLabel = new Label(file.getName() + "\n" + classInfo);
+                        filePane.getChildren().add(fileLabel);
 
-                // Calculer l'offset du curseur par rapport au Viewport
-                double cursorX = dragEvent.getSceneX() - viewport.getLayoutX();
-                double cursorY = dragEvent.getSceneY() - viewport.getLayoutY();
+                        // Calculer l'offset du curseur par rapport au Viewport
+                        double cursorX = dragEvent.getSceneX() - viewport.getLayoutX();
+                        double cursorY = dragEvent.getSceneY() - viewport.getLayoutY();
 
-                // Ajuster la position du texte (prendre en compte la taille du label)
-                double labelHeight = fileLabel.getHeight();
-                double labelWidth = fileLabel.getWidth();
-                filePane.setLayoutX(cursorX - labelWidth / 2);  // Centrer horizontalement
-                filePane.setLayoutY(cursorY - labelHeight / 2);  // Centrer verticalement
+                        // Ajuster la position du texte (prendre en compte la taille du label)
+                        double labelHeight = fileLabel.getHeight();
+                        double labelWidth = fileLabel.getWidth();
+                        filePane.setLayoutX(cursorX - labelWidth / 2);  // Centrer horizontalement
+                        filePane.setLayoutY(cursorY - labelHeight / 2);  // Centrer verticalement
 
-                // Ajouter un gestionnaire d'événements pour déplacer l'élément dans le viewport
-                setUpMouseDrag(vb);
+                        // Ajouter un gestionnaire d'événements pour déplacer l'élément dans le viewport
+                        setUpMouseDrag(vb);
 
-                // Ajouter l'élément dans le viewport
-                viewport.getChildren().add(vb);
-                 */
+                        // Ajouter l'élément dans le viewport
+                        viewport.getChildren().add(vb);
+                         */
+                    }
+
             }
         }
 
