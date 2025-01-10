@@ -7,22 +7,29 @@ import app.Sujet;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class VueFichiers extends TreeView implements Observateur {
     @Override
     public void actualiser(Sujet s) {
         List<Fichier> f = ((Modele) s).getFichiers();
-        //TreeItem<String> root = new TreeItem<>(((Modele) s).getFichiers().getFirst().getName());
-        //root.setExpanded(true);
+
+        // Trier la liste des fichiers par ordre alphabétique
+        f.sort(Comparator.comparing(Fichier::getName));
+
+        // Créer la racine
         TreeItem<String> root = new TreeItem<>(new Fichier(((Modele) s).getRep()).getName());
         root.setExpanded(true);
-        for(Fichier fichier : f) {
-            //if(fichier!= f.getFirst()) {
-                TreeItem<String> c = new TreeItem<>(fichier.getName());
-                root.getChildren().add(c);
-            //}
+
+        // Ajouter les enfants triés
+        for (Fichier fichier : f) {
+            TreeItem<String> c = new TreeItem<>(fichier.getName());
+            root.getChildren().add(c);
         }
+
+        // Mettre à jour la racine du TreeView
         this.setRoot(root);
     }
 }
+
