@@ -73,16 +73,27 @@ public class Fleche {
     public Position getArrivee(){return this.arrivee;};
     public Position getArrivee2(){return this.arrivee2;};
 
-    public static Position[] getStartEnd(Bloc bPosA, Bloc bPosB, VueBloc vPosA, VueBloc vPosB) {
+    public Position[] getStartEnd(Position bPosA, Position bPosB, Position vPosA, Position vPosB) {
         Position posA = new Position();
         Position posB = new Position();
         // Calcul du centre de chaque point
         Position aCentre = new Position();
-        aCentre.setX((bPosA.getPosition().getX() + bPosA.getPosition().getX() + vPosA.getWidth()) / 2);
-        aCentre.setY((bPosA.getPosition().getY() + bPosA.getPosition().getY() + vPosA.getHeight()) / 2);
+        if(vPosA.getWidth() == 0) {
+            aCentre.setX(bPosA.getX());
+            aCentre.setY(bPosA.getY());
+        }else{
+            aCentre.setX((bPosA.getX() + bPosA.getX() + vPosA.getWidth()) / 2);
+            aCentre.setY((bPosA.getY() + bPosA.getY() + vPosA.getHeight()) / 2);
+        }
+
         Position bCentre = new Position();
-        bCentre.setX((bPosB.getPosition().getX() + bPosB.getPosition().getX() + vPosB.getWidth()) / 2);
-        bCentre.setY((bPosB.getPosition().getY() + bPosB.getPosition().getY() + vPosB.getHeight()) / 2);
+        if(vPosB.getWidth() == 0) {
+            bCentre.setX(bPosB.getX());
+            bCentre.setY(bPosB.getY());
+        }else{
+            bCentre.setX((bPosB.getX() + bPosB.getX() + vPosB.getWidth()) / 2);
+            bCentre.setY((bPosB.getY() + bPosB.getY() + vPosB.getHeight()) / 2);
+        }
 
         // Gère le cas où les points sont à la verticale
         if (aCentre.getX() == bCentre.getX()) {
@@ -108,7 +119,7 @@ public class Fleche {
             posA.setX(aCentre.getX());
             posA.setY(aCentre.getY());
             double x = aCentre.getX();
-            while (posA.getX() - bPosA.getPosition().getX() < vPosA.getWidth() && posA.getX() > bPosA.getPosition().getX() && posA.getY() - bPosA.getPosition().getY() < vPosA.getHeight() && posA.getY() > bPosA.getPosition().getY()) {
+            while (posA.getX() - bPosA.getX() < vPosA.getWidth() && posA.getX() > bPosA.getX() && posA.getY() - bPosA.getY() < vPosA.getHeight() && posA.getY() > bPosA.getY()) {
                 posA.setX(x);
                 posA.setY(a * x + b);
                 x += .1;
@@ -117,7 +128,7 @@ public class Fleche {
             posB.setX(bCentre.getX());
             posB.setY(bCentre.getY());
             x = bCentre.getX();
-            while (posB.getX() - bPosB.getPosition().getX() < vPosB.getWidth() && posB.getX() > bPosB.getPosition().getX() && posB.getY() - bPosB.getPosition().getY() < vPosB.getHeight() && posB.getY() > bPosB.getPosition().getY()) {
+            while (posB.getX() - bPosB.getX() < vPosB.getWidth() && posB.getX() > bPosB.getX() && posB.getY() - bPosB.getY() < vPosB.getHeight() && posB.getY() > bPosB.getY()) {
                 posB.setX(x);
                 posB.setY(a * x + b);
                 x -= .1;

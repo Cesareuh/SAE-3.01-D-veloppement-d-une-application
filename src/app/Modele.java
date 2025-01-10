@@ -143,15 +143,28 @@ public class Modele implements Sujet{
             VueBloc vDep = getVueBlocById(f.getBlocDepart());
             VueBloc vArrivee = getVueBlocById(f.getBlocArrivee());
             Position[] positions;
+            Position[] positionsCentre;
 
-            if (bDep.getPosition().getX() + vDep.getWidth()/2 < bArrivee.getPosition().getX() + vArrivee.getWidth()/2) {
-                positions = Fleche.getStartEnd(bDep, bArrivee, vDep, vArrivee);
+            Position departPos;
+            Position departTaille;
+            if(f.getCentre().getX() != -1){
+                departPos = new Position(f.getCentre().getX(), f.getCentre().getY());
+                departTaille = new Position(0, 0);
+            }else{
+                departPos = bDep.getPosition();
+                departTaille = new Position(vDep.getWidth(), vDep.getHeight());
+            }
+
+            if (departPos.getX() + departTaille.getWidth()/2 < bArrivee.getPosition().getX() + vArrivee.getWidth()/2) {
+                positions = f.getStartEnd(bDep.getPosition(), bArrivee.getPosition(), new Position(vDep.getWidth(), vDep.getHeight()), new Position(vArrivee.getWidth(), vArrivee.getHeight()));
+                positionsCentre = f.getStartEnd(departPos, bArrivee.getPosition(), new Position(departTaille.getWidth(), departTaille.getHeight()), new Position(vArrivee.getWidth(), vArrivee.getHeight()));
                 f.setDepart(positions[0]);
-                f.setArrivee(positions[1]);
+                f.setArrivee(positionsCentre[1]);
             } else {
-                positions = Fleche.getStartEnd(bArrivee, bDep, vArrivee, vDep);
+                positions = f.getStartEnd(bArrivee.getPosition(), bDep.getPosition(), new Position(vArrivee.getWidth(), vArrivee.getHeight()), new Position(vDep.getWidth(), vDep.getHeight()));
+                positionsCentre = f.getStartEnd(bArrivee.getPosition(), departPos, new Position(vArrivee.getWidth(), vArrivee.getHeight()), new Position(departTaille.getWidth(), departTaille.getHeight()));
                 f.setDepart(positions[1]);
-                f.setArrivee(positions[0]);
+                f.setArrivee(positionsCentre[0]);
             }
 
             if(f.getType() != Fleche.ASSOCIATION){
