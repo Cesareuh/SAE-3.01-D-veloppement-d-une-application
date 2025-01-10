@@ -5,13 +5,12 @@ import app.classes.Bloc;
 import app.classes.Fleche;
 import app.classes.Position;
 import app.control.ControlClic;
-import app.control.ControlDeplacerBloc;
+import app.control.ControlDeplacer;
 import app.vue.VueBloc;
 import app.vue.fleche.*;
 import app.vue.VueViewport;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Pos;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -69,7 +68,7 @@ public class Modele implements Sujet{
         derniereID++;
         blocsMap.put(derniereID, b);
         VueBloc vb = new VueBloc(derniereID, this);
-        vb.setOnMouseDragged(new ControlDeplacerBloc(this));
+        vb.setOnMouseDragged(new ControlDeplacer(this));
         vb.setOnMouseClicked(new ControlClic(this));
         viewport.getChildren().add(vb);
         ajouterObs(vb);
@@ -85,7 +84,7 @@ public class Modele implements Sujet{
 
         VueCorpsFleche vcf = new VueCorpsFleche(derniereFlecheID);
         VueHitboxFleche vhf = new VueHitboxFleche(derniereFlecheID);
-        vhf.setOnMouseDragged(new ControlDeplacerBloc(this));
+        vhf.setOnMouseDragged(new ControlDeplacer(this));
         VuePointeFleche vpf = new VuePointeFleche(derniereFlecheID);
         viewport.getChildren().addFirst(vhf);
         viewport.getChildren().addFirst(vcf);

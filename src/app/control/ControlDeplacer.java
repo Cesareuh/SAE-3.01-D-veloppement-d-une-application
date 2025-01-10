@@ -11,13 +11,13 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
-public class ControlDeplacerBloc implements EventHandler<MouseEvent>{
+public class ControlDeplacer implements EventHandler<MouseEvent>{
 
     private TreeView<String> fileExplorer;
     private Pane viewport;
     private Modele m;
 
-    public ControlDeplacerBloc(Modele m) {
+    public ControlDeplacer(Modele m) {
         this.m = m;
     }
 
